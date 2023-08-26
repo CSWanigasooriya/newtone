@@ -1,0 +1,11 @@
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$sync-vote-light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $sync-vote-light-primary,
+      accent: $sync-vote-light-accent,
+      warn: $sync-vote-light-warn,
+    ),
+  )
+);
