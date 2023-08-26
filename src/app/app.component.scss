@@ -1,0 +1,30 @@
+div.list-container {
+  max-height: 156px;
+  overflow: auto;
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  z-index: 1002;
+  margin-top: 20vh;
+  left: 50%; /* Position X halfway in */
+  transform: translate(-50%, -50%); /* Move it halfway back(x,y) */
+  width: 100px; /* Any width */
+  height: 100px; /* Any height */
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
+
+.blurred {
+  pointer-events: none;
+  opacity: 0.4;
+}

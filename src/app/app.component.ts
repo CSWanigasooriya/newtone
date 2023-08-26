@@ -35,21 +35,21 @@ export class AppComponent implements OnDestroy {
     private _router: Router,
     private _iconRegistry: MatIconRegistry,
     private _overlayContainer: OverlayContainer,
-    private store: Store<{ count: number; theme: boolean }>,
+    private _store: Store<{ count: number; theme: boolean }>,
     @Inject(APP_CONFIG) public config: AppConfig,
     private _titleService: Title
   ) {
-    this.count$ = store.select('count');
-    this.theme$ = store.select('theme');
+    this.count$ = _store.select('count');
+    this.theme$ = _store.select('theme');
 
-    this._router.events.subscribe((ev) => {
-      if (ev instanceof NavigationStart) {
+    this._router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
         this.loading = true;
       }
       if (
-        ev instanceof NavigationEnd ||
-        ev instanceof NavigationCancel ||
-        ev instanceof NavigationError
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError
       ) {
         this.loading = false;
       }
@@ -77,15 +77,15 @@ export class AppComponent implements OnDestroy {
   }
 
   increment() {
-    this.store.dispatch(increment());
+    this._store.dispatch(increment());
   }
 
   decrement() {
-    this.store.dispatch(decrement());
+    this._store.dispatch(decrement());
   }
 
   reset() {
-    this.store.dispatch(reset());
+    this._store.dispatch(reset());
   }
 
   ngOnDestroy(): void {
