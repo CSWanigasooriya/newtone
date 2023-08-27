@@ -1,0 +1,83 @@
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 70px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1em 1em 0 0;
+  mat-spinner {
+    margin-top: 50px;
+  }
+}
+
+.error-found {
+  max-width: 360px;
+  text-align: center;
+}
+
+.main-container {
+  position: relative;
+  @apply shadow-md;
+}
+
+.table-container {
+  position: relative;
+  min-height: 200px;
+  max-height: 50vh;
+  overflow: auto;
+  border-radius: 1em 1em 0 0;
+}
+
+// .mat-header-row {
+//   // background: #f5f5f5;
+// }
+
+// .mat-table-sticky {
+//   // border-top: 1px solid #e0e0e0;
+// }
+
+.mat-paginator {
+  background: inherit;
+}
+
+// .mat-toolbar {
+//   background: inherit;
+// }
+
+::ng-deep .mat-paginator-container {
+  .mat-form-field {
+    top: 0.2em;
+  }
+  .mat-select-value {
+    margin-top: -0.5em;
+  }
+  .mat-form-field .mat-form-field-infix {
+    padding: 4px;
+  }
+}
+
+.selection {
+  flex: 0 0 5%;
+}
+
+.actions {
+  flex: 0 0 10%;
+  flex-direction: row;
+  justify-content: center;
+}
+
+// .mat-cell:nth-child(1),
+// .mat-header-cell:nth-child(1) {
+//   flex: 0 0 5%;
+// }
+// .mat-cell:nth-last-child(1),
+// .mat-header-cell:nth-last-child(1) {
+//   flex: 0 0 10%;
+//   flex-direction: row;
+//   justify-content: center;
+// }

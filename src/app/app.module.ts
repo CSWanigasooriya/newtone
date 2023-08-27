@@ -1,6 +1,7 @@
 import { ActionReducer, MetaReducer, StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { LayoutComponent } from './layout/layout.component';
 import { MaterialModule } from '@newtone/material';
@@ -27,6 +28,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
   declarations: [AppComponent, LayoutComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     MaterialModule,
     StoreModule.forRoot(
       { count: counterReducer, theme: themeReducer },

@@ -1,4 +1,17 @@
-<h2>Home Component!</h2>
-<newtone-banner></newtone-banner>
-<newtone-featured></newtone-featured>
-<newtone-latest></newtone-latest>
+<newtone-table
+  [tableData]="tableData"
+  [tableColumns]="tableColumns"
+  [isPageable]="true"
+  [isSortable]="true"
+  [isFilterable]="false"
+  [rowActionButtons]="tableRowActions"
+  [paginationSizes]="[2, 4, 6, 10, 30]"
+  [defaultPageSize]="10"
+  [stickyHeader]="true"
+  [isSelectable]="true"
+  [paginatorActionButton]="tablePaginatorAction"
+  (sort)="sortData($event)"
+  (paginatorAction)="onPaginatorAction($event)"
+  (selectionChange)="onSelectionChange($event)"
+>
+</newtone-table>

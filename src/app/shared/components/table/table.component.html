@@ -1,0 +1,146 @@
+<!-- Filter -->
+<ng-container *ngIf="isFilterable">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Search records..."
+    />
+  </mat-form-field>
+</ng-container>
+
+<div class="main-container">
+  <ng-container>
+    <div class="loading-shade" *ngIf="isLoading">
+      <mat-spinner [diameter]="60" [strokeWidth]="3"></mat-spinner>
+    </div>
+    <div
+      class="loading-shade"
+      *ngIf="isRateLimitReached && tableDataSource.data.length === 0"
+    >
+      <div class="error-found">
+        <p>Results Unavailable</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <mat-table
+      class="table-container"
+      [dataSource]="tableDataSource"
+      matSort
+      (matSortChange)="sortTable($event)"
+      matSortDisableClear
+      matSortDirection="desc"
+    >
+      <!-- Checkbox Column -->
+      <ng-container *ngIf="isSelectable" matColumnDef="select">
+        <mat-header-cell class="selection" *matHeaderCellDef>
+          <mat-checkbox
+            (click)="$event ? toggleAllRows() : null"
+            [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          >
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell class="selection" *matCellDef="let row">
+          <mat-checkbox
+            (change)="$event ? toggleOneRow(row) : null"
+            [checked]="selection.isSelected(row)"
+          >
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Row Action Buttons -->
+      <ng-container *ngIf="rowActionButtons" matColumnDef="actions">
+        <mat-header-cell class="actions" *matHeaderCellDef
+          >Actions</mat-header-cell
+        >
+        <mat-cell class="actions" *matCellDef="let element">
+          <button
+            mat-icon-button
+            *ngFor="let instance of rowActionButtons"
+            [matTooltip]="instance.tooltip"
+            matTooltipPosition="below"
+            (click)="emitAction(instance, element)"
+          >
+            <mat-icon [color]="instance.color">{{ instance.icon }}</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Column Headers -->
+      <ng-container
+        *ngFor="let tableColumn of tableColumns"
+        [matColumnDef]="tableColumn.name"
+      >
+        <!-- if sortable column header -->
+        <ng-container *ngIf="tableColumn.isSortable; else notSortable">
+          <mat-header-cell
+            *matHeaderCellDef
+            [mat-sort-header]="tableColumn.name"
+            [arrowPosition]="
+              tableColumn.position === 'right' ? 'before' : 'after'
+            "
+          >
+            {{ tableColumn.name }}
+          </mat-header-cell>
+        </ng-container>
+        <!-- else not sortable -->
+        <ng-template #notSortable>
+          <mat-header-cell
+            *matHeaderCellDef
+            [class.text-right]="tableColumn.position === 'right'"
+          >
+            {{ tableColumn.name }}
+          </mat-header-cell>
+        </ng-template>
+
+        <!-- column data -->
+        <mat-cell
+          *matCellDef="let element"
+          [class.text-right]="tableColumn.position === 'right'"
+        >
+          {{ element[tableColumn.dataKey] }}
+        </mat-cell>
+      </ng-container>
+      <mat-header-row
+        *matHeaderRowDef="displayedColumns; sticky: stickyHeader"
+      ></mat-header-row>
+      <mat-row
+        matRipple
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="toggleOneRow(row)"
+      ></mat-row>
+    </mat-table>
+
+    <!-- Pagination -->
+    <mat-toolbar *ngIf="isPageable">
+      <mat-toolbar-row>
+        <button
+          [disabled]="selection.selected.length > 10"
+          (click)="emitPaginatorAction()"
+          mat-button
+          [ngClass]="paginatorActionButton.style"
+          [color]="paginatorActionButton.color"
+          *ngIf="paginatorActionButton"
+        >
+          <mat-icon>{{ paginatorActionButton.icon }}</mat-icon>
+          {{ paginatorActionButton.text }}
+          <span *ngIf="paginatorActionButton.count"
+            >{{ selection.selected.length }} / 10</span
+          >
+        </button>
+        <span class="spacer"></span>
+        <mat-paginator
+          [length]="tableDataSource.data.length"
+          [pageSizeOptions]="paginationSizes"
+          [pageSize]="defaultPageSize"
+          showFirstLastButtons
+        >
+        </mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </ng-container>
+</div>
