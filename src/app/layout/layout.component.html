@@ -6,17 +6,20 @@
   </button>
 </mat-toolbar>
 <mat-toolbar>
-  <button mat-icon-button>
-    <mat-icon>menu</mat-icon>
+  <button mat-raised-button color="accent">
+    {{ config.title | uppercase }}
   </button>
-  <span>{{ config.title }}</span>
   <span class="spacer"></span>
-  <button mat-icon-button>
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon>share</mat-icon>
+  <button
+    mat-icon-button
+    *ngFor="let iconButton of iconButtons"
+    [matTooltip]="iconButton.tooltip"
+    (click)="iconButton.action()"
+  >
+    <mat-icon>{{ iconButton.icon }}</mat-icon>
   </button>
 </mat-toolbar>
+
+<newtone-breadcrumb [breadcrumbItems]="breadcrumbs"></newtone-breadcrumb>
 
 <router-outlet></router-outlet>

@@ -8,6 +8,7 @@ import { MaterialModule } from '@newtone/material';
 import { NgModule } from '@angular/core';
 import { PROVIDERS_CONFIG } from './core/config/providers.config';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from './shared/shared.module';
 import { appRoutes } from './app.routes';
 import { counterReducer } from './core/state/counter/counter.reducer';
 import { localStorageSync } from 'ngrx-store-localstorage';
@@ -30,6 +31,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
+    SharedModule,
     StoreModule.forRoot(
       { count: counterReducer, theme: themeReducer },
       { metaReducers: metaReducers }
