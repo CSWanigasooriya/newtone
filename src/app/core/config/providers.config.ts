@@ -37,12 +37,12 @@ export const tooltipOptions: MatTooltipDefaultOptions = {
 };
 
 export const PROVIDERS_CONFIG = [
-  {
-    provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-    useValue: {
-      appearance: 'outline',
-    },
-  },
+  // {
+  //   provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  //   useValue: {
+  //     appearance: 'outline',
+  //   },
+  // },
   {
     provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
     useValue: { hasBackdrop: true },

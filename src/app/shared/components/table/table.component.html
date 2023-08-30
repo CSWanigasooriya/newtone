@@ -2,11 +2,7 @@
 <ng-container *ngIf="isFilterable">
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Search records..."
-    />
+    <input matInput (keyup)="applyFilter($event)" />
   </mat-form-field>
 </ng-container>
 

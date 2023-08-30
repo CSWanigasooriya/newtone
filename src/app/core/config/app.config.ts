@@ -9,5 +9,5 @@ export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 
 export const NEWTONE_DI_CONFIG: AppConfig = {
   title: 'NEWTONE',
-  dark_theme: true,
+  dark_theme: false,
 };

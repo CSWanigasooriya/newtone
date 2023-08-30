@@ -11,6 +11,6 @@ const sharedComponents = [TableComponent, BreadcrumbComponent];
 @NgModule({
   declarations: [sharedComponents],
   imports: [CommonModule, FormsModule, MaterialModule, ReactiveFormsModule],
-  exports: [sharedComponents],
+  exports: [sharedComponents, MaterialModule],
 })
 export class SharedModule {}

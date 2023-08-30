@@ -1,25 +1,29 @@
-<mat-toolbar class="bg-black h-8">
-  <span class="spacer"></span>
-  <button mat-raised-button color="primary">
-    <mat-icon>language</mat-icon>
-    EN
-  </button>
-</mat-toolbar>
-<mat-toolbar>
-  <button mat-raised-button color="accent">
-    {{ config.title | uppercase }}
-  </button>
-  <span class="spacer"></span>
-  <button
-    mat-icon-button
-    *ngFor="let iconButton of iconButtons"
-    [matTooltip]="iconButton.tooltip"
-    (click)="iconButton.action()"
-  >
-    <mat-icon>{{ iconButton.icon }}</mat-icon>
-  </button>
-</mat-toolbar>
+<div class="mat-app-background">
+  <mat-toolbar class="bg-black h-8">
+    <span class="spacer"></span>
+    <button mat-raised-button color="primary">
+      <mat-icon>language</mat-icon>
+      EN
+    </button>
+  </mat-toolbar>
+  <mat-toolbar class="mat-elevation-z2">
+    <button mat-raised-button color="accent">
+      {{ config.title | uppercase }}
+    </button>
+    <span class="spacer"></span>
+    <button
+      mat-icon-button
+      *ngFor="let iconButton of iconButtons"
+      [matTooltip]="iconButton.tooltip"
+      (click)="iconButton.action()"
+    >
+      <mat-icon>{{ iconButton.icon }}</mat-icon>
+    </button>
+  </mat-toolbar>
 
-<newtone-breadcrumb [breadcrumbItems]="breadcrumbs"></newtone-breadcrumb>
+  <!-- <newtone-breadcrumb [breadcrumbItems]="breadcrumbs"></newtone-breadcrumb> -->
 
-<router-outlet></router-outlet>
+  <main class="h-screen">
+    <router-outlet></router-outlet>
+  </main>
+</div>
