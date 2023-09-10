@@ -1,10 +1,10 @@
+import { ErrorComponent } from './pages/error/error.component';
 import { LayoutComponent } from './layout/layout.component';
 import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
-    path: 'home',
+    path: '',
     component: LayoutComponent,
     children: [
       {
@@ -14,4 +14,5 @@ export const appRoutes: Route[] = [
       },
     ],
   },
+  { path: '**', component: ErrorComponent },
 ];
