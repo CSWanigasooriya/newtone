@@ -1,3 +1,4 @@
+import { Category } from './category.model';
 import { Review } from './review.model';
 
 export interface Product {
@@ -6,7 +7,7 @@ export interface Product {
   price: number;
   productDetails: ProductDetails;
   imageURLs?: string[];
-  category: string;
+  category: Category;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,10 +20,6 @@ export interface ProductDetails {
   quantity: number;
   rating: number;
   reviews: Review[];
-}
-
-export interface ProductCategory {
-  name: string;
 }
 
 export enum Size {

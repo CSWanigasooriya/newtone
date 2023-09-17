@@ -1,10 +1,12 @@
-<div class="container">
-  <newtone-breadcrumb [breadcrumbItems]="breadCrumb"></newtone-breadcrumb>
-  <div class="row">
-    <ng-container *ngFor="let item of products$ | async">
-      <div class="col s12 m3 mb-2 mt-2" *ngIf="item.pid">
-        <newtone-item [product]="item"></newtone-item>
-      </div>
-    </ng-container>
+<div class="mat-app-background min-h-screen">
+  <div class="container">
+    <newtone-breadcrumb></newtone-breadcrumb>
+    <div class="row">
+      <ng-container *ngFor="let item of products$ | async">
+        <div class="col s12 m6 l3 mb-2 mt-2" *ngIf="item.pid">
+          <newtone-item [product]="item"></newtone-item>
+        </div>
+      </ng-container>
+    </div>
   </div>
 </div>

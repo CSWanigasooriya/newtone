@@ -1,4 +1,4 @@
-<div
+<!-- <div
   class="w-full h-96 shadow-md rounded-xl duration-500 hover:shadow-xl hover:shadow-gray-300 shadow-gray-200"
 >
   <a>
@@ -8,10 +8,9 @@
           ? product.imageURLs[0]
           : 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'
       "
-      alt="Product"
-      class="rounded-t-xl object-cover object-center w-full h-64"
+      class="rounded-t-xl object-cover w-full h-64"
     />
-    <div class="px-4 py-3">
+    <div class="px-4 py-3" [routerLink]="['/product', product.pid]">
       <span class="text-gray-400 mr-3 uppercase text-xs">{{
         product.category
       }}</span>
@@ -30,4 +29,44 @@
       </div>
     </div>
   </a>
+</div> -->
+
+<div class="w-full max-w-sm rounded-lg shadow-md">
+  <a>
+    <img
+      [src]="
+        product.imageURLs
+          ? product.imageURLs[0]
+          : 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'
+      "
+      class="rounded-t-lg object-cover w-full h-64"
+    />
+  </a>
+  <div class="p-8 pb-5">
+    <a>
+      <h5 class="text-xl font-semibold tracking-tight">
+        Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+      </h5>
+    </a>
+    <div class="flex items-center mt-2.5 mb-5">
+      <newtone-star-rating
+        [readonly]="true"
+        [size]="1"
+        [initialStars]="1 || 0"
+        [color]="'#FFBF00'"
+        [maxStars]="5"
+      ></newtone-star-rating>
+      <span
+        class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3"
+        >5.0</span
+      >
+    </div>
+    <div class="flex items-center justify-between">
+      <span class="text-3xl font-bold">{{ product.price | currency }}</span>
+      <a
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >Add to cart</a
+      >
+    </div>
+  </div>
 </div>

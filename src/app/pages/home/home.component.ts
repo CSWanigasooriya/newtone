@@ -4,6 +4,7 @@ import {
   TableColumn,
 } from '../../shared/components/table/table.component';
 
+import { CollectionService } from '../../services/collection.service';
 import { Component } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 
@@ -15,6 +16,8 @@ type TableData = Partial<unknown | undefined>;
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  categories$ = this._collection.getCategories();
+
   tableData: TableData[] = [];
 
   tableRowActions!: TableAction<unknown>[];
@@ -23,7 +26,7 @@ export class HomeComponent {
 
   tablePaginatorAction: PaginatorAction = {};
 
-  constructor() {
+  constructor(private _collection: CollectionService) {
     this.initializeTable();
     this.tableData = [
       {

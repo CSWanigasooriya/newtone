@@ -33,6 +33,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { ProductService } from '../../services/product.service';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Title } from '@angular/platform-browser';
+import { UpperCasePipe } from '@angular/common';
 import { UserService } from '../../services/user.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
@@ -111,5 +112,6 @@ export const PROVIDERS_CONFIG = [
   ProductService,
   DialogTemplateService,
   NotificationService,
+  UpperCasePipe,
   Title,
 ];

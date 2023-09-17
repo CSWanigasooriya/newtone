@@ -19,6 +19,10 @@ export class CollectionService {
     return this._productService.getProducts();
   }
 
+  getCategories() {
+    return this._productService.getCategories();
+  }
+
   getProduct(pid: string) {
     return this._productService.getProduct(pid);
   }

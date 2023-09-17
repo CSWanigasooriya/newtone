@@ -3,6 +3,7 @@ import {
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
 
+import { Category } from '../models/category.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
@@ -12,9 +13,12 @@ import { Product } from '../models/product.model';
 })
 export class ProductService {
   private productsCollection: AngularFirestoreCollection<Partial<Product>>;
+  private categoriesCollection: AngularFirestoreCollection<Partial<Category>>;
 
   constructor(private afs: AngularFirestore) {
     this.productsCollection = this.afs.collection<Partial<Product>>('product');
+    this.categoriesCollection =
+      this.afs.collection<Partial<Category>>('category');
   }
 
   getProduct(pid: string): Observable<Partial<Product> | undefined> {
@@ -29,5 +33,17 @@ export class ProductService {
     return await this.productsCollection
       .doc(product.pid)
       .set(product, { merge: true });
+  }
+
+  async deleteProduct(pid: string) {
+    return await this.productsCollection.doc(pid).delete();
+  }
+
+  async createProduct(product: Partial<Product>) {
+    return await this.productsCollection.doc(product.pid).set(product);
+  }
+
+  getCategories() {
+    return this.categoriesCollection.valueChanges();
   }
 }

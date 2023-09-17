@@ -17,88 +17,104 @@
 >
 </newtone-table> -->
 
-  <newtone-banner></newtone-banner>
+  <header>
+    <newtone-banner></newtone-banner>
+  </header>
 
-  <!-- <div class="row mt-2">
-  <div class="col s4">
-    <div class="p-6 bg-white border border-gray-200 rounded-lg shadow">
-      <svg
-        class="w-7 h-7 text-gray-500 dark:text-gray-400 mb-3"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 20 20"
+  <main>
+    <div
+      class="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-2 text-center"
+    >
+      <div class="m-3">
+        <div class="p-1 bg-black border border-gray-200 rounded-lg shadow">
+          <img
+            src="https://images.ctfassets.net/m8onsx4mm13s/4qm6G6cNU4mSAb566UuIJ1/5dfd9c110728306b565b59671a95cc83/In-Time-For-Holidays__2_.png"
+            alt=""
+          />
+          <h5 class="mb-0 text-xl font-semibold tracking-tight text-white">
+            24 / 7 SUPPORT
+          </h5>
+          <p
+            class="mb-1 text-xs font-normal text-gray-500 dark:text-gray-400 p-2"
+          >
+            24 hours a day, 7 days a week, 365 days a year.
+          </p>
+        </div>
+      </div>
+      <div class="m-3">
+        <div class="p-1 bg-black border border-gray-200 rounded-lg shadow">
+          <img
+            src="https://images.ctfassets.net/m8onsx4mm13s/6IvzKzqfqdVRKgZHjBqFIk/de259c13ae15133900b72c494b76c694/Lifetime-Warranty__2_.png"
+            alt=""
+          />
+          <h5 class="mb-0 text-xl font-semibold tracking-tight text-white">
+            GENUINE PRODUCTS
+          </h5>
+          <p
+            class="mb-1 text-xs font-normal text-gray-500 dark:text-gray-400 p-2"
+          >
+            Hand made products from the best materials.
+          </p>
+        </div>
+      </div>
+      <div class="m-3">
+        <div class="p-1 bg-black border border-gray-200 rounded-lg shadow">
+          <img
+            src="https://images.ctfassets.net/m8onsx4mm13s/24dB0X9zp0nHGgGooFJUGn/2d7bed365abe0a24ffa79eb21b4e1f3a/Financing-Available__2_.png"
+            alt=""
+          />
+          <h5 class="mb-0 text-xl font-semibold tracking-tight text-white">
+            MONEY BACK GUARANTEE
+          </h5>
+          <p
+            class="mb-1 text-xs font-normal text-gray-500 dark:text-gray-400 p-2"
+          >
+            30 days money back guarantee.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col s12 text-center mt-3">
+            <span class="text-2xl font-semibold">SHOP BY CATEGORY</span>
+          </div>
+          <div class="row">
+            <div class="col s4" *ngFor="let category of categories$ | async">
+              <span class="text-3xl">{{ category.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
+    <div class="w-full mx-auto p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+        >© 2023
+        <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>.
+        All Rights Reserved.
+      </span>
+      <ul
+        class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0"
       >
-        <path
-          d="M18 5h-.7c.229-.467.349-.98.351-1.5a3.5 3.5 0 0 0-3.5-3.5c-1.717 0-3.215 1.2-4.331 2.481C8.4.842 6.949 0 5.5 0A3.5 3.5 0 0 0 2 3.5c.003.52.123 1.033.351 1.5H2a2 2 0 0 0-2 2v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V7a2 2 0 0 0-2-2ZM8.058 5H5.5a1.5 1.5 0 0 1 0-3c.9 0 2 .754 3.092 2.122-.219.337-.392.635-.534.878Zm6.1 0h-3.742c.933-1.368 2.371-3 3.739-3a1.5 1.5 0 0 1 0 3h.003ZM11 13H9v7h2v-7Zm-4 0H2v5a2 2 0 0 0 2 2h3v-7Zm6 0v7h3a2 2 0 0 0 2-2v-5h-5Z"
-        />
-      </svg>
-      <a href="#">
-        <h5 class="mb-2 text-2xl font-semibold tracking-tight">
-          Need a help in Claim?
-        </h5>
-      </a>
-      <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">
-        Go to this step by step guideline process on how to certify for your
-        weekly benefits:
-      </p>
+        <li>
+          <a href="#" class="mr-4 hover:underline md:mr-6">About</a>
+        </li>
+        <li>
+          <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+        </li>
+        <li>
+          <a href="#" class="mr-4 hover:underline md:mr-6">Licensing</a>
+        </li>
+        <li>
+          <a href="#" class="hover:underline">Contact</a>
+        </li>
+      </ul>
     </div>
-  </div>
-</div> -->
-
-  <!-- insurance -->
-  <div
-    class="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-2 text-center"
-  >
-    <div class="m-3">
-      <div class="p-1 bg-black border border-gray-200 rounded-lg shadow">
-        <img
-          src="https://images.ctfassets.net/m8onsx4mm13s/4qm6G6cNU4mSAb566UuIJ1/5dfd9c110728306b565b59671a95cc83/In-Time-For-Holidays__2_.png"
-          alt=""
-        />
-        <h5
-          class="mb-0 text-xl font-semibold tracking-tight text-white bottom-4"
-        >
-          24/7 SUPPORT
-        </h5>
-        <p class="mb-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-          Go to this step by step guideline process
-        </p>
-      </div>
-    </div>
-    <div class="m-3">
-      <div class="p-1 bg-black border border-gray-200 rounded-lg shadow">
-        <img
-          src="https://images.ctfassets.net/m8onsx4mm13s/6IvzKzqfqdVRKgZHjBqFIk/de259c13ae15133900b72c494b76c694/Lifetime-Warranty__2_.png"
-          alt=""
-        />
-        <h5
-          class="mb-0 text-xl font-semibold tracking-tight text-white bottom-4"
-        >
-          Need a help in Claim?
-        </h5>
-        <p class="mb-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-          Go to this step by step guideline process
-        </p>
-      </div>
-    </div>
-    <div class="m-3">
-      <div class="p-1 bg-black border border-gray-200 rounded-lg shadow">
-        <img
-          src="https://images.ctfassets.net/m8onsx4mm13s/24dB0X9zp0nHGgGooFJUGn/2d7bed365abe0a24ffa79eb21b4e1f3a/Financing-Available__2_.png"
-          alt=""
-        />
-        <h5
-          class="mb-0 text-xl font-semibold tracking-tight text-white bottom-4"
-        >
-          Need a help in Claim?
-        </h5>
-        <p class="mb-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-          Go to this step by step guideline process
-        </p>
-      </div>
-    </div>
-  </div>
+  </footer>
 </div>
-
-<mat-divider></mat-divider>
