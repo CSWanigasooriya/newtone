@@ -17,6 +17,12 @@ interface ToolbarIconButton {
   badge?: number;
 }
 
+interface NavItem {
+  name: string;
+  route: string;
+  icon: string;
+}
+
 @Component({
   selector: 'newtone-layout',
   templateUrl: './layout.component.html',
@@ -24,6 +30,7 @@ interface ToolbarIconButton {
 })
 export class LayoutComponent {
   theme$: Observable<boolean>;
+  navItems: NavItem[] = [];
   iconButtons: ToolbarIconButton[] = [];
   breadcrumbs = ['Home', 'About', 'Contact'];
   searchControl = new FormControl('');
@@ -44,6 +51,30 @@ export class LayoutComponent {
       );
     });
     this.theme$ = _store.select('theme');
+
+    this.navItems = [
+      {
+        name: 'Electric',
+        route: '/',
+        icon: 'home',
+      },
+      {
+        name: 'Acoustic',
+        route: '/about',
+        icon: 'info',
+      },
+      {
+        name: 'Bass',
+        route: '/contact',
+        icon: 'contact_support',
+      },
+      {
+        name: 'Accessories',
+        route: '/contact',
+        icon: 'contact_support',
+      },
+    ];
+
     this.iconButtons = [
       {
         icon: 'dark_mode',

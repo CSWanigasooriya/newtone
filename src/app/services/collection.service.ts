@@ -19,6 +19,10 @@ export class CollectionService {
     return this._productService.getProducts();
   }
 
+  getProduct(pid: string) {
+    return this._productService.getProduct(pid);
+  }
+
   // getFiles() {
   //   return this.filesCollection.valueChanges()
   // }

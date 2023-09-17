@@ -20,7 +20,7 @@
     </button>
   </mat-toolbar> -->
 
-<div class="shadow-sm">
+<div class="shadow-sm mat-app-background">
   <div class="mx-auto px-4 sm:px-6 lg:px-8 py-1 md:py-4">
     <div class="flex items-center justify-between md:justify-start">
       <!-- Menu Trigger -->
@@ -51,29 +51,9 @@
 
       <div class="hidden md:flex space-x-3 flex-1 lg:ml-8">
         <a
-          href="#"
+          *ngFor="let item of navItems"
           class="px-2 py-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600"
-          >Electronics</a
-        >
-        <a
-          href="#"
-          class="px-2 py-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600"
-          >Fashion</a
-        >
-        <a
-          href="#"
-          class="px-2 py-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600"
-          >Tools</a
-        >
-        <a
-          href="#"
-          class="px-2 py-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600"
-          >Books</a
-        >
-        <a
-          href="#"
-          class="px-2 py-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600"
-          >More</a
+          >{{ item.name }}</a
         >
       </div>
 
