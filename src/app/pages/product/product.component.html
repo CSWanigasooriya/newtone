@@ -1,11 +1,10 @@
-<newtone-breadcrumb [breadcrumbItems]="breadCrumb"></newtone-breadcrumb>
 <div class="container">
+  <newtone-breadcrumb [breadcrumbItems]="breadCrumb"></newtone-breadcrumb>
   <div class="row">
-    <div
-      class="col s12 m3 mb-2 mt-2"
-      *ngFor="let item of [1, 2, 3, 4, 4, 4, 4, 4, 4, 4]"
-    >
-      <newtone-item></newtone-item>
-    </div>
+    <ng-container *ngFor="let item of products$ | async">
+      <div class="col s12 m3 mb-2 mt-2" *ngIf="item.pid">
+        <newtone-item [product]="item"></newtone-item>
+      </div>
+    </ng-container>
   </div>
 </div>

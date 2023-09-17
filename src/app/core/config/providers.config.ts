@@ -21,15 +21,19 @@ import {
 
 import { AuthService } from '../../services/auth.service';
 import { CollectionService } from '../../services/collection.service';
+import { DialogTemplateService } from '../../shared/services/dialog-template.service';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
 import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MAT_EXPANSION_PANEL_DEFAULT_OPTIONS } from '@angular/material/expansion';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { NotificationService } from '../../shared/services/notification.service';
+import { ProductService } from '../../services/product.service';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Title } from '@angular/platform-browser';
+import { UserService } from '../../services/user.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const tooltipOptions: MatTooltipDefaultOptions = {
@@ -89,7 +93,23 @@ export const PROVIDERS_CONFIG = [
     },
   },
   { provide: APP_CONFIG, useValue: NEWTONE_DI_CONFIG },
+  {
+    provide: FIREBASE_OPTIONS,
+    useValue: {
+      apiKey: 'AIzaSyCXUXiH4emokThLCp8LUKQR0hyiOa_kgoo',
+      authDomain: 'newtoneinstruments.firebaseapp.com',
+      projectId: 'newtoneinstruments',
+      storageBucket: 'newtoneinstruments.appspot.com',
+      messagingSenderId: '422767985106',
+      appId: '1:422767985106:web:9b5556efa3ecfc458e080b',
+      measurementId: 'G-9NF9XM2R8H',
+    },
+  },
   CollectionService,
   AuthService,
+  UserService,
+  ProductService,
+  DialogTemplateService,
+  NotificationService,
   Title,
 ];

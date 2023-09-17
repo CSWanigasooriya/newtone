@@ -1,43 +1,31 @@
-<!--   ✅ Product card 1 - Starts Here 👇 -->
-<div 
-  [routerLink]="['/product',1]"
+<div
   matRipple
-  class="w-full shadow-md rounded-xl duration-500 hover:shadow-xl hover:shadow-gray-500 shadow-gray-600"
+  class="w-full h-96 shadow-md rounded-xl duration-500 hover:shadow-xl hover:shadow-gray-300 shadow-gray-200"
 >
   <a>
     <img
-      src="https://images.unsplash.com/photo-1646753522408-077ef9839300?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NjZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+      [src]="
+        product.imageURLs
+          ? product.imageURLs[0]
+          : 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'
+      "
       alt="Product"
-      class="object-cover rounded-t-xl"
+      class="rounded-t-xl object-cover object-center w-full h-64"
     />
-    <div class="px-4 py-3">
-      <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
+    <div class="px-4 py-3 shadow-inner">
+      <span class="text-gray-400 mr-3 uppercase text-xs">{{
+        product.category
+      }}</span>
       <p class="text-lg font-bold text-gray-500 truncate block capitalize">
-        Product Name
+        {{ product.name | uppercase }}
       </p>
       <div class="flex items-center">
-        <p class="text-lg font-semibold text-gray-500 cursor-auto my-3">$149</p>
-        <del>
-          <p class="text-sm text-gray-500 cursor-auto ml-2">$199</p>
-        </del>
+        <p class="text-lg font-semibold text-amber-500 cursor-auto my-3">
+          {{ product.price | currency }}
+        </p>
         <div class="ml-auto">
-          <button mat-icon-button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              class="bi bi-bag-plus"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"
-              />
-              <path
-                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"
-              />
-            </svg>
+          <button mat-icon-button color="primary">
+            <mat-icon>add_shopping_cart</mat-icon>
           </button>
         </div>
       </div>

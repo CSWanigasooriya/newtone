@@ -3,11 +3,14 @@ import { APP_CONFIG, AppConfig } from '../core/config/app.config';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { toggle } from '../core/state/theme/theme.actions';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { SheetComponent } from '../shared/components/sheet/sheet.component';
 
 interface ToolbarIconButton {
   icon: string;
   tooltip: string;
   action: () => void;
+  badge?: number;
 }
 
 @Component({
@@ -22,6 +25,7 @@ export class LayoutComponent {
 
   constructor(
     @Inject(APP_CONFIG) public config: AppConfig,
+    private _bottomSheet: MatBottomSheet,
     private _store: Store<{ count: number; theme: boolean }>
   ) {
     this.theme$ = _store.select('theme');
@@ -44,13 +48,18 @@ export class LayoutComponent {
         icon: 'shopping_cart',
         tooltip: 'Cart',
         action: () => {
-          console.log('Cart');
+          this._openBottomSheet();
         },
+        badge: 5,
       },
     ];
   }
 
   private _toggleTheme() {
     this._store.dispatch(toggle());
+  }
+
+  private _openBottomSheet(): void {
+    this._bottomSheet.open(SheetComponent);
   }
 }

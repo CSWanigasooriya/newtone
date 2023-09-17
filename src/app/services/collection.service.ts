@@ -1,47 +1,36 @@
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from '@angular/fire/compat/firestore'
-
-import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs'
-import { User } from '../models/user';
+import { Injectable } from '@angular/core';
+import { ProductService } from './product.service';
+import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CollectionService {
-  private usersCollection: AngularFirestoreCollection<Partial<User>>
+  constructor(
+    private _userService: UserService,
+    private _productService: ProductService
+  ) {}
 
-  constructor(private afs: AngularFirestore) {
-    this.usersCollection = this.afs.collection<Partial<User>>('users')
+  getUsers() {
+    return this._userService.getUsers();
   }
 
-  getUsers(): Observable<Partial<User>[]> {
-    return this.usersCollection.valueChanges()
+  getProducts() {
+    return this._productService.getProducts();
   }
-
-  // async updateUser(user: Partial<User>) {
-  //   return await this.usersCollection.doc(user.walletAddress).set(user, { merge: true })
-  // }
 
   // getFiles() {
   //   return this.filesCollection.valueChanges()
   // }
-
-
-
   // async getNotifications(receiver: string) {
   //   const notifications = await this.chatNotificationCollection.ref
   //     .where('receiver', '==', receiver)
   //     .get()
   //   return notifications.docs.map((doc) => doc.data())
   // }
-
   // getReviews() {
   //   return this.reviewsCollection.valueChanges()
   // }
-
   // async getAverageReviewScore(fileId: number) {
   //   const reviews = await this.reviewsCollection.ref.where('id', '==', fileId).get()
   //   const reviewCount = reviews.docs.length
@@ -50,11 +39,9 @@ export class CollectionService {
   //   }, 0)
   //   return reviewScore / reviewCount
   // }
-
   // async updateFile(file: Partial<FileContract>) {
   //   return await this.filesCollection.doc().set(file, { merge: true })
   // }
-
   // async updateReview(review: Partial<ReviewContract>) {
   //   return await this.reviewsCollection.doc().set(review, { merge: true })
   // }
