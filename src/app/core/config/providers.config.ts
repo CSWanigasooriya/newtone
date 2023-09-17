@@ -19,8 +19,8 @@ import {
   MatTooltipDefaultOptions,
 } from '@angular/material/tooltip';
 
-import { AuthService } from './../../service/auth.service';
-import { CollectionService } from './../../service/collection.service';
+import { AuthService } from '../../services/auth.service';
+import { CollectionService } from '../../services/collection.service';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
 import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
