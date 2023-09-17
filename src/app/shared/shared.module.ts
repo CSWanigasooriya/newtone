@@ -20,6 +20,6 @@ const sharedComponents = [
 @NgModule({
   declarations: [sharedComponents],
   imports: [CommonModule, FormsModule, MaterialModule, ReactiveFormsModule],
-  exports: [sharedComponents, MaterialModule],
+  exports: [sharedComponents, FormsModule, ReactiveFormsModule, MaterialModule],
 })
 export class SharedModule {}
