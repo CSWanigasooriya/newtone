@@ -21,7 +21,24 @@ export class UserService {
     return this.usersCollection.valueChanges();
   }
 
-  async updateUser(user: Partial<User>) {
-    return await this.usersCollection.doc(user.uid).set(user, { merge: true });
+  // async updateUser(user: Partial<User>) {
+  //   return await this.usersCollection.doc(user.uid).set(user, { merge: true });
+  // }
+
+  async updateUser(user: Partial<User> | null) {
+    return this.afs
+      .collection('users')
+      .doc(user?.uid)
+      .set(
+        {
+          ...user,
+        },
+        { merge: true }
+      );
   }
+
+  // updateUser(uid: string): Observable<Partial<User> | undefined> {
+  //   return this.usersCollection.doc<Partial<User>>(pid).valueChanges();
+  // }
+
 }

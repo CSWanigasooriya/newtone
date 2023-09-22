@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProductService } from './product.service';
+import { User } from './../models/user.model';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -13,6 +14,10 @@ export class CollectionService {
 
   getUsers() {
     return this._userService.getUsers();
+  }
+
+  updateUser(user: Partial<User> | null) {
+    return this._userService.updateUser(user);
   }
 
   getProducts() {
