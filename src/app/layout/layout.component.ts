@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { Product } from '../models/product.model';
 import { CollectionService } from '../services/collection.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 interface ToolbarIconButton {
   icon: string;
@@ -42,7 +43,8 @@ export class LayoutComponent {
     private _bottomSheet: MatBottomSheet,
     private _collection: CollectionService,
     private _store: Store<{ count: number; theme: boolean }>,
-    private _router: Router
+    private _router: Router,
+    private _auth: AuthService
   ) {
     this.products$.subscribe((products) => {
       this.filteredProducts = this.searchControl.valueChanges.pipe(
@@ -87,7 +89,7 @@ export class LayoutComponent {
         icon: 'settings',
         tooltip: 'Settings',
         action: () => {
-          console.log('Settings');
+          this._auth.signOut();
         },
       },
       {

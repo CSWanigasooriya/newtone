@@ -3,4 +3,11 @@ export interface User {
   email: string;
   displayName: string;
   photoURL: string;
+  role?: Role;
+}
+
+export enum Role {
+  superUser = 'superUser',
+  admin = 'admin',
+  customer = 'customer',
 }

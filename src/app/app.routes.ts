@@ -1,8 +1,7 @@
-import { AuthComponent } from './pages/auth/auth.component';
+import { AdminAuthGuard } from './guards/admin-guard.guard';
 import { ErrorComponent } from './pages/error/error.component';
 import { LayoutComponent } from './layout/layout.component';
 import { Route } from '@angular/router';
-import { SignUpComponent } from './pages/auth/sign-up/sign-up.component';
 
 export const appRoutes: Route[] = [
   {
@@ -18,12 +17,14 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'auth',
-    component: AuthComponent,
+    loadChildren: () =>
+      import('./pages/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'sign-up',
-    component: SignUpComponent,
+    path: 'admin',
+    loadChildren: () =>
+      import('./pages/admin/admin.module').then((m) => m.AdminModule),
+    canActivate: [AdminAuthGuard],
   },
   { path: '**', component: ErrorComponent },
-
 ];

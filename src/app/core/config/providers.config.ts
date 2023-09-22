@@ -1,5 +1,6 @@
 import { APP_CONFIG, NEWTONE_DI_CONFIG } from './app.config';
 import { COMMA, ENTER, TAB } from '@angular/cdk/keycodes';
+import { ERROR_CONFIG, NEWTONE_ERROR_CONFIG } from './error.config';
 import {
   ErrorStateMatcher,
   MAT_DATE_LOCALE,
@@ -94,6 +95,7 @@ export const PROVIDERS_CONFIG = [
     },
   },
   { provide: APP_CONFIG, useValue: NEWTONE_DI_CONFIG },
+  { provide: ERROR_CONFIG, useValue: NEWTONE_ERROR_CONFIG },
   {
     provide: FIREBASE_OPTIONS,
     useValue: {

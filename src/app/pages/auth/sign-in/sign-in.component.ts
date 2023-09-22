@@ -2,7 +2,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from './../../../services/auth.service';
 import { Component } from '@angular/core';
-import { NotificationService } from './../../../shared/services/notification.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,14 +12,13 @@ import { Router } from '@angular/router';
 export class SignInComponent {
   signInForm: FormGroup = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   constructor(
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _auth: AuthService,
-    private _notificationService: NotificationService
+    private _auth: AuthService
   ) {}
 
   handleSignInSubmit() {
@@ -28,23 +26,14 @@ export class SignInComponent {
 
     const email = this.signInForm.value.email;
     const password = this.signInForm.value.password;
-    this._auth.signin(email, password).then(
-      () => {
-        localStorage.setItem('token', 'true');
-        this._router.navigate(['']);
-      },
-      (err) => {
-        this._notificationService.showError({code:'1', message: 'something went wrong'})
-        this._router.navigate(['/auth/sign-in']);
-      }
-    );
+    this._auth.signin(email, password);
   }
 
   signInWithGoogle() {
     this._auth.googleSignIn();
   }
 
-  signupForm(){
-    this._router.navigate(['/sign-up']);
+  signUpForm() {
+    this._router.navigate(['/auth/sign-up']);
   }
 }
