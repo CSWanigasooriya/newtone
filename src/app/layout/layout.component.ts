@@ -52,6 +52,7 @@ export class LayoutComponent {
         map((value) => this._filter(value || '', products))
       );
     });
+
     this.theme$ = _store.select('theme');
 
     this.navItems = [

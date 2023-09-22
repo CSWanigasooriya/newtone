@@ -77,44 +77,96 @@
 
     <mat-divider></mat-divider>
 
-    <section>
-      <div class="container">
-        <div class="row">
-          <div class="col s12 text-center mt-3">
-            <span class="text-2xl font-semibold">SHOP BY CATEGORY</span>
-          </div>
-          <div class="row">
-            <div class="col s4" *ngFor="let category of categories$ | async">
-              <span class="text-3xl">{{ category.name }}</span>
-            </div>
-          </div>
+    <section class="bg-blue-200 bg-opacity-20">
+      <div class="row">
+        <div class="col s12 text-center mt-3">
+          <span class="text-2xl font-semibold">SHOP BY CATEGORY</span>
         </div>
       </div>
+      <div class="row pb-3">
+        <ng-container *ngFor="let category of categories$ | async">
+          <div class="col s12 m4 l3" *ngIf="category.cid && category.title">
+            <div
+              class="relative flex shadow-3xl hover:shadow-2xl flex-col w-full border-2 border-white border-opacity-30 rounded-xl shadow-xl m-1"
+            >
+              <div class="h-full w-full">
+                <div class="relative w-full">
+                  <img
+                    [src]="
+                      category.imageURL
+                        ? category.imageURL
+                        : 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'
+                    "
+                    class="h-80 w-full p-2 rounded-xl object-cover"
+                  />
+                  <button
+                    class="absolute top-3 right-3 flex items-center justify-center rounded-full p-2 text-brand-500 hover:cursor-pointer"
+                  >
+                    <div
+                      class="flex h-full w-full items-center justify-center rounded-full text-xl text-white"
+                    >
+                      <svg
+                        stroke="currentColor"
+                        fill="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 512 512"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="32"
+                          d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-95.08 96.81-1.1 109.33 86.73 187.08 183 252.42a16 16 0 0018 0c96.26-65.34 184.09-143.09 183-252.42-.54-52.67-42.32-96.81-95.08-96.81z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 md:items-start h-20"
+                >
+                  <div class="mb-2">
+                    <p class="text-lg font-bold text-navy-700">
+                      {{ category.title }}
+                    </p>
+                    <p class="mt-1 text-sm font-medium text-gray-500 md:mt-2">
+                      {{ category.source }}
+                    </p>
+                  </div>
+                  <div class="flex flex-row-reverse md:mt-2 lg:mt-0">
+                    <span
+                      class="z-0 ml-px inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#e0e5f26c] text-xs text-navy-700"
+                      >+{{ category.subCategories?.length }}</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="flex items-center justify-between md:items-center lg:justify-between p-3"
+                >
+                  <div class="flex">
+                    <p class="!mb-0 text-sm font-bold text-brand-500">
+                      {{
+                        category.subCategories?.length
+                          ? category.subCategories?.length
+                          : '0'
+                      }}
+                      Sub Categories
+                    </p>
+                  </div>
+                  <button mat-raised-button>VIEW</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <mat-divider></mat-divider>
+    </section>
+    <section>
+      <newtone-featured></newtone-featured>
     </section>
   </main>
-  <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
-    <div class="w-full mx-auto p-4 md:flex md:items-center md:justify-between">
-      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
-        >© 2023
-        <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>.
-        All Rights Reserved.
-      </span>
-      <ul
-        class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0"
-      >
-        <li>
-          <a href="#" class="mr-4 hover:underline md:mr-6">About</a>
-        </li>
-        <li>
-          <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
-        </li>
-        <li>
-          <a href="#" class="mr-4 hover:underline md:mr-6">Licensing</a>
-        </li>
-        <li>
-          <a href="#" class="hover:underline">Contact</a>
-        </li>
-      </ul>
-    </div>
-  </footer>
 </div>

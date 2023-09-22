@@ -1,8 +1,119 @@
 <div class="mat-app-background min-h-screen">
   <div class="container">
-    <newtone-breadcrumb></newtone-breadcrumb>
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="flex flex-col m-h-screen">
+            <div
+              class="items-center justify-between w-full flex rounded-full shadow-lg p-2 sticky"
+            >
+              <div>
+                <div class="mr-1 rounded-full hover:bg-gray-100 cursor-pointer">
+                  <button mat-icon-button [matMenuTriggerFor]="filters">
+                    <mat-icon>filter_alt</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <mat-menu #filters="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="vertebrates">
+                  SORT BY
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="invertebrates">
+                  Invertebrates
+                </button>
+              </mat-menu>
+
+              <mat-menu #vertebrates="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="fish">Fishes</button>
+                <button mat-menu-item [matMenuTriggerFor]="amphibians">
+                  Amphibians
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="reptiles">
+                  Reptiles
+                </button>
+                <button mat-menu-item>Birds</button>
+                <button mat-menu-item>Mammals</button>
+              </mat-menu>
+
+              <mat-menu #invertebrates="matMenu">
+                <button mat-menu-item>Insects</button>
+                <button mat-menu-item>Molluscs</button>
+                <button mat-menu-item>Crustaceans</button>
+                <button mat-menu-item>Corals</button>
+                <button mat-menu-item>Arachnids</button>
+                <button mat-menu-item>Velvet worms</button>
+                <button mat-menu-item>Horseshoe crabs</button>
+              </mat-menu>
+
+              <mat-menu #fish="matMenu">
+                <button mat-menu-item>Baikal oilfish</button>
+                <button mat-menu-item>Bala shark</button>
+                <button mat-menu-item>Ballan wrasse</button>
+                <button mat-menu-item>Bamboo shark</button>
+                <button mat-menu-item>Banded killifish</button>
+              </mat-menu>
+
+              <mat-menu #amphibians="matMenu">
+                <button mat-menu-item>Sonoran desert toad</button>
+                <button mat-menu-item>Western toad</button>
+                <button mat-menu-item>Arroyo toad</button>
+                <button mat-menu-item>Yosemite toad</button>
+              </mat-menu>
+
+              <mat-menu #reptiles="matMenu">
+                <button mat-menu-item>Banded Day Gecko</button>
+                <button mat-menu-item>Banded Gila Monster</button>
+                <button mat-menu-item>Black Tree Monitor</button>
+                <button mat-menu-item>Blue Spiny Lizard</button>
+                <button mat-menu-item disabled>Velociraptor</button>
+              </mat-menu>
+
+              <input
+                [formControl]="searchControl"
+                class="font-bold uppercase rounded-full w-full py-4 pl-4 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline lg:text-sm text-xs"
+                type="text"
+                [matAutocomplete]="auto"
+                placeholder="Search"
+              />
+
+              <div
+                class="bg-gray-600 p-2 hover:bg-blue-400 cursor-pointer mx-2 rounded-full"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="onSelectionChanged($event)"
+    >
+      <mat-option
+        *ngFor="let product of filteredProducts | async"
+        [value]="product.name"
+        [id]="product.pid?.toString()!"
+      >
+        <span>{{ product.name }}</span> |
+        <small>Category: {{ product.category }}</small>
+      </mat-option>
+    </mat-autocomplete>
+    <mat-divider></mat-divider>
     <div class="row">
-      <ng-container *ngFor="let item of products$ | async">
+      <ng-container *ngFor="let item of filteredProducts | async">
         <div class="col s12 m6 l3 mb-2 mt-2" *ngIf="item.pid">
           <newtone-item [product]="item"></newtone-item>
         </div>

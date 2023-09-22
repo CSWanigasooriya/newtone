@@ -1,3 +1,5 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { CommonModule } from '@angular/common';
 import { ItemComponent } from './item/item.component';
 import { NgModule } from '@angular/core';
@@ -8,6 +10,12 @@ import { ViewComponent } from './view/view.component';
 
 @NgModule({
   declarations: [ProductComponent, ItemComponent, ViewComponent],
-  imports: [CommonModule, SharedModule, ProductRoutingModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ProductRoutingModule,
+  ],
 })
 export class ProductModule {}

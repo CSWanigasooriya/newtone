@@ -45,7 +45,7 @@
       </button>
       <!-- ./ Menu Trigger -->
 
-      <a href="#" class="font-bold text-gray-500 text-2xl">{{
+      <a class="font-bold text-gray-500 text-2xl" [routerLink]="['']">{{
         config.title
       }}</a>
 
@@ -62,7 +62,7 @@
           <form>
             <input
               type="search"
-              class="pl-10 pr-2 h-10 py-1 rounded-lg border border-gray-200 focus:border-gray-300 focus:outline-none focus:shadow-inner leading-none"
+              class="text-blue-950 pl-10 pr-2 h-10 py-1 rounded-lg border border-gray-200 focus:border-gray-300 focus:outline-none focus:shadow-inner leading-none"
               placeholder="Search"
               matInput
               [formControl]="searchControl"
@@ -92,7 +92,7 @@
                 [id]="product.pid?.toString()!"
               >
                 <span>{{ product.name }}</span> |
-                <small>Authors:</small>
+                <small>Category: {{ product.category }}</small>
               </mat-option>
             </mat-autocomplete>
           </form>

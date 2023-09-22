@@ -1,5 +1,8 @@
-<div class="antialiased" *ngIf="product$ | async as product">
-  <div class="py-6">
+<div
+  class="antialiased mat-app-background h-[calc(100vh-72px)]"
+  *ngIf="product$ | async as product"
+>
+  <div class="py-6 flex-1">
     <div class="mx-auto px-4 sm:px-6 lg:px-8 mt-8">
       <div class="flex flex-col md:flex-row">
         <div class="md:flex-1 px-4">
@@ -94,4 +97,26 @@
       </div>
     </div>
   </div>
+  <mat-divider></mat-divider>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>
+    <mat-tab label="SPECIFICATIONS">
+      <div class="mat-elevation-z4">
+        <div class="container">
+          <div class="row">
+            <mat-card>
+              <mat-card-content>
+                <p>{{ product.pid }}</p>
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}</p>
+                <p>{{ product.category }}</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="REVIEWS">
+      <div class="mat-elevation-z4"></div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
