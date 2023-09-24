@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Product } from '../../../models/product.model';
 
@@ -9,4 +9,9 @@ import { Product } from '../../../models/product.model';
 })
 export class ItemComponent {
   @Input() product: Partial<Product> = {};
+  @Output() addToCart: EventEmitter<Product> = new EventEmitter();
+
+  handleAddToCart(product: Partial<Product>) {
+    this.addToCart.emit(product as Product);
+  }
 }

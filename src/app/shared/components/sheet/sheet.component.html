@@ -1,24 +1,38 @@
-<mat-nav-list>
-  <a href="https://keep.google.com/" mat-list-item (click)="openLink($event)">
-    <span mat-line>Google Keep</span>
-    <span mat-line>Add to a note</span>
-  </a>
+<mat-nav-list *ngIf="(cart$ | async)?.products as products" class="mb-2">
+  <h1 class="text-xl uppercase">Cart Items</h1>
+  <ng-container *ngFor="let item of products | groupBy : 'pid'">
+    <mat-list-item>
+      <div matListItemTitle>{{ item.value[0].name }}</div>
+      <div matListItemLine>QUANTITY: {{ item.value.length }}</div>
+      <button mat-icon-button color="warn" (click)="deleteItem(item)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </ng-container>
 
-  <a href="https://docs.google.com/" mat-list-item (click)="openLink($event)">
-    <span mat-line>Google Docs</span>
-    <span mat-line>Embed in a document</span>
-  </a>
-
-  <a href="https://plus.google.com/" mat-list-item (click)="openLink($event)">
-    <span mat-line>Google Plus</span>
-    <span mat-line>Share with your friends</span>
-  </a>
-
-  <a
-    href="https://hangouts.google.com/"
-    mat-list-item
-    (click)="openLink($event)">
-    <span mat-line>Google Hangouts</span>
-    <span mat-line>Show to your coworkers</span>
-  </a>
+  <mat-divider></mat-divider>
+  <div class="flow-root mt-2">
+    <div class="float-left">
+      <button
+        mat-button
+        [routerLink]="['/checkout']"
+        (click)="bottomSheetRef.dismiss()"
+        [disabled]="products.length === 0"
+      >
+        <span> Subtotal: {{ subTotal | currency }} </span>
+      </button>
+    </div>
+    <div class="float-right">
+      <button
+        mat-raised-button
+        [routerLink]="['/checkout']"
+        (click)="bottomSheetRef.dismiss()"
+        class="right"
+        [disabled]="products.length === 0"
+        color="accent"
+      >
+        Checkout
+      </button>
+    </div>
+  </div>
 </mat-nav-list>

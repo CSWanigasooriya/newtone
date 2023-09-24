@@ -33,6 +33,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { NotificationService } from '../../shared/services/notification.service';
 import { ProductService } from '../../services/product.service';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { StorageService } from './../../services/storage.service';
 import { Title } from '@angular/platform-browser';
 import { UpperCasePipe } from '@angular/common';
 import { UserService } from '../../services/user.service';
@@ -108,5 +109,6 @@ export const PROVIDERS_CONFIG = [
   DialogTemplateService,
   NotificationService,
   UpperCasePipe,
+  StorageService,
   Title,
 ];

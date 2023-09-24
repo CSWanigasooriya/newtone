@@ -24,6 +24,7 @@ import { PROVIDERS_CONFIG } from './core/config/providers.config';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
 import { appRoutes } from './app.routes';
+import { cartReducer } from './core/state/cart/cart.reducer';
 import { counterReducer } from './core/state/counter/counter.reducer';
 import { firebaseConfig } from './core/config/firebase.config';
 import { localStorageSync } from 'ngrx-store-localstorage';
@@ -33,7 +34,7 @@ export function localStorageSyncReducer(
   reducer: ActionReducer<unknown>
 ): ActionReducer<unknown> {
   return localStorageSync({
-    keys: ['count', 'theme'],
+    keys: ['count', 'theme', 'cart'],
     rehydrate: true,
   })(reducer);
 }
@@ -59,7 +60,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     provideRemoteConfig(() => getRemoteConfig()),
     provideStorage(() => getStorage()),
     StoreModule.forRoot(
-      { count: counterReducer, theme: themeReducer },
+      { count: counterReducer, theme: themeReducer, cart: cartReducer },
       { metaReducers: metaReducers }
     ),
     RouterModule.forRoot(appRoutes, {

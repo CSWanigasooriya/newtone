@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { CommonModule } from '@angular/common';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { GroupByPipe } from './../pipes/group-by.pipe';
 import { MaterialModule } from '@newtone/material';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -18,6 +19,7 @@ const sharedComponents = [
   SheetComponent,
   UploaderComponent,
   StarRatingComponent,
+  GroupByPipe,
 ];
 
 @NgModule({

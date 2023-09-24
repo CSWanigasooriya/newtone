@@ -1,15 +1,16 @@
-import { Component, Inject } from '@angular/core';
-import { APP_CONFIG, AppConfig } from '../core/config/app.config';
-import { Observable, map, startWith } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { toggle } from '../core/state/theme/theme.actions';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { SheetComponent } from '../shared/components/sheet/sheet.component';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Product } from '../models/product.model';
-import { CollectionService } from '../services/collection.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription, map, startWith } from 'rxjs';
+import { APP_CONFIG, AppConfig } from '../core/config/app.config';
+import { toggle } from '../core/state/theme/theme.actions';
+import { Product } from '../models/product.model';
 import { AuthService } from '../services/auth.service';
+import { CollectionService } from '../services/collection.service';
+import { SheetComponent } from '../shared/components/sheet/sheet.component';
+import { Cart } from './../models/cart.model';
 
 interface ToolbarIconButton {
   icon: string;
@@ -29,7 +30,7 @@ interface NavItem {
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnDestroy {
   theme$: Observable<boolean>;
   navItems: NavItem[] = [];
   iconButtons: ToolbarIconButton[] = [];
@@ -37,15 +38,26 @@ export class LayoutComponent {
   searchControl = new FormControl('');
   products$ = this._collection.getProducts();
   filteredProducts!: Observable<Partial<Product>[]>;
+  cart$: Observable<Cart>;
+  cartSize = 0;
+
+  private _subscriptions = new Subscription();
 
   constructor(
     @Inject(APP_CONFIG) public config: AppConfig,
     private _bottomSheet: MatBottomSheet,
     private _collection: CollectionService,
-    private _store: Store<{ count: number; theme: boolean }>,
+    private _store: Store<{ count: number; theme: boolean; cart: Cart }>,
     private _router: Router,
     private _auth: AuthService
   ) {
+    this.cart$ = this._store.select('cart');
+
+    this._subscriptions.add(
+      this.cart$.subscribe((cart) => {
+        this.cartSize = cart.products.length;
+      })
+    );
     this.products$.subscribe((products) => {
       this.filteredProducts = this.searchControl.valueChanges.pipe(
         startWith(''),
@@ -99,7 +111,7 @@ export class LayoutComponent {
         action: () => {
           this._openBottomSheet();
         },
-        badge: 5,
+        badge: this.cartSize,
       },
     ];
   }
@@ -126,5 +138,9 @@ export class LayoutComponent {
   onSelectionChanged(event: { option: { id: unknown; value: unknown } }) {
     const selectedValue = event.option.id;
     this._router.navigate(['/product', selectedValue]);
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.unsubscribe();
   }
 }
