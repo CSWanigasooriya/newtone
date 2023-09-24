@@ -23,3 +23,8 @@
   font-size: 20px;
   display: inline-block;
 }
+
+.disabled-item {
+  pointer-events: none;
+  opacity: 0.4;
+}
