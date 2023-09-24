@@ -1,5 +1,6 @@
 import { Observable, of } from 'rxjs';
 
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { GoogleAuthProvider } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { ERROR_CONFIG, ErrorConfig } from '../core/config/error.config';
 import { NotificationService } from '../shared/services/notification.service';
-import { User } from './../models/user.model';
+import { Role, User } from './../models/user.model';
 import { CollectionService } from './collection.service';
 
 @Injectable({
@@ -16,16 +17,18 @@ import { CollectionService } from './collection.service';
 })
 export class AuthService {
   user$: Observable<Partial<User> | null | undefined>;
+  BACKEND_URL = 'http://localhost:3000';
 
   constructor(
-    private _fireauth: AngularFireAuth,
+    private _fireAuth: AngularFireAuth,
     private _router: Router,
     private _collection: CollectionService,
     private _afs: AngularFirestore,
     private _notificationService: NotificationService,
+    private _http: HttpClient,
     @Inject(ERROR_CONFIG) public errorConfig: ErrorConfig
   ) {
-    this.user$ = this._fireauth.authState.pipe(
+    this.user$ = this._fireAuth.authState.pipe(
       switchMap((user) => {
         // Logged in
         if (user) {
@@ -41,41 +44,81 @@ export class AuthService {
   }
 
   //signin method
-  signin(email: string, password: string) {
-    return this._fireauth
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => {
-        const user = {
-          photoURL: res.user?.photoURL ?? '',
-          uid: res.user?.uid ?? '',
-          email: res.user?.email ?? '',
-        } as Partial<User>;
+  async signin(email: string, password: string) {
+    try {
+      const credential = await this._fireAuth.signInWithEmailAndPassword(
+        this._mapEmail(email),
+        password
+      );
 
+      const idToken = await credential.user
+        ?.getIdTokenResult(true)
+        .then((res) => res.token)
+        .catch((err) => console.log(err));
+
+      const claims = await credential.user?.getIdTokenResult(true).then(
+        (res) => res.claims || {},
+        (err) => console.log(err)
+      );
+
+      const userRole =
+        Object.keys(claims || {}).find((key) => {
+          const role = Role[key as keyof typeof Role];
+          return role && claims?.[role];
+        }) ?? Role.user;
+
+      // if (idToken) {
+      //   (await this.setAdminClaim(idToken)).subscribe((res: unknown) =>
+      //     console.log(res)
+      //   );
+      // }
+
+      const user = {
+        photoURL: credential.user?.photoURL ?? '',
+        uid: credential.user?.uid ?? '',
+        email: credential.user?.email ?? '',
+        idToken: idToken ?? '',
+        role: userRole ?? '',
+      } as Partial<User> | null;
+
+      if (user) {
         this._collection.updateUser(user);
-        this._router.navigate(['']);
-      })
-      .catch((err) => {
-        this._notificationService.showError(err);
-      });
+        userRole === Role.admin
+          ? this._router.navigate(['/admin'])
+          : this._router.navigate(['']);
+      }
+    } catch (err) {
+      this._notificationService.showNotification('error');
+    }
   }
 
   //signup method
-  signup(email: string, password: string) {
-    return this._fireauth.createUserWithEmailAndPassword(email, password).then(
-      (res) => {
-        const user = {
-          photoURL: res.user?.photoURL ?? '',
-          uid: res.user?.uid ?? '',
-          email: res.user?.email ?? '',
-        } as Partial<User>;
+  async signup(email: string, password: string) {
+    try {
+      const credential = await this._fireAuth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
 
+      const idToken = await credential.user
+        ?.getIdTokenResult(true)
+        .then((res) => res.token)
+        .catch((err) => console.log(err));
+
+      const user = {
+        photoURL: credential.user?.photoURL ?? '',
+        uid: credential.user?.uid ?? '',
+        email: credential.user?.email ?? '',
+        idToken: idToken ?? '',
+      } as Partial<User> | null;
+
+      if (user) {
         this._collection.updateUser(user);
         this._router.navigate(['']);
-      },
-      (err) => {
-        this._notificationService.showError(err);
       }
-    );
+    } catch (err) {
+      this._notificationService.showNotification('error');
+    }
   }
 
   // //forgot password
@@ -103,26 +146,80 @@ export class AuthService {
   // }
 
   //sign in with google
-  googleSignIn() {
-    return this._fireauth.signInWithPopup(new GoogleAuthProvider()).then(
-      (res) => {
-        const user = {
-          photoURL: res.user?.photoURL ?? '',
-          uid: res.user?.uid ?? '',
-          email: res.user?.email ?? '',
-        } as Partial<User>;
+  async googleSignIn() {
+    try {
+      const credential = await this._fireAuth.signInWithPopup(
+        new GoogleAuthProvider()
+      );
 
+      const idToken = await credential.user
+        ?.getIdTokenResult(true)
+        .then((res) => res.token)
+        .catch((err) => console.log(err));
+
+      const claims = await credential.user?.getIdTokenResult(true).then(
+        (res) => res.claims || {},
+        (err) => console.log(err)
+      );
+
+      const userRole =
+        Object.keys(claims || {}).find((key) => {
+          const role = Role[key as keyof typeof Role];
+          return role && claims?.[role];
+        }) ?? Role.user;
+
+      const user = {
+        photoURL: credential.user?.photoURL ?? '',
+        uid: credential.user?.uid ?? '',
+        email: credential.user?.email ?? '',
+        idToken: idToken ?? '',
+        role: userRole ?? '',
+      } as Partial<User> | null;
+
+      if (user) {
         this._collection.updateUser(user);
-        this._router.navigate(['']);
-      },
-      (err) => {
-        this._notificationService.showError(err);
+        userRole === Role.admin
+          ? this._router.navigate(['/admin'])
+          : this._router.navigate(['']);
       }
-    );
+    } catch (err) {
+      this._notificationService.showNotification('error');
+    }
   }
 
   signOut() {
     this._router.navigate(['/auth']);
-    return this._fireauth.signOut();
+    return this._fireAuth.signOut();
+  }
+
+  private async _setAdminClaim(idToken: string): Promise<Observable<object>> {
+    return this.post('setAdminClaim', { idToken });
+  }
+
+  private _mapEmail(email: string) {
+    const regex = '^[A-Z0-9@. _%+-]{6,254}$';
+    const username = email.split('@')[0];
+
+    if (username.match(regex)) {
+      return email;
+    } else {
+      return `${username}@gmail.com`;
+    }
+  }
+
+  get(uri: string): Observable<object> {
+    return this._http.get(`${this.BACKEND_URL}/${uri}`);
+  }
+
+  post(uri: string, payload: object): Observable<object> {
+    return this._http.post(`${this.BACKEND_URL}/${uri}`, payload);
+  }
+
+  put(uri: string, payload: object): Observable<object> {
+    return this._http.put(`${this.BACKEND_URL}/${uri}`, payload);
+  }
+
+  delete(uri: string, payload: object): Observable<object> {
+    return this._http.delete(`${this.BACKEND_URL}/${uri}`, payload);
   }
 }

@@ -14,7 +14,7 @@ export class UserService {
   private usersCollection: AngularFirestoreCollection<Partial<User>>;
 
   constructor(private afs: AngularFirestore) {
-    this.usersCollection = this.afs.collection<Partial<User>>('users');
+    this.usersCollection = this.afs.collection<Partial<User>>('user');
   }
 
   getUsers(): Observable<Partial<User>[]> {
@@ -26,19 +26,15 @@ export class UserService {
   // }
 
   async updateUser(user: Partial<User> | null) {
-    return this.afs
-      .collection('users')
-      .doc(user?.uid)
-      .set(
-        {
-          ...user,
-        },
-        { merge: true }
-      );
+    return this.usersCollection.doc(user?.uid).set(
+      {
+        ...user,
+      },
+      { merge: true }
+    );
   }
 
   // updateUser(uid: string): Observable<Partial<User> | undefined> {
   //   return this.usersCollection.doc<Partial<User>>(pid).valueChanges();
   // }
-
 }

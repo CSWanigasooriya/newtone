@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SignInComponent {
   signInForm: FormGroup = this._formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 

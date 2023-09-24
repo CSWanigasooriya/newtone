@@ -4,10 +4,11 @@ export interface User {
   displayName: string;
   photoURL: string;
   role?: Role;
+  idToken?: string;
 }
 
 export enum Role {
   superUser = 'superUser',
   admin = 'admin',
-  customer = 'customer',
+  user = 'user',
 }
