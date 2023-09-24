@@ -78,8 +78,8 @@
 
 <a
   [class.disabled-item]="
-    product.productDetails?.quantity! <= 0 ||
-    product.productDetails?.quantity! === undefined
+    product.productDetails?.stock! === undefined ||
+    product.productDetails?.stock! <= (product.stockThreshold! || 0)
   "
   [routerLink]="['/product', product.pid]"
   class="c-card block shadow-md hover:shadow-xl rounded-lg overflow-hidden"
@@ -95,16 +95,15 @@
     <span
       [ngClass]="{
         'text-red-800 bg-red-200':
-          product.productDetails?.quantity! <= 0 ||
-          product.productDetails?.quantity! === undefined,
-        'text-orange-800 bg-orange-200': product.productDetails?.quantity! > 0
+          product.productDetails?.stock! === undefined || product.productDetails?.stock! <= ( product.stockThreshold! || 0 ),
+        'text-orange-800 bg-orange-200': product.productDetails?.stock! > (product.stockThreshold! || 0),
       }"
       class="inline-block px-2 py-1 leading-none rounded-full font-semibold uppercase tracking-wide text-xs"
       >{{
-        product.productDetails?.quantity! === undefined ||
-        product.productDetails?.quantity! <= 0
+        product.productDetails?.stock! === undefined ||
+        product.productDetails?.stock! <= (product.stockThreshold! || 0)
           ? 'OUT OF STOCK'
-          : product.productDetails?.quantity! + ' IN STOCK'
+          : product.productDetails?.stock! + ' IN STOCK'
       }}</span
     >
     <h2 class="mt-2 mb-2 font-bold">{{ product.name }}</h2>

@@ -8,6 +8,7 @@ export interface Product {
   productDetails: ProductDetails;
   imageURLs?: string[];
   category: Category;
+  stockThreshold: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,7 +18,7 @@ export interface ProductDetails {
   size: Size;
   color: string;
   brand: string;
-  quantity: number;
+  stock: number;
   rating: number;
   reviews: Review[];
 }

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { APP_CONFIG, AppConfig } from './../../../core/config/app.config';
 
 import { Product } from '../../../models/product.model';
 
@@ -10,6 +11,8 @@ import { Product } from '../../../models/product.model';
 export class ItemComponent {
   @Input() product: Partial<Product> = {};
   @Output() addToCart: EventEmitter<Product> = new EventEmitter();
+
+  constructor(@Inject(APP_CONFIG) public config: AppConfig) {}
 
   handleAddToCart(product: Partial<Product>) {
     this.addToCart.emit(product as Product);
