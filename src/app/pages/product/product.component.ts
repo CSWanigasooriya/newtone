@@ -1,9 +1,10 @@
-import { Observable, map, startWith } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Observable, Subscription, map, startWith } from 'rxjs';
 
 import { Cart } from './../../models/cart.model';
 import { CollectionService } from '../../services/collection.service';
-import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { NotificationService } from './../../shared/services/notification.service';
 import { Product } from './../../models/product.model';
 import { Router } from '@angular/router';
@@ -15,20 +16,30 @@ import { postCart } from './../../core/state/cart/cart.actions';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
 })
-export class ProductComponent {
+export class ProductComponent implements OnDestroy {
   cart$: Observable<Cart>;
   openDropdown = false;
   breadCrumb = ['HOME', 'PRODUCT'];
   searchControl = new FormControl('');
   products$ = this._collection.getProducts();
   filteredProducts!: Observable<Partial<Product>[]>;
+  mobileQuery: MediaQueryList;
+
+  private _mobileQueryListener: () => void;
+  private _subscriptions = new Subscription();
 
   constructor(
     private _collection: CollectionService,
     private _router: Router,
     private _notificationService: NotificationService,
-    private _store: Store<{ cart: Cart }>
+    private _store: Store<{ cart: Cart }>,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
   ) {
+    this.mobileQuery = media.matchMedia('(max-width: 960px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+
     this.cart$ = this._store.select('cart');
 
     this.products$.subscribe((products) => {
@@ -60,5 +71,10 @@ export class ProductComponent {
       `${product.name} added to cart successfully`
     );
     this._store.dispatch(postCart({ products: product }));
+  }
+
+  ngOnDestroy() {
+    this.mobileQuery.removeEventListener('change', this._mobileQueryListener);
+    this._subscriptions.unsubscribe();
   }
 }
