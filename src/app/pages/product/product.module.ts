@@ -7,9 +7,15 @@ import { ProductComponent } from './product.component';
 import { ProductRoutingModule } from './product-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { ViewComponent } from './view/view.component';
+import { NewProductComponent } from './new-product/new-product.component';
 
 @NgModule({
-  declarations: [ProductComponent, ItemComponent, ViewComponent],
+  declarations: [
+    ProductComponent,
+    ItemComponent,
+    ViewComponent,
+    NewProductComponent,
+  ],
   imports: [
     CommonModule,
     SharedModule,
