@@ -50,7 +50,7 @@ export class NewProductComponent {
       .updateNewProduct({
         name: this.newProductGroup.value.name,
         price: this.newProductGroup.value.price,
-        imageURLs: ['this.newProductGroup.value.imageURLs'],
+        imageURLs: [this.newProductGroup.value.imageURLs],
         category: this.newProductGroup.value.category,
         // productDetails: [{
         //   description: this.newProductGroup.value.description,
