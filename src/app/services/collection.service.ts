@@ -1,6 +1,5 @@
-import { Product, ProductDetails } from './../models/product.model';
-
 import { Injectable } from '@angular/core';
+import { Product } from './../models/product.model';
 import { ProductService } from './product.service';
 import { User } from './../models/user.model';
 import { UserService } from './user.service';
@@ -34,8 +33,8 @@ export class CollectionService {
     return this._productService.getProduct(pid);
   }
 
-  updateNewProduct(product: Partial<Product> | Partial<ProductDetails>){
-    return this._productService.updateNewProduct(product);
+  updateProduct(product: Partial<Product>){
+    return this._productService.updateProduct(product);
   }
 
   // getFiles() {

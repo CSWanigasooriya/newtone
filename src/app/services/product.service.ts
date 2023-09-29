@@ -2,11 +2,11 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { Product, ProductDetails } from '../models/product.model';
 
 import { Category } from '../models/category.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,24 +29,17 @@ export class ProductService {
     return this.productsCollection.valueChanges();
   }
 
-  async updateNewProduct(product: Partial<Product> | Partial<ProductDetails>) {
-    const id = this.afs.createId();
-    return this.afs
-      .collection('product')
-      .doc(id)
-      .set(
-        {
-          ...product,
-          pid: id,
-        },
-        { merge: true }
-      );
-  }
-
   async updateProduct(product: Partial<Product>) {
+    const id = this.afs.createId();
     return await this.productsCollection
-      .doc(product.pid)
-      .set(product, { merge: true });
+    .doc(id)
+    .set(
+      {
+        ...product,
+        pid: id,
+      },
+      { merge: true }
+      );
   }
 
   async deleteProduct(pid: string) {

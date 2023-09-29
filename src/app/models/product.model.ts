@@ -5,7 +5,7 @@ export interface Product {
   pid: string;
   name: string;
   price: number;
-  productDetails: ProductDetails;
+  productDetails: Partial <ProductDetails>;
   imageURLs?: string[];
   category: Category;
   stockThreshold: number;

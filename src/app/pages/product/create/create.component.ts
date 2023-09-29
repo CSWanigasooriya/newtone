@@ -1,15 +1,15 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Component } from '@angular/core';
-import { ProductService } from './../../../services/product.service';
+import { ProductService } from '../../../services/product.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'newtone-new-product',
-  templateUrl: './new-product.component.html',
-  styleUrls: ['./new-product.component.css'],
+  selector: 'newtone-create-product',
+  templateUrl: './create.component.html',
+  styleUrls: ['./create.component.scss'],
 })
-export class NewProductComponent {
+export class CreateComponent {
   newProductGroup: FormGroup = this._formBuilder.group({
     pid: [''],
     name: ['', Validators.required],
@@ -47,22 +47,22 @@ export class NewProductComponent {
       return;
     }
     this._productService
-      .updateNewProduct({
+      .updateProduct({
         name: this.newProductGroup.value.name,
         price: this.newProductGroup.value.price,
         imageURLs: [this.newProductGroup.value.imageURLs],
         category: this.newProductGroup.value.category,
-        // productDetails: [{
-        //   description: this.newProductGroup.value.description,
-        //   brand: this.newProductGroup.value.brand,
-        //   stock: this.newProductGroup.value.stock,
-        //   rating: this.newProductGroup.value.rating,
-        // }],
-        stockThreshold: this.newProductGroup.value.stockThreshold,
+        productDetails: {
+          description: this.newProductGroup.value.description,
+          brand: this.newProductGroup.value.brand,
+          stock: Number(this.newProductGroup.value.stock),
+          rating: this.newProductGroup.value.rating,
+        },
+        stockThreshold: Number(this.newProductGroup.value.stockThreshold),
       })
       .then((res) => {
         // this.openSnackBar('Successfully Created', 'done_outline');
-        this._router.navigate(['/pages/home']);
+        this._router.navigate(['/product']);
       });
   }
 }
