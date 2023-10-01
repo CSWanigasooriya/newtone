@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
-import { CreateComponent } from './create/create.component';
+import { CreateComponent } from '../admin/inventory/create/create.component';
 import { ItemComponent } from './item/item.component';
 import { NgModule } from '@angular/core';
 import { ProductComponent } from './product.component';

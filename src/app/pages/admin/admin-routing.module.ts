@@ -10,6 +10,11 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      {
+        path: 'inventory',
+        loadChildren: () =>
+          import('./inventory/inventory.module').then((m) => m.InventoryModule),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
