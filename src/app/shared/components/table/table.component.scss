@@ -71,13 +71,13 @@
   justify-content: center;
 }
 
-// .mat-cell:nth-child(1),
-// .mat-header-cell:nth-child(1) {
-//   flex: 0 0 5%;
-// }
-// .mat-cell:nth-last-child(1),
-// .mat-header-cell:nth-last-child(1) {
-//   flex: 0 0 10%;
-//   flex-direction: row;
-//   justify-content: center;
-// }
+.mat-cell:nth-child(1),
+.mat-header-cell:nth-child(1) {
+  flex: 0 0 5%;
+}
+.mat-cell:nth-last-child(1),
+.mat-header-cell:nth-last-child(1) {
+  flex: 0 0 10%;
+  flex-direction: row;
+  justify-content: center;
+}

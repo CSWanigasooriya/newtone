@@ -11,6 +11,7 @@ import { SheetComponent } from './components/sheet/sheet.component';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
 import { TableComponent } from './components/table/table.component';
 import { UploaderComponent } from './components/uploader/uploader.component';
+import { AccordionComponent } from './components/accordion/accordion.component';
 
 const sharedComponents = [
   TableComponent,
@@ -20,6 +21,7 @@ const sharedComponents = [
   UploaderComponent,
   StarRatingComponent,
   GroupByPipe,
+  AccordionComponent,
 ];
 
 @NgModule({
