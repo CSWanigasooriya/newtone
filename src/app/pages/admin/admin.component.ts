@@ -10,6 +10,7 @@ import { toggle } from './../../core/state/theme/theme.actions';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent {
+ 
   selected = 0;
   isEnlarge = true;
 
