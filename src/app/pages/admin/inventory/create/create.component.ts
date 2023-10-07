@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -14,21 +14,24 @@ import { StepperOrientation } from '@angular/cdk/stepper';
 })
 export class CreateComponent {
   createProductForm: FormGroup = this._formBuilder.group({
-    pid: [''],
     name: ['', Validators.required],
     price: ['', Validators.required],
     description: ['', Validators.required],
-    brand: ['', [Validators.email, Validators.required]],
+    brand: ['', [Validators.required]],
     stock: ['', Validators.required],
     category: ['', Validators.required],
-    stockThreshold: [10, Validators.required],
+    threshold: [10, Validators.required],
   });
 
-  productImagesForm = this._formBuilder.group({
-    imageURLs: ['', Validators.required],
+  productImagesForm: FormGroup = this._formBuilder.group({
+    imageURLs: this._formBuilder.array([
+      this._formBuilder.group({
+        url: ['', Validators.required],
+      }),
+    ]),
   });
 
-  productAttributesForm = this._formBuilder.group({
+  productAttributesForm: FormGroup = this._formBuilder.group({
     size: ['', Validators.required],
     color: ['', Validators.required],
     brand: ['', Validators.required],
@@ -54,20 +57,40 @@ export class CreateComponent {
   createProduct() {
     this._productService
       .updateProduct({
-        name: this.createProductForm.value.name,
-        price: this.createProductForm.value.price,
-        imageURLs: [this.createProductForm.value.imageURLs],
-        category: this.createProductForm.value.category,
-        description: this.createProductForm.value.description,
-        stock: Number(this.createProductForm.value.stock),
-        rating: this.createProductForm.value.rating,
+        name: this.createProductForm.value.name ?? '',
+        price: this.createProductForm.value.price ?? 0,
+        imageURLs: [this.createProductForm.value.imageURLs ?? ''],
+        category: this.createProductForm.value.category ?? '',
+        description: this.createProductForm.value.description ?? '',
+        stock: Number(this.createProductForm.value.stock) ?? 0,
         productAttributes: {
-          brand: this.createProductForm.value.brand,
+          size: this.createProductForm.value.size ?? '',
+          color: this.createProductForm.value.color ?? '',
+          brand: this.createProductForm.value.brand ?? '',
         },
-        stockThreshold: Number(this.createProductForm.value.stockThreshold),
+        stockThreshold: Number(this.createProductForm.value.threshold) ?? 0,
       })
       .then(() => {
         this._router.navigate(['/product']);
       });
+  }
+
+  get productImages() {
+    return this.productImagesForm.get('imageURLs') as FormArray;
+  }
+
+  get getFormControls() {
+    return this.productImages.controls as FormGroup[];
+  }
+
+  addImage() {
+    const images = this._formBuilder.group({
+      url: ['', Validators.required],
+    });
+    this.productImages.push(images);
+  }
+
+  deleteImage(index: number) {
+    this.productImages.removeAt(index);
   }
 }

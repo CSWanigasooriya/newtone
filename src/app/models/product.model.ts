@@ -1,4 +1,5 @@
 import { Category } from './category.model';
+import { FieldValue } from '@angular/fire/firestore';
 import { Review } from './review.model';
 
 export interface Product {
@@ -13,8 +14,8 @@ export interface Product {
   rating: number;
   reviews: Review[];
   stock: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: FieldValue;
+  updatedAt: FieldValue;
 }
 
 export interface ProductAttributes {

@@ -7,6 +7,7 @@ import { Category } from '../models/category.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
+import { serverTimestamp } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -25,21 +26,24 @@ export class ProductService {
     return this.productsCollection.doc<Partial<Product>>(pid).valueChanges();
   }
 
-  getProducts(): Observable<Partial<Product>[]> {
-    return this.productsCollection.valueChanges();
+  getProducts(limit: number) {
+    return this.afs
+      .collection<Partial<Product>>('product', (ref) =>
+        ref.orderBy('updatedAt').limit(limit)
+      )
+      .valueChanges();
   }
 
   async updateProduct(product: Partial<Product>) {
     const id = this.afs.createId();
-    return await this.productsCollection
-    .doc(id)
-    .set(
+    return await this.productsCollection.doc(id).set(
       {
         ...product,
+        updatedAt: serverTimestamp(),
         pid: id,
       },
       { merge: true }
-      );
+    );
   }
 
   async deleteProduct(pid: string) {
