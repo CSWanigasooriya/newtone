@@ -1,11 +1,17 @@
+import {
+  PaginatorAction,
+  TableAction,
+  TableColumn,
+} from './../../../../shared/components/table/table.component';
+
+import { AccordionData } from './../../../../shared/components/accordion/accordion.component';
 import { BreakPointHelper } from '../../../../core/helpers/breakpoint.helper';
-import { TableAction, TableColumn, PaginatorAction } from './../../../../shared/components/table/table.component';
+import { Component } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { AccordionData } from 'src/app/shared/components/accordion/accordion.component';
+import { User } from './../../../../models/user.model';
+import { map } from 'rxjs';
 
-
-type TableData = Partial<unknown | undefined>;
+type TableData = Partial<User | undefined>;
 
 @Component({
   selector: 'newtone-list',
@@ -13,6 +19,9 @@ type TableData = Partial<unknown | undefined>;
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent {
+  isSmallScreen$ = this.breakpointHelper.isSmallScreen$.pipe(
+    map((state) => state.matches)
+  );
 
   tableData: TableData[] = [];
 
@@ -22,24 +31,9 @@ export class ListComponent {
 
   tablePaginatorAction: PaginatorAction = {};
 
-  accordionData: AccordionData[] = [
-    {
-      title: "Classical",
-      description: " not classcial",
-      actions: [
-        {
-          text: "edit",
-          event: () => {
-            console.log("edited")
-          }
-        }
-      ]
-    }
-  ]
+  accordionData: AccordionData;
 
-  constructor(
-    public mediaQuery: BreakPointHelper,
-  ) {
+  constructor(private breakpointHelper: BreakPointHelper) {
     this.initializeTable();
     this.tableData = [
       {
@@ -53,6 +47,20 @@ export class ListComponent {
         email: '',
       },
     ];
+
+    this.accordionData = {
+      key: 'uid',
+      content: this.tableData,
+      actions: [
+        {
+          text: 'edit',
+          icon: 'edit',
+          event: () => {
+            console.log('edited');
+          },
+        },
+      ],
+    };
   }
 
   private initializeTable(): void {
@@ -79,7 +87,7 @@ export class ListComponent {
         id: 'edit',
         icon: 'edit',
         color: 'primary',
-        tooltip: 'Edit any',
+        tooltip: 'Edit',
         action: (item) => {
           console.log(item);
         },
@@ -88,7 +96,7 @@ export class ListComponent {
         id: 'delete',
         icon: 'delete',
         color: 'warn',
-        tooltip: 'Delete any',
+        tooltip: 'Delete',
       },
     ];
 
@@ -123,5 +131,4 @@ export class ListComponent {
     //   );
     // }
   }
-
 }

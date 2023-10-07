@@ -1,8 +1,11 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, map } from 'rxjs';
 
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { ProductService } from '../../../../services/product.service';
 import { Router } from '@angular/router';
+import { StepperOrientation } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'newtone-create-product',
@@ -10,58 +13,55 @@ import { Router } from '@angular/router';
   styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent {
-  newProductGroup: FormGroup = this._formBuilder.group({
+  createProductForm: FormGroup = this._formBuilder.group({
     pid: [''],
     name: ['', Validators.required],
     price: ['', Validators.required],
-    imageURLs: ['', Validators.required],
-    category: ['', Validators.required],
     description: ['', Validators.required],
     brand: ['', [Validators.email, Validators.required]],
     stock: ['', Validators.required],
-    rating: ['', Validators.required],
-    stockThreshold: ['', Validators.required],
-    
+    stockThreshold: [10, Validators.required],
   });
 
+  productDetailsForm = this._formBuilder.group({
+    imageURLs: ['', Validators.required],
+    category: ['', Validators.required],
+    rating: ['', Validators.required],
+  });
+
+  thirdFormGroup = this._formBuilder.group({
+    thirdCtrl: ['', Validators.required],
+  });
+
+  stepperOrientation: Observable<StepperOrientation>;
 
   constructor(
+    breakpointObserver: BreakpointObserver,
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _productService: ProductService,
-  ) {}
+    private _productService: ProductService
+  ) {
+    this.stepperOrientation = breakpointObserver
+      .observe('(min-width: 800px)')
+      .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
+  }
 
-  handleNewProductForm() {
-    if (
-      this.newProductGroup.value.name == '' ||
-      this.newProductGroup.value.price == '' ||
-      this.newProductGroup.value.imageURLs == '' ||
-      this.newProductGroup.value.category == '' ||
-      this.newProductGroup.value.description == '' ||
-      this.newProductGroup.value.brand == '' ||
-      this.newProductGroup.value.stock == '' ||
-      this.newProductGroup.value.rating == '' ||
-      this.newProductGroup.value.stockThreshold == ''
-    ) {
-      alert('fill all input fields');
-      return;
-    }
+  createProduct() {
     this._productService
       .updateProduct({
-        name: this.newProductGroup.value.name,
-        price: this.newProductGroup.value.price,
-        imageURLs: [this.newProductGroup.value.imageURLs],
-        category: this.newProductGroup.value.category,
-        productDetails: {
-          description: this.newProductGroup.value.description,
-          brand: this.newProductGroup.value.brand,
-          stock: Number(this.newProductGroup.value.stock),
-          rating: this.newProductGroup.value.rating,
+        name: this.createProductForm.value.name,
+        price: this.createProductForm.value.price,
+        imageURLs: [this.createProductForm.value.imageURLs],
+        category: this.createProductForm.value.category,
+        description: this.createProductForm.value.description,
+        stock: Number(this.createProductForm.value.stock),
+        rating: this.createProductForm.value.rating,
+        productAttributes: {
+          brand: this.createProductForm.value.brand,
         },
-        stockThreshold: Number(this.newProductGroup.value.stockThreshold),
+        stockThreshold: Number(this.createProductForm.value.stockThreshold),
       })
-      .then((res) => {
-        // this.openSnackBar('Successfully Created', 'done_outline');
+      .then(() => {
         this._router.navigate(['/product']);
       });
   }

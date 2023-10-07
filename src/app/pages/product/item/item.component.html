@@ -1,85 +1,7 @@
-<!-- <!-- <div
-  class="w-full h-96 shadow-md rounded-xl duration-500 hover:shadow-xl hover:shadow-gray-300 shadow-gray-200"
->
-  <a>
-    <img
-      [src]="
-        product.imageURLs
-          ? product.imageURLs[0]
-          : 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'
-      "
-      class="rounded-t-xl object-cover w-full h-64"
-    />
-    <div class="px-4 py-3" [routerLink]="['/product', product.pid]">
-      <span class="text-gray-400 mr-3 uppercase text-xs">{{
-        product.category
-      }}</span>
-      <p class="text-lg font-bold text-gray-500 truncate block capitalize">
-        {{ product.name | uppercase }}
-      </p>
-      <div class="flex items-center">
-        <p class="text-lg font-semibold text-amber-500 cursor-auto my-3">
-          {{ product.price | currency }}
-        </p>
-        <div class="ml-auto">
-          <button mat-icon-button color="primary">
-            <mat-icon>add_shopping_cart</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </a>
-</div> -->
-
-<!--<div class="w-full rounded-lg shadow-md">
-  <a>
-    <img
-      [src]="
-        product.imageURLs
-          ? product.imageURLs[0]
-          : 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'
-      "
-      class="rounded-t-lg object-cover w-full h-64"
-    />
-  </a>
-  <div class="p-4 pb-5">
-    <a>
-      <h5 class="text-xl font-semibold tracking-tight">
-        {{ product.name | uppercase }}
-      </h5>
-    </a>
-    <div class="flex items-center mt-2.5 mb-5">
-      <newtone-star-rating
-        [readonly]="true"
-        [size]="1"
-        [initialStars]="product.productDetails?.rating || 0"
-        [color]="'#FFBF00'"
-        [maxStars]="5"
-      ></newtone-star-rating>
-      <span
-        class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3"
-      >
-        {{ product.category }}
-      </span>
-    </div>
-    <div class="flex items-center justify-between">
-      <span class="text-3xl font-bold">{{ product.price | currency }}</span>
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="handleAddToCart(product)"
-      >
-        <mat-icon>add_shopping_cart</mat-icon>
-      </button>
-    </div>
-    <mat-divider></mat-divider>
-  </div>
-</div> -->
-
 <a
   [class.disabled-item]="
-    product.productDetails?.stock! === undefined ||
-    product.productDetails?.stock! <= (product.stockThreshold! || 0)
+    product.stock! === undefined ||
+    product.stock! <= (product.stockThreshold! || 0)
   "
   [routerLink]="['/product', product.pid]"
   class="c-card block shadow-md hover:shadow-xl rounded-lg overflow-hidden border-2 border-gray-50 border-opacity-20"
@@ -95,21 +17,19 @@
     <span
       [ngClass]="{
         'text-red-800 bg-red-200':
-          product.productDetails?.stock! === undefined || product.productDetails?.stock! <= ( product.stockThreshold! || 0 ),
-        'text-orange-800 bg-orange-200': product.productDetails?.stock! > (product.stockThreshold! || 0),
+          product.stock! === undefined || product.stock! <= ( product.stockThreshold! || 0 ),
+        'text-orange-800 bg-orange-200': product.stock! > (product.stockThreshold! || 0),
       }"
       class="inline-block px-2 py-1 leading-none rounded-full font-semibold uppercase tracking-wide text-xs"
       >{{
-        product.productDetails?.stock! === undefined ||
-        product.productDetails?.stock! <= (product.stockThreshold! || 0)
+        product.stock! === undefined ||
+        product.stock! <= (product.stockThreshold! || 0)
           ? 'OUT OF STOCK'
-          : product.productDetails?.stock! + ' IN STOCK'
+          : product.stock! + ' IN STOCK'
       }}</span
     >
     <h2 class="mt-2 mb-2 font-bold">{{ product.name }}</h2>
-    <p class="text-sm">
-      {{ product.productDetails?.description | slice : 0 : 100 }}...
-    </p>
+    <p class="text-sm">{{ product.description | slice : 0 : 100 }}...</p>
     <div class="mt-3 flex items-center">
       <span class="font-bold text-xl">{{ product.price | currency }}</span>
     </div>
@@ -124,7 +44,7 @@
     <newtone-star-rating
       [readonly]="true"
       [size]="1"
-      [initialStars]="product.productDetails?.rating || 0"
+      [initialStars]="product.rating || 0"
       [color]="'#FFBF00'"
       [maxStars]="5"
     ></newtone-star-rating>

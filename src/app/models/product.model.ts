@@ -5,22 +5,26 @@ export interface Product {
   pid: string;
   name: string;
   price: number;
-  productDetails: Partial <ProductDetails>;
+  productAttributes: Partial<ProductAttributes>;
   imageURLs?: string[];
   category: Category;
   stockThreshold: number;
+  description: string;
+  rating: number;
+  reviews: Review[];
+  stock: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface ProductDetails {
-  description: string;
+export interface ProductAttributes {
   size: Size;
   color: string;
   brand: string;
-  stock: number;
-  rating: number;
-  reviews: Review[];
+  weight: number;
+  height: number;
+  width: number;
+  length: number;
 }
 
 export enum Size {

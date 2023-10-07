@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Component, Input } from '@angular/core';
 
 export interface AccordionData {
-  title: string;
-  description: string;
-  actions: AccordionAction[];
+  key: string;
+  content: any[];
+  actions: Partial<AccordionAction>[];
 }
 
 export interface AccordionAction {
   text: string;
+  icon: string;
   event: () => void;
 }
 
@@ -17,7 +20,7 @@ export interface AccordionAction {
   styleUrls: ['./accordion.component.scss'],
 })
 export class AccordionComponent {
-  @Input() data: AccordionData[] | undefined;
+  @Input() data!: AccordionData;
   step = 0;
 
   setStep(index: number) {

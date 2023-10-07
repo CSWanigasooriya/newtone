@@ -1,17 +1,42 @@
 <mat-accordion class="headers-align">
-    <mat-expansion-panel *ngFor="let item of data; index as i" [expanded]="step === i" (opened)="setStep(i)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{item.title}}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{item.description}}
-          <mat-icon>account_circle</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-action-row>
-        <button mat-button color="primary" (click)="nextStep()">Edit</button>
-      </mat-action-row>
-    </mat-expansion-panel>  
-  </mat-accordion>
-  
+  <mat-expansion-panel
+    *ngFor="let item of data.content | keyvalue; index as i"
+    (opened)="setStep(i)"
+    hideToggle
+  >
+    <mat-expansion-panel-header
+      *ngIf="(item.value | keyvalue).length as length"
+    >
+      <ng-container *ngFor="let pair of item.value | keyvalue">
+        <ng-container *ngIf="pair.key === data.key">
+          <mat-panel-title>
+            <span>{{ pair.key | uppercase }} : </span>
+          </mat-panel-title>
+          <mat-panel-description>
+            <span>{{ pair.value }}</span>
+          </mat-panel-description>
+        </ng-container>
+      </ng-container>
+      <button mat-icon-button *ngFor="let action of data.actions">
+        <mat-icon>{{ action?.icon }}</mat-icon>
+      </button>
+    </mat-expansion-panel-header>
+
+    <ng-container *ngFor="let pair of item.value | keyvalue">
+      <span>{{ pair.key }} : {{ pair.value }}</span
+      ><br />
+    </ng-container>
+
+    <mat-action-row>
+      <button
+        *ngFor="let action of data.actions"
+        mat-button
+        color="primary"
+        (click)="nextStep()"
+      >
+        <mat-icon>{{ action?.icon }}</mat-icon>
+        {{ action?.text }}
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -1,7 +1,9 @@
-import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { CreateComponent } from './create/create.component';
 import { InventoryComponent } from './inventory.component';
 import { ListComponent } from './list/list.component';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   {
@@ -10,19 +12,23 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: ListComponent
+        component: ListComponent,
+      },
+      {
+        path: 'create',
+        component: CreateComponent,
       },
       {
         path: '',
         redirectTo: 'list',
-        pathMatch: 'full'
-      }
-    ]
-  }
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class InventoryRoutingModule { }
+export class InventoryRoutingModule {}

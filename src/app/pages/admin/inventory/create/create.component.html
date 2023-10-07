@@ -1,103 +1,77 @@
-<section
-  class="min-h-screen flex items-center justify-center mat-app-background"
->
-  <!-- create container -->
-  <div
-    class="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center"
-  >
-    <!-- form -->
-    <div class="md:w-1/2 px-8 md:px-16">
-      <h2 class="font-bold text-2xl text-[#002D74]">NEW PRODUCT</h2>
-      <p class="text-xs mt-4 text-[#002D74]">
-        Fill all slots, please
-      </p>
-
-      <form
-        [formGroup]="newProductGroup"
-        (ngSubmit)="handleNewProductForm()"
-        class="flex flex-col gap-4"
-      >
+<mat-stepper class="stepper" [orientation]="(stepperOrientation | async)!">
+  <mat-step [stepControl]="createProductForm" label="PRODUCT INFORMATION">
+    <form [formGroup]="createProductForm">
+      <mat-form-field>
+        <mat-label>PRODUCT NAME</mat-label>
         <input
-          class="p-2 mt-8 rounded-sm border text-[#002D74]"
-          type="text"
-          required
+          matInput
+          placeholder="PRODUCT NAME"
           formControlName="name"
-          placeholder="Display Name"
+          required
         />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>PRODUCT PRICE</mat-label>
         <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="price"
-        placeholder="Price"
+          matInput
+          placeholder="PRODUCT PRICE"
+          formControlName="price"
+          required
         />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>PRODUCT DESCRIPTION</mat-label>
+        <textarea
+          matInput
+          placeholder="PRODUCT DESCRIPTION"
+          formControlName="description"
+          required
+        ></textarea>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="productDetailsForm" label="Fill out your address">
+    <form [formGroup]="productDetailsForm">
+      <mat-form-field>
+        <mat-label>Address</mat-label>
         <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="imageURLs"
-        placeholder="Image URLs"
+          matInput
+          formControlName="secondCtrl"
+          placeholder="Ex. 1 Main St, New York, NY"
+          required
         />
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup" label="Fill out your phone number">
+    <form [formGroup]="thirdFormGroup">
+      <mat-form-field>
+        <mat-label>Phone number</mat-label>
         <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="category"
-        placeholder="Category"
+          matInput
+          formControlName="thirdCtrl"
+          placeholder="Ex. 12345678"
+          required
         />
-        <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="description"
-        placeholder="Description"
-        />
-        <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="brand"
-        placeholder="Brand"
-        />
-        <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="stock"
-        placeholder="Stock"
-        />
-        <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="rating"
-        placeholder="Rating"
-        />
-        <input
-        class="p-2 mt-0 rounded-sm border text-[#002D74]"
-        type="text"
-        required
-        formControlName="stockThreshold"
-        placeholder="Stock Threshold"
-        />
-        
-
-        <button
-          class="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300"
-          type="submit"
-        >
-          ADD
-        </button>
-      </form>
-
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
     </div>
-
-    <!-- image -->
-    <div class="md:block hidden w-1/2">
-      <img
-        class="rounded-2xl"
-        src="https://images.ctfassets.net/m8onsx4mm13s/6OMpaaKRTBud76Vo0TSLan/bc89ce4d7de3f6e5959517dc1acd8755/DeluxeProtectorCases_Homepage-50Module.jpg"
-      />
-    </div>
-  </div>
-</section>
+  </mat-step>
+</mat-stepper>

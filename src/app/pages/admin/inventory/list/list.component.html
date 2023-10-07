@@ -1,20 +1,44 @@
+<button
+  [routerLink]="['/admin/inventory/create']"
+  class="inline-flex px-5 py-3 text-white bg-blue-600 hover:bg-purple-700 focus:bg-blue-700 rounded-md mb-3"
+>
+  <svg
+    aria-hidden="true"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    class="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+    />
+  </svg>
+  CREATE
+</button>
+
 <newtone-table
-[tableData]="tableData"
-[tableColumns]="tableColumns"
-[isPageable]="true"
-[isSortable]="true"
-[isFilterable]="true"
-[rowActionButtons]="tableRowActions"
-[paginationSizes]="[2, 4, 6, 10, 30]"
-[defaultPageSize]="10"
-[stickyHeader]="true"
-[isSelectable]="true"
-[paginatorActionButton]="tablePaginatorAction"
-(sort)="sortData($event)"
-(paginatorAction)="onPaginatorAction($event)"
-(selectionChange)="onSelectionChange($event)"
+  *ngIf="(isSmallScreen$ | async) === false"
+  [tableData]="tableData"
+  [tableColumns]="tableColumns"
+  [isPageable]="true"
+  [isSortable]="true"
+  [isFilterable]="true"
+  [rowActionButtons]="tableRowActions"
+  [paginationSizes]="[2, 4, 6, 10, 30]"
+  [defaultPageSize]="10"
+  [stickyHeader]="true"
+  [isSelectable]="true"
+  [paginatorActionButton]="tablePaginatorAction"
+  (sort)="sortData($event)"
+  (paginatorAction)="onPaginatorAction($event)"
+  (selectionChange)="onSelectionChange($event)"
 >
 </newtone-table>
 
-
-<newtone-accordion [data]="accordionData"></newtone-accordion>
+<newtone-accordion
+  [data]="accordionData"
+  *ngIf="(isSmallScreen$ | async) === true"
+></newtone-accordion>
