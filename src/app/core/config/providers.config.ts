@@ -1,3 +1,4 @@
+import { BreakPointHelper } from '../helpers/breakpoint.helper';
 import { APP_CONFIG, NEWTONE_DI_CONFIG } from './app.config';
 import { COMMA, ENTER, TAB } from '@angular/cdk/keycodes';
 import { ERROR_CONFIG, NEWTONE_ERROR_CONFIG } from './error.config';
@@ -103,6 +104,7 @@ export const PROVIDERS_CONFIG = [
     provide: FIREBASE_OPTIONS,
     useValue: firebaseConfig,
   },
+  BreakPointHelper,
   CollectionService,
   AuthService,
   UserService,

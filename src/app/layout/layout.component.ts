@@ -41,9 +41,7 @@ export class LayoutComponent implements OnDestroy {
   filteredProducts!: Observable<Partial<Product>[]>;
   cart$: Observable<Cart>;
   cartSize = 0;
-  mobileQuery: MediaQueryList;
 
-  private _mobileQueryListener: () => void;
   private _subscriptions = new Subscription();
 
   constructor(
@@ -53,12 +51,7 @@ export class LayoutComponent implements OnDestroy {
     private _store: Store<{ count: number; theme: boolean; cart: Cart }>,
     private _router: Router,
     private _auth: AuthService,
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
   ) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
     this.cart$ = this._store.select('cart');
 
     this._subscriptions.add(
@@ -149,7 +142,6 @@ export class LayoutComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.mobileQuery.removeEventListener('change', this._mobileQueryListener);
     this._subscriptions.unsubscribe();
   }
 }

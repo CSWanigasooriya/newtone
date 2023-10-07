@@ -1,6 +1,8 @@
+import { BreakPointHelper } from '../../../../core/helpers/breakpoint.helper';
 import { TableAction, TableColumn, PaginatorAction } from './../../../../shared/components/table/table.component';
 import { Sort } from '@angular/material/sort';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { AccordionData } from 'src/app/shared/components/accordion/accordion.component';
 
 
 type TableData = Partial<unknown | undefined>;
@@ -20,7 +22,24 @@ export class ListComponent {
 
   tablePaginatorAction: PaginatorAction = {};
 
-  constructor() {
+  accordionData: AccordionData[] = [
+    {
+      title: "Classical",
+      description: " not classcial",
+      actions: [
+        {
+          text: "edit",
+          event: () => {
+            console.log("edited")
+          }
+        }
+      ]
+    }
+  ]
+
+  constructor(
+    public mediaQuery: BreakPointHelper,
+  ) {
     this.initializeTable();
     this.tableData = [
       {
