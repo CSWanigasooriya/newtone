@@ -20,17 +20,22 @@ export class CreateComponent {
     description: ['', Validators.required],
     brand: ['', [Validators.email, Validators.required]],
     stock: ['', Validators.required],
+    category: ['', Validators.required],
     stockThreshold: [10, Validators.required],
   });
 
-  productDetailsForm = this._formBuilder.group({
+  productImagesForm = this._formBuilder.group({
     imageURLs: ['', Validators.required],
-    category: ['', Validators.required],
-    rating: ['', Validators.required],
   });
 
-  thirdFormGroup = this._formBuilder.group({
-    thirdCtrl: ['', Validators.required],
+  productAttributesForm = this._formBuilder.group({
+    size: ['', Validators.required],
+    color: ['', Validators.required],
+    brand: ['', Validators.required],
+    weight: ['', Validators.required],
+    height: ['', Validators.required],
+    width: ['', Validators.required],
+    length: ['', Validators.required],
   });
 
   stepperOrientation: Observable<StepperOrientation>;
