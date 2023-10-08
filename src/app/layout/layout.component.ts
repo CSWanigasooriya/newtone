@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Router } from '@angular/router';
@@ -11,7 +11,6 @@ import { AuthService } from '../services/auth.service';
 import { CollectionService } from '../services/collection.service';
 import { SheetComponent } from '../shared/components/sheet/sheet.component';
 import { Cart } from './../models/cart.model';
-import { MediaMatcher } from '@angular/cdk/layout';
 
 interface ToolbarIconButton {
   icon: string;
@@ -50,7 +49,7 @@ export class LayoutComponent implements OnDestroy {
     private _collection: CollectionService,
     private _store: Store<{ count: number; theme: boolean; cart: Cart }>,
     private _router: Router,
-    private _auth: AuthService,
+    private _auth: AuthService
   ) {
     this.cart$ = this._store.select('cart');
 
@@ -112,7 +111,7 @@ export class LayoutComponent implements OnDestroy {
         action: () => {
           this._openBottomSheet();
         },
-        badge: this.cartSize,
+        badge: -1,
       },
     ];
   }

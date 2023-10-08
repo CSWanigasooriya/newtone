@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy, ViewChild } from '@angular/core';
 import {
   MAT_BOTTOM_SHEET_DATA,
   MatBottomSheetRef,
@@ -8,6 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { removeItemFromCart } from './../../../core/state/cart/cart.actions';
 import { Cart } from './../../../models/cart.model';
 import { Product } from './../../../models/product.model';
+import { MatSelectionList } from '@angular/material/list';
 
 export interface SheetData {
   names: string[];
@@ -21,6 +22,7 @@ export interface SheetData {
 export class SheetComponent implements OnDestroy {
   cart$: Observable<Cart>;
   subTotal = 0;
+  @ViewChild('items') items: MatSelectionList | undefined;
 
   private _subscriptions = new Subscription();
 
@@ -52,6 +54,12 @@ export class SheetComponent implements OnDestroy {
 
   removeFromCart(product: Partial<Product>) {
     this._store.dispatch(removeItemFromCart({ product: product }));
+  }
+
+  deleteSelectedItems() {
+    this.items?.selectedOptions.selected.map(async (item) => {
+      this.removeFromCart({ pid: item.value.key });
+    });
   }
 
   ngOnDestroy() {

@@ -1,17 +1,19 @@
 <mat-nav-list *ngIf="(cart$ | async)?.products as products" class="mb-2">
   <h1 class="text-xl uppercase">Cart Items</h1>
-  <ng-container *ngFor="let item of products | groupBy : 'pid'">
-    <mat-list-item>
-      <div matListItemTitle>{{ item.value[0].name }}</div>
-      <div matListItemLine>QUANTITY: {{ item.value.length }}</div>
-      <button mat-icon-button color="warn" (click)="deleteItem(item)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-list-item>
-  </ng-container>
+
+  <mat-selection-list #items>
+    <mat-list-option
+      *ngFor="let item of products | groupBy : 'pid'"
+      [value]="item"
+    >
+      <div matListItemTitle>
+        {{ item.value[0].name }} : {{ item.value.length }}
+      </div>
+    </mat-list-option>
+  </mat-selection-list>
 
   <mat-divider></mat-divider>
-  <div class="flow-root mt-2">
+  <div class="flow-root mt-3">
     <div class="float-left">
       <button
         mat-button
@@ -22,12 +24,20 @@
         <span> Subtotal: {{ subTotal | currency }} </span>
       </button>
     </div>
-    <div class="float-right">
+    <div class="flex justify-end align-middle">
+      <button
+        mat-icon-button
+        class="-mt-2 mr-1"
+        (click)="deleteSelectedItems()"
+        [disabled]="items.selectedOptions.selected.length === 0"
+        color="warn"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
       <button
         mat-raised-button
         [routerLink]="['/checkout']"
         (click)="bottomSheetRef.dismiss()"
-        class="right"
         [disabled]="products.length === 0"
         color="accent"
       >

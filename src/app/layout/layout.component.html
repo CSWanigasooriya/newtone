@@ -81,9 +81,12 @@
             [matTooltip]="iconButton.tooltip"
             (click)="iconButton.action()"
           >
-            <mat-icon [matBadge]="iconButton?.badge" matBadgeSize="small">{{
-              iconButton.icon
-            }}</mat-icon>
+            <mat-icon
+              [matBadge]="iconButton.badge === -1 ? cartSize : iconButton.badge"
+              matBadgeSize="small"
+              aria-hidden="false"
+              >{{ iconButton.icon }}</mat-icon
+            >
           </button>
         </div>
       </div>
