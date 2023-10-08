@@ -1,13 +1,43 @@
-<div id="app" class="bg-gray-200">
-  <div class="shadow-sm mat-app-background">
-    <div class="mx-auto px-4 sm:px-6 lg:px-8 py-1 md:py-4">
-      <div class="flex items-center justify-between md:justify-start">
-        <button
-          type="button"
-          class="md:hidden w-10 h-10 rounded-lg -ml-2 flex justify-center items-center"
-        >
+<div class="layout-container" [class.is-mobile]="mobileQuery.matches">
+  <nav>
+    <div class="shadow-sm mat-app-background">
+      <div class="mx-auto px-4 sm:px-6 lg:px-8 py-1 md:py-4">
+        <div class="flex items-center justify-between md:justify-start">
+          <button
+            type="button"
+            (click)="toggleSidenav()"
+            class="md:hidden w-10 h-10 rounded-lg -ml-2 flex justify-center items-center"
+          >
+            <svg
+              class="text-gray-500 w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+
+          <a class="font-bold text-gray-500 text-2xl" [routerLink]="['']">{{
+            config.title
+          }}</a>
+        </div>
+
+        <div class="relative md:hidden">
+          <input
+            type="search"
+            class="mt-1 w-full pl-10 pr-2 h-10 py-1 rounded-lg border border-gray-200 focus:border-gray-300 focus:outline-none focus:shadow-inner leading-none"
+            placeholder="Search"
+          />
+
           <svg
-            class="text-gray-500 w-6 h-6"
+            class="h-6 w-6 text-gray-300 ml-2 mt-3 stroke-current absolute top-0 left-0"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -17,51 +47,78 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
-        </button>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-        <a class="font-bold text-gray-500 text-2xl" [routerLink]="['']">{{ config.title }}</a>
-      </div>
-    </div>
-  </div>
-  <div class="flex">
-    <!-- Sidebar -->
-    <div
-      class="pos-r h-[calc(100vh-72px)] inline-flex flex-col justify-between bg-white shadow p-6"
-      id="side-nav"
+  <mat-sidenav-container class="sidenav-container" autosize>
+    <mat-sidenav
+      class="sidenav"
+      #snav
+      [opened]="!mobileQuery.matches"
+      [@openCloseSidenav]="toggleSidebarAnimation()"
+      [class.is-compact]="!isEnlarge"
+      (mouseover)="isEnlarge = true"
+      (mouseleave)="isEnlarge = false"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
     >
-      <div class="inline-flex flex-col space-y-2" data-te-sidenav-content="#content" data-te-sidenav-init>
-        <a
-          [routerLink]="link.link"
-          [routerLinkActive]="'bg-indigo-100 text-indigo-500'"
-          *ngFor="let link of sideNavItems; index as i"
-          class="flex items-center text-gray-600 py-2 cursor-pointer hover:bg-gray-100"
-          [ngClass]="{
-            'pl-2 pr-6 rounded-lg': isEnlarge,
-            'px-2 rounded-full': !isEnlarge
-          }"
-          (click)="selected = i"
-        >
-          <span class="w-8 h-8 p-1" [class.mr-4]="isEnlarge"
-            ><mat-icon>{{ link.icon }}</mat-icon></span
-          >
-          <span *ngIf="isEnlarge" class="font-medium select-none">{{ link.text }}</span>
-        </a>
-      </div>
-      <button
-        class="h-8 w-8 p-1 bg-gray-100 text-gray-600 rounded-lg mx-auto border border-solid border-gray-200 hover:border-gray-300"
-        (click)="isEnlarge = !isEnlarge"
-      >
-        <span>
-          <mat-icon>{{ isEnlarge ? enlarge.decrease : enlarge.enlarge }}</mat-icon>
-        </span>
-      </button>
-    </div>
-    <!-- Content -->
-    <div class="flex-grow p-5">
+      <mat-nav-list class="items" [class.is-dark]="(theme$ | async) === true">
+        <!-- <button class="new-btn">
+          <span class="icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+            >
+              <path fill="#34A853" d="M16 16v14h4V20z" />
+              <path fill="#4285F4" d="M30 16H20l-4 4h14z" />
+              <path fill="#FBBC05" d="M6 16v4h10l4-4z" />
+              <path fill="#EA4335" d="M20 16V6h-4v14z" />
+              <path fill="none" d="M0 0h36v36H0z" />
+            </svg>
+          </span>
+
+          <span class="name truncate" *ngIf="isEnlarge">Submit Paper</span>
+        </button> -->
+        <div class="inline-flex flex-col justify-between p-2" id="side-nav">
+          <div class="inline-flex flex-col">
+            <a
+              [routerLink]="link.link"
+              [routerLinkActive]="'bg-indigo-100 bg-opacity-10 text-indigo-500'"
+              *ngFor="let link of sideNavItems; index as i"
+              class="flex items-center text-gray-600 py-2 cursor-pointer hover:bg-gray-50 hover:bg-opacity-5 hover:text-gray-500"
+              [ngClass]="{
+                'pl-2 pr-6 rounded-lg': isEnlarge,
+                'px-2 rounded-full': !isEnlarge
+              }"
+              (click)="selected = i"
+            >
+              <span class="w-8 h-8 p-1" [class.mr-4]="isEnlarge"
+                ><mat-icon>{{ link.icon }}</mat-icon></span
+              >
+              <span *ngIf="isEnlarge" class="font-medium select-none">{{
+                link.text
+              }}</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="bottom"></div>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content
+      [@openCloseSidenavContent]="
+        !mobileQuery.matches ? (!isEnlarge ? 'closed' : 'open') : null
+      "
+    >
       <router-outlet></router-outlet>
-    </div>
-  </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

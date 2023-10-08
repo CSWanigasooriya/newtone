@@ -1,0 +1,260 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.toolbar {
+  z-index: 2;
+  @apply shadow-md;
+}
+
+.is-mobile .toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+.is-compact .sidenav-item {
+  border-radius: 50%;
+}
+
+h1.app-name {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+.is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+       `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.sidenav {
+  background-color: transparent;
+}
+
+.is-mobile .sidenav {
+  background-color: inherit;
+}
+
+.mat-sidenav-content {
+  padding: 10px;
+}
+
+// Sidenav
+
+.sidenav {
+  max-height: 100vh;
+}
+
+.bottom {
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  bottom: 0;
+  margin-bottom: 1em;
+  width: 100%;
+
+  .mat-line {
+    font-weight: 600;
+    font-size: 12px;
+    color: #5f6368;
+  }
+  .mat-list-icon {
+    margin: auto;
+    padding: 0;
+    color: #5f6368;
+  }
+}
+
+.items {
+  overflow: hidden;
+  padding-right: 10px;
+}
+
+.item {
+  display: flex;
+  margin: 0 auto;
+  border-radius: 0px 100px 100px 0px;
+  cursor: pointer;
+  max-height: 54px;
+  transition: all 0.041s ease;
+}
+
+.item.active {
+  background: #01616417;
+}
+
+.item.active .mat-line {
+  color: #016064;
+}
+.item.active .mat-list-icon {
+  color: #016064;
+}
+.item .mat-line {
+  font-weight: 600;
+  font-size: 12px;
+  color: #5f6368;
+}
+.item * {
+  pointer-events: none;
+}
+.item .mat-list-icon {
+  padding: 0;
+  border-radius: 0;
+  color: #5f6368;
+}
+.item:not(.active):hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+//Dark theme
+.is-dark .item.active {
+  background-color: rgba(63, 76, 107, 0.315);
+}
+
+.is-dark .item .mat-line {
+  color: #cccccc;
+}
+
+.is-dark .item .mat-list-icon {
+  color: #cccccc;
+}
+
+.is-dark .item.active .mat-list-icon {
+  color: #82b1ff;
+}
+
+.is-dark .item.active .mat-line {
+  color: #82b1ff;
+}
+
+//Compact theme
+
+.is-compact .items {
+  padding-right: 0;
+}
+
+.is-compact .item {
+  height: 54px;
+  width: 54px;
+  margin: 0 8px;
+  border-radius: 100px;
+}
+
+//Button
+.new-btn {
+  display: flex;
+  align-items: center;
+  margin: 10px 8px;
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302),
+    0 1px 3px 1px rgba(60, 64, 67, 0.149);
+  border: none;
+  background: white;
+  padding: 10px;
+  height: 54px;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.new-btn * {
+  pointer-events: none;
+}
+.new-btn:hover {
+  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302),
+    0 4px 8px 3px rgba(60, 64, 67, 0.149);
+  background: #f8f9fa;
+}
+.new-btn:focus {
+  background-color: #f8f9fa;
+}
+.new-btn:active {
+  background-color: #e2e2e2;
+}
+.new-btn .icon {
+  margin-right: 10px;
+}
+.new-btn .name {
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 9px;
+  color: #3c4043;
+}
+
+.is-dark .new-btn {
+  display: flex;
+  align-items: center;
+  margin: 10px 8px;
+  box-shadow: 0 1px 2px 0 rgba(14, 14, 14, 0.302),
+    0 1px 3px 1px rgba(14, 14, 14, 0.149);
+  border: none;
+  background: #1d1d1d;
+  padding: 10px;
+  height: 54px;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.is-dark .new-btn:hover {
+  box-shadow: 0 1px 2px 0 rgba(14, 14, 14, 0.302),
+    0 1px 3px 1px rgba(14, 14, 14, 0.149);
+  background: #444444;
+}
+.is-dark .new-btn:focus {
+  background-color: #505050;
+}
+.is-dark .new-btn:active {
+  background-color: #00000038;
+}
+.is-dark .new-btn .icon {
+  margin-right: 10px;
+}
+.is-dark .new-btn .name {
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 9px;
+  color: #a1aab3;
+}
+
+.is-compact .new-btn {
+  height: 54px;
+  width: 54px;
+  border-radius: 100px;
+}
+
+.is-compact .new-btn .icon {
+  margin-right: 0px;
+}
+
+.search {
+  width: 600px;
+  height: 44px;
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  font: 16px arial, sans-serif;
+  color: gray;
+  padding-left: 17px;
+  padding-right: 17px;
+}
+.search:hover,
+.search:focus {
+  outline: none;
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+.search::placeholder {
+  color: #a9a9a9;
+}

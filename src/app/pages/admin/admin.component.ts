@@ -1,20 +1,41 @@
-import { Component, Inject } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  Optional,
+  ViewChild,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import {
+  sideNavAnimation,
+  sideNavContainerAnimation,
+} from './../../core/animation/side-bar.animations';
 import { APP_CONFIG, AppConfig } from './../../core/config/app.config';
-import { toggle } from './../../core/state/theme/theme.actions';
 
 @Component({
   selector: 'newtone-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
+  animations: [sideNavAnimation, sideNavContainerAnimation],
 })
-export class AdminComponent {
- 
+export class AdminComponent implements AfterViewInit, OnDestroy {
+  private subscriptions = new Subscription();
+
+  @ViewChild('snav') snav: MatSidenav | undefined;
+  @ViewChild(MatSidenavContainer) sidenavContainer:
+    | MatSidenavContainer
+    | undefined;
+  searchControl = new FormControl();
+  theme$: Observable<boolean>;
   selected = 0;
   isEnlarge = true;
-
-
 
   sideNavItems = [
     {
@@ -27,6 +48,11 @@ export class AdminComponent {
       text: 'Inventory',
       link: '/admin/inventory',
     },
+    {
+      icon: 'point_of_sale',
+      text: 'Sales',
+      link: '/admin/sales',
+    },
   ];
 
   enlarge = {
@@ -34,16 +60,42 @@ export class AdminComponent {
     enlarge: 'chevron_right',
   };
 
-  theme$: Observable<boolean>;
+  mobileQuery: MediaQueryList;
+
+  private _mobileQueryListener: () => void;
 
   constructor(
-    @Inject(APP_CONFIG) public config: AppConfig,
-    private _store: Store<{ count: number; theme: boolean }>
+    public dialog: MatDialog,
+    private _store: Store<{ count: number; theme: boolean; sidebar: boolean }>,
+    @Optional() @Inject(APP_CONFIG) public config: AppConfig,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
   ) {
-    this.theme$ = _store.select('theme');
+    this.theme$ = this._store.select('theme');
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
   }
 
-  private _toggleTheme() {
-    this._store.dispatch(toggle());
+  ngAfterViewInit(): void {
+    this.subscriptions.add(
+      this.sidenavContainer?.scrollable.elementScrolled().subscribe(() => {
+        console.log('scrolled');
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+    this.subscriptions.unsubscribe();
+  }
+
+  toggleSidebarAnimation(): string {
+    return !this.isEnlarge ? 'closed' : 'open';
+  }
+
+  toggleSidenav() {
+    this.snav?.toggle();
+    this.isEnlarge = !this.isEnlarge;
   }
 }

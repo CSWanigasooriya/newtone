@@ -34,4 +34,10 @@ export class AccordionComponent {
   prevStep() {
     this.step--;
   }
+
+  transformCamelCaseToWords(value: unknown) {
+    return (value as string)
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, (str) => str.toUpperCase());
+  }
 }

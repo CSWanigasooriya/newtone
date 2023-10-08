@@ -22,9 +22,15 @@
       </button>
     </mat-expansion-panel-header>
 
-    <ng-container *ngFor="let pair of item.value | keyvalue">
-      <span>{{ pair.key }} : {{ pair.value }}</span
-      ><br />
+    <ng-container>
+      <mat-list>
+        <mat-list-item *ngFor="let pair of item.value | keyvalue">
+          <div matListItemTitle>
+            <b> {{ transformCamelCaseToWords(pair.key) | uppercase }}</b>
+          </div>
+          <div matListItemLine>{{ pair.value }}</div>
+        </mat-list-item>
+      </mat-list>
     </ng-container>
 
     <mat-action-row>
