@@ -1,0 +1,155 @@
+<div id="app" class="antialiased h-screen bg-gray-100">
+
+    <div class="lg:flex">
+  
+      <div class="lg:flex lg:w-full">
+  
+        <div class="w-full">
+          <div class="mx-6 my-3 h-10 flex items-center justify-evenly border border-blue-900 rounded-lg">
+            <div class="h-full w-full flex items-center justify-center">
+              <svg class="mx-2 w-8 h-8 fill-current text-blue-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/></svg>
+              <input class="pb-1 h-full w-full rounded-lg bg-transparent focus:outline-none" type="text" placeholder="Search">
+            </div>
+          </div>
+  
+          <div>
+            <div class="mx-2 my-2 pb-1 flex flex-col bg-blue-900 rounded-lg text-sm lg:mx-6">
+              <div class="ml-4 mt-2 flex items-center text-gray-100">
+                <h4 class="">Today</h4>
+                <span class="ml-2 text-gray-300">October, 26</span>
+              </div>
+              <div class="mx-4 my-2 flex items-center justify-between">
+                <div class="flex flex-col">
+                  <div class="-mb-2 text-white text-2xl tracking-wide font-semibold">$6,471</div>
+                  <div class="text-xs text-gray-300">gross revenue</div>
+                </div>
+                <div class="flex">
+                  <div class="mx-4 w-20 flex flex-col border-l-2 border-blue-900">
+                    <div class="-mb-2 ml-2 text-white text-2xl tracking-wide font-semibold">149</div>
+                    <div class="ml-2 text-xs text-gray-300">units sold</div>
+                  </div>
+                  <div class="w-20 flex flex-col border-l-2 border-blue-900">
+                    <div class="-mb-2 ml-2 text-white text-2xl tracking-wide font-semibold">125</div>
+                    <div class="ml-2 text-xs text-gray-300">orders</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="mx-8 my-4 flex items-center justify-around text-sm">
+              <button class="px-2 py-1 text-gray-500" type="button">24 hours</button>
+              <button class="px-2 py-1 text-gray-500" type="button">1 week</button>
+              <button class="px-2 py-1 bg-blue-900 text-white rounded-lg" type="button">1 month</button>
+              <button class="px-2 py-1 text-gray-500" type="button">1 year</button>
+              <button class="px-2 py-1 text-gray-500" type="button">All time</button>
+            </div>
+  
+            <div class="lg:mx-6">
+              <div class="md:flex md:justify-around">
+                <div class="mx-2 my-4 pb-1 flex flex-col justify-between bg-white shadow-lg border border-blue-200 text-sm lg:w-full">
+                  <div class="ml-4 mt-2 flex items-center justify-between text-lg text-gray-800 font-medium">
+                    <div>
+                      Last month revenue
+                    </div>
+                    <div class="mr-4 text-sm text-gray-500">
+                      Sept 26 - Oct 26
+                    </div>
+                  </div>
+                  <img class="mx-4 my-4 object-center" src="https://i.imgur.com/hQ7I41P.png">
+                </div>
+  
+                <div class="mt-6 items-center justify-center md:hidden">
+                  <div class="flex items-center">
+                    <hr class="w-full bg-gray-400 h-px">
+                    <h5 class="m-auto px-4 w-32 text-center bg-gray-100 tracking-wider font-medium text-gray-500">
+                      STATISTICS
+                    </h5>
+                    <hr class="w-full bg-gray-400 h-px">
+                  </div>
+                </div>
+  
+                <div class="mx-2 mt-4 mb-4 pb-1 flex flex-col bg-white shadow-lg border border-blue-200 text-sm lg:w-full">
+                  <div class="ml-4 mt-2 mb-2 flex items-center justify-between text-lg text-gray-800 font-medium">
+                    <div>
+                      Traffic
+                      <hr>
+                    </div>
+                    <div class="mr-4 text-sm text-gray-500">
+                      Today <span class="text-xs font-semibold text-gray-800">&or;</span>
+                    </div>
+                  </div>
+                  <div class="my-2 flex items-center justify-around">
+                    <div class="mx-4 flex flex-col items-center">
+                      <div>
+                        <svg class="w-20 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58 19"><defs/><path fill-rule="evenodd" d="M49.234 4.457l7.887-1.972-.242-.97-8.113 2.028L42.316 9H31.41l-11.957 4.484-8.505-1.501L.814 16.036l.372.928 9.867-3.947 8.495 1.5L31.59 10h11.092l6.551-5.543z" clip-rule="evenodd"/></svg>
+                      </div>
+                      <div class="flex flex-col items-center">
+                        <span class="text-blue-900 text-xl font-medium">2,496</span>
+                        <span class="-mt-1 text-gray-500 text-xs">unique visits</span>
+                      </div>
+                    </div>
+                    <div class="mx-4 flex flex-col items-center">
+                      <div>
+                        <svg class="w-20 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58 19"><defs/><g clip-path="url(#clip0)"><path fill-rule="evenodd" d="M56.864-.157l-8.193 8.705-7.048-1.51-9.027 7.021L20.57 10.05l-8.39 5.43-10.61 1.515-.14-.99 10.39-1.484 8.61-5.571 11.974 3.991 8.973-6.979 6.952 1.49 7.807-8.295.728.686z" clip-rule="evenodd"/></g><defs><clipPath id="clip0"><path d="M0 0h58v19H0z"/></clipPath></defs></svg>
+                      </div>
+                      <div class="flex flex-col items-center">
+                        <span class="text-blue-900 text-xl font-medium">8,761</span>
+                        <span class="-mt-1 text-gray-500 text-xs">visits</span>
+                      </div>
+                    </div>
+                    <div class="mx-4 flex flex-col items-center">
+                      <div>
+                        <svg class="w-20 fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58 19"><defs/><path fill-rule="evenodd" d="M49.234 4.457l7.887-1.972-.242-.970-8.113 2.028L42.316 9H31.41l-11.957 4.484-8.505-1.501L.814 16.036l.372.928 9.867-3.947 8.495 1.5L31.59 10h11.092l6.551-5.543z" clip-rule="evenodd"/></svg>
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="text-blue-900 text-xl font-medium">18,222</span>
+                        <span class="-mt-1 text-gray-500 text-xs">page views</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ml-4 mt-2 mb-2 flex items-center justify-between text-lg text-gray-500 font-medium">
+                    <div>
+                      Traffic sources
+                      <hr>
+                    </div>
+                  </div>
+                  <div class="mx-6 my-2">
+                    <div>
+                      <span class="font-semibold text-lg text-blue-900">Direct</span>
+                      <div class="h-5 flex items-center border border-gray-300 rounded-lg">
+                        <div class="w-2/3 h-full rounded-lg bg-blue-900"></div>
+                        <span class="ml-1 text-xs font-semibold text-blue-900">66%</span>
+                      </div>
+                    </div>
+                    <div class="my-2">
+                      <span class="font-semibold text-lg text-blue-900">Social media</span>
+                      <div class="h-5 flex items-center border border-gray-300 rounded-lg">
+                        <div class="w-1/6 h-full rounded-lg bg-blue-900"></div>
+                        <span class="ml-1 text-xs font-semibold text-blue-900">10%</span>
+                      </div>
+                    </div>
+                    <div class="my-2">
+                      <span class="font-semibold text-lg text-blue-900">Search engines</span>
+                      <div class="h-5 flex items-center border border-gray-300 rounded-lg">
+                        <div class="w-2/6 h-full rounded-lg bg-blue-900"></div>
+                        <span class="ml-1 text-xs font-semibold text-blue-900">20%</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="font-semibold text-lg text-blue-900">Other</span>
+                      <div class="h-5 flex items-center border border-gray-300 rounded-lg">
+                        <div class="w-6 h-full rounded-lg bg-blue-900"></div>
+                        <span class="ml-1 text-xs font-semibold text-blue-900">3%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

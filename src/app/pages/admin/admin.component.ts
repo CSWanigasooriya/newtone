@@ -27,6 +27,11 @@ export class AdminComponent {
       text: 'Inventory',
       link: '/admin/inventory',
     },
+    {
+      icon: 'point_of_sale',
+      text: 'Sales',
+      link: '/admin/sales',
+    },
   ];
 
   enlarge = {

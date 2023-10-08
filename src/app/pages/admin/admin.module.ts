@@ -6,9 +6,10 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { SharedModule } from './../../shared/shared.module';
+import { SalesComponent } from './sales/sales.component';
 
 @NgModule({
-  declarations: [DashboardComponent, AdminComponent],
+  declarations: [DashboardComponent, AdminComponent, SalesComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
