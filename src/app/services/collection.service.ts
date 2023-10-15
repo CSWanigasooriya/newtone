@@ -37,6 +37,14 @@ export class CollectionService {
     return this._productService.updateProduct(product);
   }
 
+  deleteProduct(pid: string) {
+    return this._productService.deleteProduct(pid);
+  }
+
+  deleteProducts(pids: string[]) {
+    return this._productService.deleteProducts(pids);
+  }
+
   // getFiles() {
   //   return this.filesCollection.valueChanges()
   // }

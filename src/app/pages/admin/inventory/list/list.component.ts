@@ -6,10 +6,16 @@ import {
 
 import { AccordionData } from './../../../../shared/components/accordion/accordion.component';
 import { BreakPointHelper } from '../../../../core/helpers/breakpoint.helper';
+import { CollectionService } from './../../../../services/collection.service';
 import { Component } from '@angular/core';
+import { DialogComponent } from './../../../../shared/components/dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Product } from './../../../../models/product.model';
 import { Sort } from '@angular/material/sort';
 import { User } from './../../../../models/user.model';
 import { map } from 'rxjs';
+
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 type TableData = Partial<User | undefined>;
 
@@ -25,59 +31,55 @@ export class ListComponent {
 
   tableData: TableData[] = [];
 
-  tableRowActions!: TableAction<unknown>[];
+  tableRowActions!: TableAction<Product>[];
 
   tableColumns: TableColumn[] = [];
 
   tablePaginatorAction: PaginatorAction = {};
 
-  accordionData: AccordionData;
+  accordionData: AccordionData = {} as AccordionData;
 
-  constructor(private breakpointHelper: BreakPointHelper) {
+  constructor(
+    private breakpointHelper: BreakPointHelper,
+    private _collection: CollectionService,
+    private _matDialog: MatDialog
+  ) {
     this.initializeTable();
-    this.tableData = [
-      {
-        uid: '1',
-        displayName: 'John Doe',
-        email: '',
-      },
-      {
-        uid: '2',
-        displayName: 'Jane Doe',
-        email: '',
-      },
-    ];
 
-    this.accordionData = {
-      key: 'uid',
-      content: this.tableData,
-      actions: [
-        {
-          text: 'edit',
-          icon: 'edit',
-          event: () => {
-            console.log('edited');
+    this._collection.getProducts().subscribe((products) => {
+      this.tableData = products as TableData[];
+
+      this.accordionData = {
+        key: 'uid',
+        content: this.tableData,
+        actions: [
+          {
+            text: 'edit',
+            icon: 'edit',
+            event: () => {
+              console.log('edited');
+            },
           },
-        },
-      ],
-    };
+        ],
+      };
+    });
   }
 
   private initializeTable(): void {
     this.tableColumns = [
       {
-        name: 'UID',
-        dataKey: 'uid',
+        name: 'Product Name',
+        dataKey: 'name',
         isSortable: true,
       },
       {
-        name: 'Display Name',
-        dataKey: 'displayName',
+        name: 'Price',
+        dataKey: 'price',
         isSortable: true,
       },
       {
-        name: 'Email',
-        dataKey: 'email',
+        name: 'Stock',
+        dataKey: 'stock',
         isSortable: true,
       },
     ];
@@ -89,7 +91,7 @@ export class ListComponent {
         color: 'primary',
         tooltip: 'Edit',
         action: (item) => {
-          console.log(item);
+          this.onRowAction(this.tableRowActions[1], item);
         },
       },
       {
@@ -97,6 +99,9 @@ export class ListComponent {
         icon: 'delete',
         color: 'warn',
         tooltip: 'Delete',
+        action: (item) => {
+          this.onRowAction(this.tableRowActions[1], item);
+        },
       },
     ];
 
@@ -113,22 +118,79 @@ export class ListComponent {
     console.log(selectedRows);
   }
 
-  onPaginatorAction(selectedRows: unknown[]) {
+  onPaginatorAction(selectedRows: Product[]) {
     if (!selectedRows.length) return;
+    this._matDialog.open(DialogComponent, {
+      data: {
+        title: 'Delete',
+        subtitle: `Are you sure you want to delete ${selectedRows.length} products?`,
+        description: 'This action cannot be undone.',
+        actions: [
+          {
+            text: 'Cancel',
+            action: () => false,
+            style: 'mat-stroked-button',
+          },
+          {
+            text: 'Delete',
+            action: () => {
+              this._collection.deleteProducts(
+                selectedRows.map((row) => row.pid)
+              );
+            },
+            style: 'mat-stroked-button',
+            color: 'warn',
+          },
+        ],
+      },
+    });
   }
 
   sortData(sortParameters: Sort) {
     const keyName = sortParameters.active;
     console.log(keyName);
 
-    // if (sortParameters.direction === 'asc') {
-    //   this.tableData = this.tableData.sort((a: TableData, b: TableData) =>
-    //     a![keyName as keyof TableData] > b![keyName as keyof TableData] ? 1 : -1
-    //   );
-    // } else if (sortParameters.direction === 'desc') {
-    //   this.tableData = this.tableData.sort((a: TableData, b: TableData) =>
-    //     a![keyName as keyof TableData] < b![keyName as keyof TableData] ? 1 : -1
-    //   );
-    // }
+    if (sortParameters.direction === 'asc') {
+      this.tableData = this.tableData.sort((a: TableData, b: TableData) =>
+        a![keyName as keyof TableData] > b![keyName as keyof TableData] ? 1 : -1
+      );
+    } else if (sortParameters.direction === 'desc') {
+      this.tableData = this.tableData.sort((a: TableData, b: TableData) =>
+        a![keyName as keyof TableData] < b![keyName as keyof TableData] ? 1 : -1
+      );
+    }
+  }
+
+  onRowAction(action: TableAction<Product>, item: Product = {} as Product) {
+    if (action.id === 'edit') {
+      console.log('edit');
+    } else if (action.id === 'delete') {
+      this.openDeleteDialog(item);
+    }
+  }
+
+  openDeleteDialog(item: Product = {} as Product) {
+    this._matDialog.open(DialogComponent, {
+      data: {
+        title: 'Delete',
+        subtitle: `Are you sure you want to delete ${item.name}?`,
+        description: 'This action cannot be undone.',
+        actions: [
+          {
+            text: 'Cancel',
+            action: () => false,
+            style: 'mat-stroked-button',
+          },
+          {
+            text: 'Delete',
+            action: () => {
+              this._collection.deleteProduct(item.pid);
+            },
+            style: 'mat-stroked-button',
+            color: 'warn',
+          },
+        ],
+      },
+    });
   }
 }

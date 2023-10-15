@@ -1,5 +1,10 @@
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map } from 'rxjs';
+import {
+  Product,
+  ProductAttributes,
+  Size,
+} from './../../../../models/product.model';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
@@ -17,10 +22,9 @@ export class CreateComponent {
     name: ['', Validators.required],
     price: ['', Validators.required],
     description: ['', Validators.required],
-    brand: ['', [Validators.required]],
     stock: ['', Validators.required],
     category: ['', Validators.required],
-    threshold: [10, Validators.required],
+    stockThreshold: [10, Validators.required],
   });
 
   productImagesForm: FormGroup = this._formBuilder.group({
@@ -55,23 +59,39 @@ export class CreateComponent {
   }
 
   createProduct() {
+    if (
+      this.createProductForm.invalid ||
+      this.productImagesForm.invalid ||
+      this.productAttributesForm.invalid
+    )
+      return;
+
+    const productFormValue = this.createProductForm.value as Partial<Product>;
+
+    const productAttributesValue = this.productAttributesForm
+      .value as Partial<ProductAttributes>;
+
+    const images = this.productImagesForm.value.imageURLs.map(
+      (image: { url: string }) => image.url
+    );
+
     this._productService
       .updateProduct({
-        name: this.createProductForm.value.name ?? '',
-        price: this.createProductForm.value.price ?? 0,
-        imageURLs: [this.createProductForm.value.imageURLs ?? ''],
-        category: this.createProductForm.value.category ?? '',
-        description: this.createProductForm.value.description ?? '',
-        stock: Number(this.createProductForm.value.stock) ?? 0,
+        name: productFormValue.name ?? '',
+        price: productFormValue.price ?? 0,
+        imageURLs: images ?? '',
+        // category: productFormValue.category ?? '',
+        description: productFormValue.description ?? '',
+        stock: Number(productFormValue.stock) ?? 0,
         productAttributes: {
-          size: this.createProductForm.value.size ?? '',
-          color: this.createProductForm.value.color ?? '',
-          brand: this.createProductForm.value.brand ?? '',
+          size: productAttributesValue.size ?? Size.UNKNOWN,
+          color: productAttributesValue.color ?? '',
+          brand: productAttributesValue.brand ?? '',
         },
-        stockThreshold: Number(this.createProductForm.value.threshold) ?? 0,
+        stockThreshold: Number(productFormValue.stockThreshold) ?? 0,
       })
       .then(() => {
-        this._router.navigate(['/product']);
+        this._router.navigate(['/admin/inventory']);
       });
   }
 

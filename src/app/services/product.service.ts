@@ -50,6 +50,15 @@ export class ProductService {
     return await this.productsCollection.doc(pid).delete();
   }
 
+  async deleteProducts(pids: string[]) {
+    const batch = this.afs.firestore.batch();
+    pids.forEach((pid) => {
+      const docRef = this.productsCollection.doc(pid).ref;
+      batch.delete(docRef);
+    });
+    return await batch.commit();
+  }
+
   async createProduct(product: Partial<Product>) {
     return await this.productsCollection.doc(product.pid).set(product);
   }

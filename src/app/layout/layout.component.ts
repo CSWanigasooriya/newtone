@@ -99,19 +99,19 @@ export class LayoutComponent implements OnDestroy {
         },
       },
       {
-        icon: 'settings',
-        tooltip: 'Settings',
-        action: () => {
-          this._auth.signOut();
-        },
-      },
-      {
         icon: 'shopping_cart',
         tooltip: 'Cart',
         action: () => {
           this._openBottomSheet();
         },
         badge: -1,
+      },
+      {
+        icon: 'account_circle',
+        tooltip: 'Account',
+        action: () => {
+          this._auth.signOut();
+        },
       },
     ];
   }
