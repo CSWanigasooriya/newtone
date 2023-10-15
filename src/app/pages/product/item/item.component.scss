@@ -28,3 +28,13 @@
   pointer-events: none;
   opacity: 0.4;
 }
+
+.launch {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  text-align: center;
+  border-radius: 30px 30px 30px 30px;
+  padding: 5px 10px;
+  display: inline-block;
+}

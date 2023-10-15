@@ -11,6 +11,15 @@
       [src]="product.imageURLs?.[0] ?? 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'"
       alt=""
     />
+    <div class="launch">
+      <button
+        mat-icon-button
+        color="primary"
+        [routerLink]="['/product', product.pid]"
+      >
+        <mat-icon>launch</mat-icon>
+      </button>
+    </div>
   </div>
   <div class="p-4">
     <span
@@ -49,9 +58,6 @@
     ></newtone-star-rating>
     <span class="spacer"></span>
     <div class="ml-2">
-      <button mat-icon-button [routerLink]="['/product', product.pid]">
-        <mat-icon>launch</mat-icon>
-      </button>
       <button mat-icon-button (click)="handleAddToCart(product)">
         <mat-icon>add_shopping_cart</mat-icon>
       </button>

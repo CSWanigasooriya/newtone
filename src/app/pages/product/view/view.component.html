@@ -1,19 +1,19 @@
-<section class="productCard" *ngIf="product$ | async as product">
+<section
+  class="productCard mat-app-background"
+  *ngIf="product$ | async as product"
+>
   <div class="container">
     <div class="info">
-      <h3 class="name">Fila Disruptor</h3>
-      <h1 class="slogan">Performance with comfort</h1>
-      <p class="price">$500.00</p>
-      <div class="attribs">
+      <h3 class="name">{{ product.productAttributes?.brand }}</h3>
+      <h1 class="slogan">{{ product.name }}</h1>
+      <p class="price">{{ product.price | currency }}</p>
+      <div class="attribs" *ngIf="category$ | async as category">
         <div class="attrib size">
-          <p class="header">Select Size</p>
+          <p class="header">Select Option</p>
           <div class="options">
-            <div class="option">6</div>
-            <div class="option">7</div>
-            <div class="option">8</div>
-            <div class="option">9</div>
-            <div class="option">10</div>
-            <div class="option">11</div>
+            <div class="option" *ngFor="let option of category.subCategories">
+              {{ option.name }}
+            </div>
           </div>
         </div>
         <div class="attrib color">
