@@ -1,124 +1,44 @@
-<div
-  class="antialiased mat-app-background h-[calc(100vh-72px)]"
-  *ngIf="product$ | async as product"
->
-  <div class="py-6 flex-1">
-    <div class="mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-      <div class="flex flex-col md:flex-row">
-        <div class="md:flex-1 px-4">
-          <div>
-            <div class="h-64 md:h-80 rounded-lg">
-              <div
-                class="h-64 md:h-80 rounded-lg flex items-center justify-center"
-              >
-                <img
-                  class="object-contain w-full h-72 shadow-lg rounded-2xl"
-                  [src]="
-                    product.imageURLs
-                      ? product.imageURLs[0]
-                      : 'https://www.eag-led.com/wp-content/uploads/2017/04/Product-Image-Coming-Soon.png'
-                  "
-                />
-              </div>
-            </div>
+<section class="productCard">
+  <div class="container">
+    <div class="info">
+      <h3 class="name">Fila Disruptor</h3>
+      <h1 class="slogan">Performance with comfort</h1>
+      <p class="price">$500.00</p>
+      <div class="attribs">
+        <div class="attrib size">
+          <p class="header">Select Size</p>
+          <div class="options">
+            <div class="option">6</div>
+            <div class="option">7</div>
+            <div class="option">8</div>
+            <div class="option">9</div>
+            <div class="option">10</div>
+            <div class="option">11</div>
           </div>
         </div>
-        <div class="md:flex-1 px-4 mt-8">
-          <h2
-            class="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl"
-          >
-            {{ product.name }}
-          </h2>
-          <p class="text-gray-500 text-sm">
-            Category:
-            <a href="#" class="text-indigo-600 hover:underline">{{
-              product.category
-            }}</a>
-          </p>
-
-          <div class="flex items-center space-x-4 my-4">
-            <div>
-              <div class="rounded-lg bg-gray-100 flex py-2 px-3">
-                <span class="text-indigo-400 mr-1 mt-1">$</span>
-                <span class="font-bold text-indigo-600 text-3xl">{{
-                  product.price
-                }}</span>
-              </div>
-            </div>
-            <div class="flex-1">
-              <p class="text-green-500 text-xl font-semibold">Save 12%</p>
-              <p class="text-gray-400 text-sm">Inclusive of all Taxes.</p>
-            </div>
-          </div>
-
-          <p class="text-gray-500">
-            {{ product?.description }}
-          </p>
-
-          <div class="flex py-4 space-x-4">
-            <div class="relative">
-              <div
-                class="text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold"
-              >
-                Qty
-              </div>
-              <select
-                class="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1"
-              >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-
-              <svg
-                class="w-5 h-5 text-gray-400 absolute right-0 bottom-0 mb-2 mr-2"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-                />
-              </svg>
-            </div>
-
-            <button
-              type="button"
-              class="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"
-            >
-              Add to Cart
-            </button>
+        <div class="attrib color">
+          <p class="header">Select Color</p>
+          <div class="options">
+            <div class="option" style="color: #60aec1"></div>
+            <div class="option" style="color: #ef525e"></div>
+            <div class="option" style="color: #000000"></div>
           </div>
         </div>
+      </div>
+      <div class="buttons">
+        <div class="button">Add to cart</div>
+        <div class="button colored">Buy now</div>
+      </div>
+    </div>
+    <div class="colorLayer"></div>
+    <div class="preview">
+      <h1 class="brand">Fila</h1>
+      <div class="zoomControl"></div>
+      <div class="closePreview"></div>
+      <div class="movControls">
+        <div class="movControl left"></div>
+        <div class="movControl right"></div>
       </div>
     </div>
   </div>
-  <mat-divider></mat-divider>
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>
-    <mat-tab label="SPECIFICATIONS">
-      <div class="mat-elevation-z4">
-        <div class="container">
-          <div class="row">
-            <mat-card>
-              <mat-card-content>
-                <p>{{ product.pid }}</p>
-                <p>{{ product.name }}</p>
-                <p>{{ product.price }}</p>
-                <p>{{ product.category }}</p>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-      </div>
-    </mat-tab>
-    <mat-tab label="REVIEWS">
-      <div class="mat-elevation-z4"></div>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+</section>

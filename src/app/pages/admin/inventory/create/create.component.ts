@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, map } from 'rxjs';
+import { Observable, map, startWith } from 'rxjs';
 import {
   Product,
   ProductAttributes,
@@ -7,8 +9,9 @@ import {
 } from './../../../../models/product.model';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { Category } from './../../../../models/category.model';
+import { CollectionService } from '../../../../services/collection.service';
 import { Component } from '@angular/core';
-import { ProductService } from '../../../../services/product.service';
 import { Router } from '@angular/router';
 import { StepperOrientation } from '@angular/cdk/stepper';
 
@@ -18,12 +21,16 @@ import { StepperOrientation } from '@angular/cdk/stepper';
   styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent {
+  filteredCategories!: Observable<Partial<Category>[]>;
+  categories$ = this._collection.getCategories();
+  selectedCategoryId!: string;
+
   createProductForm: FormGroup = this._formBuilder.group({
     name: ['', Validators.required],
     price: ['', Validators.required],
     description: ['', Validators.required],
     stock: ['', Validators.required],
-    category: ['', Validators.required],
+    categoryId: ['', Validators.required],
     stockThreshold: [10, Validators.required],
   });
 
@@ -51,11 +58,25 @@ export class CreateComponent {
     breakpointObserver: BreakpointObserver,
     private _formBuilder: FormBuilder,
     private _router: Router,
-    private _productService: ProductService
+    private _collection: CollectionService
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
+
+    this.categories$.subscribe((category) => {
+      this.filteredCategories = this.createProductForm
+        .get('categoryId')!
+        .valueChanges.pipe(
+          startWith(''),
+          map((value: string) => this._filter(value || '', category))
+        );
+    });
+  }
+
+  onSelectionChanged(event: { option: { id: unknown; value: unknown } }) {
+    const selectedValue = event.option.id;
+    this.selectedCategoryId = selectedValue as string;
   }
 
   createProduct() {
@@ -75,12 +96,12 @@ export class CreateComponent {
       (image: { url: string }) => image.url
     );
 
-    this._productService
+    this._collection
       .updateProduct({
         name: productFormValue.name ?? '',
         price: productFormValue.price ?? 0,
         imageURLs: images ?? '',
-        // category: productFormValue.category ?? '',
+        categoryId: this.selectedCategoryId ?? '',
         description: productFormValue.description ?? '',
         stock: Number(productFormValue.stock) ?? 0,
         productAttributes: {
@@ -112,5 +133,16 @@ export class CreateComponent {
 
   deleteImage(index: number) {
     this.productImages.removeAt(index);
+  }
+
+  private _filter(
+    value: string,
+    categories: Partial<Category>[]
+  ): Partial<Category>[] {
+    const filterValue = value.toLowerCase();
+
+    return categories.filter((category) =>
+      category?.title?.toLowerCase().includes(filterValue)
+    );
   }
 }

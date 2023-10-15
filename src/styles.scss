@@ -6,6 +6,8 @@
 @import './styles/components/grid';
 @import './styles/themes/dark-theme';
 @import './styles/themes/light-theme';
+
+/* @import "your-own-theme.css"; */
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
@@ -138,7 +140,6 @@ mat-card {
   flex: 1 1 auto;
 }
 
-.mdc-notched-outline__notch
-{
+.mdc-notched-outline__notch {
   border-right: none;
 }

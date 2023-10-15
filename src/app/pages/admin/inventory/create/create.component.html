@@ -35,10 +35,24 @@
         <input
           matInput
           placeholder="CATEGORY"
-          formControlName="category"
+          formControlName="categoryId"
+          [matAutocomplete]="auto"
           required
         />
       </mat-form-field>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onSelectionChanged($event)"
+      >
+        <mat-option
+          *ngFor="let category of filteredCategories | async"
+          [value]="category.title"
+          [id]="category.cid?.toString()!"
+        >
+          <span>{{ category.title }}</span> |
+          <small>Subcategories: {{ category.subCategories?.length }}</small>
+        </mat-option>
+      </mat-autocomplete>
       <mat-form-field>
         <mat-label>PRODUCT DESCRIPTION</mat-label>
         <textarea

@@ -22,11 +22,15 @@ export class CollectionService {
   }
 
   getProducts() {
-    return this._productService.getProducts(5);
+    return this._productService.getProducts(10);
   }
 
   getCategories() {
     return this._productService.getCategories();
+  }
+
+  getCategory(cid: string) {
+    return this._productService.getCategory(cid);
   }
 
   getProduct(pid: string) {

@@ -3,7 +3,6 @@
     product.stock! === undefined ||
     product.stock! <= (product.stockThreshold! || 0)
   "
-  [routerLink]="['/product', product.pid]"
   class="c-card block shadow-md hover:shadow-xl rounded-lg overflow-hidden border-2 border-gray-50 border-opacity-20"
 >
   <div class="relative pb-48 overflow-hidden">
@@ -37,7 +36,7 @@
   <div class="p-4 border-t border-b text-xs text-gray-500">
     <span
       class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-      >#{{ product.category }}</span
+      >#{{ product.categoryId }}</span
     >
   </div>
   <div class="p-4 flex items-center text-sm text-gray-400">
@@ -50,6 +49,9 @@
     ></newtone-star-rating>
     <span class="spacer"></span>
     <div class="ml-2">
+      <button mat-icon-button [routerLink]="['/product', product.pid]">
+        <mat-icon>launch</mat-icon>
+      </button>
       <button mat-icon-button (click)="handleAddToCart(product)">
         <mat-icon>add_shopping_cart</mat-icon>
       </button>

@@ -11,6 +11,7 @@ import { Product } from '../../../models/product.model';
   styleUrls: ['./view.component.scss'],
 })
 export class ViewComponent implements OnInit {
+  activeSlide = 0;
   product$!: Observable<Partial<Product> | undefined>;
   selectedId!: string | null | undefined;
   constructor(
@@ -26,9 +27,5 @@ export class ViewComponent implements OnInit {
         return this._collection.getProduct(this.selectedId || '');
       })
     );
-  }
-
-  getXshowValue(index: number) {
-    return `image === ${index}`;
   }
 }

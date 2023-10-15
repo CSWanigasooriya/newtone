@@ -66,4 +66,8 @@ export class ProductService {
   getCategories() {
     return this.categoriesCollection.valueChanges();
   }
+
+  getCategory(cid: string) {
+    return this.categoriesCollection.doc(cid).valueChanges();
+  }
 }

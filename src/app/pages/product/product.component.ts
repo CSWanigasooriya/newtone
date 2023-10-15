@@ -67,10 +67,23 @@ export class ProductComponent implements OnDestroy {
   }
 
   handleAddToCart(product: Partial<Product>) {
-    this._notificationService.showNotification(
-      `${product.name} added to cart successfully`
+    if (product.categoryId === undefined || product.categoryId === null) return;
+    const category = this._collection.getCategory(product.categoryId || '');
+    this._subscriptions.add(
+      category.subscribe((category) => {
+        if (category?.subCategories && category.subCategories.length > 1) {
+          this._notificationService.showNotification(
+            'Please select a subcategory'
+          );
+          this._router.navigate(['/product', product.pid]);
+        } else {
+          this._store.dispatch(postCart({ products: product }));
+          this._notificationService.showNotification(
+            `${product.name} added to cart successfully`
+          );
+        }
+      })
     );
-    this._store.dispatch(postCart({ products: product }));
   }
 
   ngOnDestroy() {

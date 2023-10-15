@@ -1,4 +1,3 @@
-import { Category } from './category.model';
 import { FieldValue } from '@angular/fire/firestore';
 import { Review } from './review.model';
 
@@ -8,7 +7,7 @@ export interface Product {
   price: number;
   productAttributes: Partial<ProductAttributes>;
   imageURLs?: string[];
-  category: Category;
+  categoryId: string;
   stockThreshold: number;
   description: string;
   rating: number;
