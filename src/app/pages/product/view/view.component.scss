@@ -23,41 +23,6 @@
     background-attachment: fixed;
   }
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
-
-body {
-  overflow-x: hidden;
-  background-color: #000;
-  margin: 0 auto;
-  * {
-    font-family: Arial, sans-serif;
-  }
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 0;
-  }
-  a {
-    color: #666;
-    text-decoration: none;
-  }
-  ul,
-  li {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-  }
-}
-
-.noScroll {
-  overflow: hidden !important;
-}
-
 .productCard {
   @include flex(column);
   width: 100%;
@@ -245,7 +210,7 @@ body {
         top: 150px;
         width: 90%;
         height: 200px;
-        font-size: 200px;
+        font-size: 100px;
         text-align: center;
         color: rgba(#fff, 0.2);
         text-transform: uppercase;
@@ -470,4 +435,24 @@ body {
       }
     }
   }
+}
+
+img {
+  display: none;
+  height: auto;
+}
+
+img.active {
+  display: block;
+}
+
+button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5em;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
