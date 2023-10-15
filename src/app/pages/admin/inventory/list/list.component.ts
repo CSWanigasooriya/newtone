@@ -14,6 +14,7 @@ import { Product } from './../../../../models/product.model';
 import { Sort } from '@angular/material/sort';
 import { User } from './../../../../models/user.model';
 import { map } from 'rxjs';
+import { Router } from '@angular/router';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -25,7 +26,7 @@ type TableData = Partial<User | undefined>;
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent {
-  isSmallScreen$ = this.breakpointHelper.isSmallScreen$.pipe(
+  isSmallScreen$ = this._breakpointHelper.isSmallScreen$.pipe(
     map((state) => state.matches)
   );
 
@@ -40,9 +41,10 @@ export class ListComponent {
   accordionData: AccordionData = {} as AccordionData;
 
   constructor(
-    private breakpointHelper: BreakPointHelper,
+    private _breakpointHelper: BreakPointHelper,
     private _collection: CollectionService,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private _router: Router
   ) {
     this.initializeTable();
 
@@ -91,7 +93,7 @@ export class ListComponent {
         color: 'primary',
         tooltip: 'Edit',
         action: (item) => {
-          this.onRowAction(this.tableRowActions[1], item);
+          this.onRowAction(this.tableRowActions[0], item);
         },
       },
       {
@@ -163,7 +165,7 @@ export class ListComponent {
 
   onRowAction(action: TableAction<Product>, item: Product = {} as Product) {
     if (action.id === 'edit') {
-      console.log('edit');
+      this._router.navigate(['admin', 'inventory', 'edit', item.pid]);
     } else if (action.id === 'delete') {
       this.openDeleteDialog(item);
     }
