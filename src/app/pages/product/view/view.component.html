@@ -29,6 +29,13 @@
         <div class="button">Add to cart</div>
         <div class="button colored">Buy now</div>
       </div>
+      <div class="product-description m-2">
+        <p>description : {{ product.description }}</p>
+        <p>colors available : {{ product.productAttributes?.color }}</p>
+        <p>size : {{ product.productAttributes?.size }}</p>
+        <p>stock : {{ product.stock }}</p>
+        <!-- <p>last updated on : {{ product.updatedAt }}</p> -->
+      </div>
     </div>
     <div class="colorLayer"></div>
     <div class="preview">

@@ -1,1 +1,188 @@
-<p>edit works!</p>
+<mat-stepper class="stepper" [orientation]="(stepperOrientation | async)!">
+  <mat-step [stepControl]="createProductForm" label="PRODUCT INFORMATION">
+    <form [formGroup]="createProductForm" class="m-2">
+      <mat-form-field>
+        <mat-label>PRODUCT NAME</mat-label>
+        <input
+          matInput
+          placeholder="PRODUCT NAME"
+          formControlName="name"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>PRODUCT PRICE</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="PRODUCT PRICE"
+          formControlName="price"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>STOCK AMOUNT</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="STOCK"
+          formControlName="stock"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>PRODUCT CATEGORY</mat-label>
+        <input
+          matInput
+          placeholder="CATEGORY"
+          formControlName="categoryId"
+          [matAutocomplete]="auto"
+          required
+        />
+      </mat-form-field>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onSelectionChanged($event)"
+      >
+        <mat-option
+          *ngFor="let category of filteredCategories | async"
+          [value]="category.title"
+          [id]="category.cid?.toString()!"
+        >
+          <span>{{ category.title }}</span> |
+          <small>Subcategories: {{ category.subCategories?.length }}</small>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-form-field>
+        <mat-label>PRODUCT DESCRIPTION</mat-label>
+        <textarea
+          matInput
+          placeholder="PRODUCT DESCRIPTION"
+          maxlength="200"
+          formControlName="description"
+          required
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>THRESHOLD</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="PRODUCT STOCK THRESHOLD"
+          formControlName="stockThreshold"
+          required
+        />
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="productImagesForm" label="PRODUCT IMAGES">
+    <button mat-raised-button (click)="addImage()" class="m-2">
+      ADD IMAGE URL
+    </button>
+    <form [formGroup]="productImagesForm" class="m-2">
+      <ng-container formArrayName="imageURLs">
+        <ng-container *ngFor="let imagesForm of getFormControls; let i = index">
+          <div [formGroup]="imagesForm">
+            <div class="row">
+              <div class="col s11">
+                <mat-form-field>
+                  <input
+                    matInput
+                    formControlName="url"
+                    placeholder="IMAGE URL"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col s1 items-center justify-center">
+                <button
+                  color="warn"
+                  class="mt-3"
+                  mat-icon-button
+                  (click)="deleteImage(i)"
+                >
+                  <mat-icon> delete_forever</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="productAttributesForm" label="PRODUCT ATTRIBUTES">
+    <form [formGroup]="productAttributesForm" class="m-2">
+      <mat-form-field>
+        <mat-label>SIZE</mat-label>
+        <input matInput formControlName="size" placeholder="LARGE" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>COLOR</mat-label>
+        <input matInput formControlName="color" placeholder="Red" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>BRAND</mat-label>
+        <input matInput formControlName="brand" placeholder="Yamaha" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>WEIGHT</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="weight"
+          placeholder="1KG"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>HEIGHT</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="height"
+          placeholder="5CM"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>WIDTH</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="width"
+          placeholder="10CM"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>LENGTH</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="length"
+          placeholder="10CM"
+          required
+        />
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>DONE</ng-template>
+    <button mat-raised-button color="primary" (click)="createProduct()">
+      ADD PRODUCT
+    </button>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+    </div>
+  </mat-step>
+</mat-stepper>

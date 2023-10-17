@@ -19,12 +19,12 @@ const routes: Routes = [
         path: 'create',
         component: CreateComponent,
       },
+      // {
+      //   path: 'edit',
+      //   component: EditComponent,
+      // },
       {
-        path: 'edit',
-        component: EditComponent,
-      },
-      {
-        path: 'edit/:id',
+        path: 'edit/:pid',
         component: EditComponent,
       },
       {

@@ -13,6 +13,7 @@ import { serverTimestamp } from '@angular/fire/firestore';
   providedIn: 'root',
 })
 export class ProductService {
+
   private productsCollection: AngularFirestoreCollection<Partial<Product>>;
   private categoriesCollection: AngularFirestoreCollection<Partial<Category>>;
 
