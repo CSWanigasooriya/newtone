@@ -139,7 +139,7 @@ export class EditComponent implements OnInit, OnDestroy {
     );
 
     this._collection
-      .updateProduct(this.productId,{
+      .updateProduct(this.productId, {
         name: productFormValue.name ?? '',
         price: Number(productFormValue.price) ?? 0,
         imageURLs: images ?? '',
@@ -170,7 +170,7 @@ export class EditComponent implements OnInit, OnDestroy {
     return this.productImages.controls as FormGroup[];
   }
 
-  addImage(urlValue: string = '') {
+  addImage(urlValue = '') {
     const images = this._formBuilder.group({
       url: [urlValue, Validators.required],
     });

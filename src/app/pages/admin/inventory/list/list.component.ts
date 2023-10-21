@@ -1,20 +1,20 @@
+import { Component, OnDestroy } from '@angular/core';
 import {
   PaginatorAction,
   TableAction,
   TableColumn,
 } from './../../../../shared/components/table/table.component';
+import { Subscription, map } from 'rxjs';
 
 import { AccordionData } from './../../../../shared/components/accordion/accordion.component';
 import { BreakPointHelper } from '../../../../core/helpers/breakpoint.helper';
 import { CollectionService } from './../../../../services/collection.service';
-import { Component } from '@angular/core';
 import { DialogComponent } from './../../../../shared/components/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Product } from './../../../../models/product.model';
+import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { User } from './../../../../models/user.model';
-import { map } from 'rxjs';
-import { Router } from '@angular/router';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -25,7 +25,7 @@ type TableData = Partial<User | undefined>;
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class ListComponent {
+export class ListComponent implements OnDestroy {
   isSmallScreen$ = this._breakpointHelper.isSmallScreen$.pipe(
     map((state) => state.matches)
   );
@@ -40,6 +40,7 @@ export class ListComponent {
 
   accordionData: AccordionData = {} as AccordionData;
 
+  private _subscriptions = new Subscription();
   constructor(
     private _breakpointHelper: BreakPointHelper,
     private _collection: CollectionService,
@@ -48,23 +49,25 @@ export class ListComponent {
   ) {
     this.initializeTable();
 
-    this._collection.getProducts().subscribe((products) => {
-      this.tableData = products as TableData[];
+    this._subscriptions.add(
+      this._collection.getProducts().subscribe((products) => {
+        this.tableData = products as TableData[];
 
-      this.accordionData = {
-        key: 'uid',
-        content: this.tableData,
-        actions: [
-          {
-            text: 'edit',
-            icon: 'edit',
-            event: () => {
-              console.log('edited');
+        this.accordionData = {
+          key: 'uid',
+          content: this.tableData,
+          actions: [
+            {
+              text: 'edit',
+              icon: 'edit',
+              event: () => {
+                console.log('edited');
+              },
             },
-          },
-        ],
-      };
-    });
+          ],
+        };
+      })
+    );
   }
 
   private initializeTable(): void {
@@ -194,5 +197,9 @@ export class ListComponent {
         ],
       },
     });
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.unsubscribe();
   }
 }

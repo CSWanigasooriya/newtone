@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
+import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, map, startWith } from 'rxjs';
 import {
@@ -11,7 +12,6 @@ import {
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Category } from './../../../../models/category.model';
 import { CollectionService } from '../../../../services/collection.service';
-import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { StepperOrientation } from '@angular/cdk/stepper';
 
@@ -20,7 +20,7 @@ import { StepperOrientation } from '@angular/cdk/stepper';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent {
+export class CreateComponent implements OnDestroy {
   filteredCategories!: Observable<Partial<Category>[]>;
   categories$ = this._collection.getCategories();
   selectedCategoryId!: string;
@@ -152,5 +152,9 @@ export class CreateComponent {
     return categories.filter((category) =>
       category?.title?.toLowerCase().includes(filterValue)
     );
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.unsubscribe();
   }
 }

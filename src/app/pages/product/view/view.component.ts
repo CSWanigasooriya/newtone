@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, switchMap } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
@@ -11,7 +11,7 @@ import { Product } from '../../../models/product.model';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss'],
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent implements OnInit, OnDestroy {
   activeIndex = 0;
   images: string[] = [];
   product$!: Observable<Partial<Product> | undefined>;
@@ -55,5 +55,9 @@ export class ViewComponent implements OnInit {
   prevSlide(): void {
     this.activeIndex =
       (this.activeIndex - 1 + this.images.length) % this.images.length;
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.unsubscribe();
   }
 }
