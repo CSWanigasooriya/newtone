@@ -11,9 +11,13 @@
         <div class="attrib size">
           <p class="header">Select Option</p>
           <div class="options">
-            <div class="option" *ngFor="let option of category.subCategories">
-              {{ option.name }}
-            </div>
+            <mat-button-toggle-group>
+              <mat-button-toggle
+                [value]="option.name"
+                *ngFor="let option of category.subCategories"
+                >{{ option.name }}</mat-button-toggle
+              >
+            </mat-button-toggle-group>
           </div>
         </div>
         <div class="attrib color">
@@ -53,34 +57,30 @@
 <!-- product details -->
 <section class="mat-app-background" *ngIf="product$ | async as product">
   <div class="container">
-    <div class=" bg-opacity-25 rounded-lg p-6">
+    <div class="rounded-lg p-6">
       <div class="flex">
         <div class="w-full pt-4">
           <div>
-            <h2 class="font-bold text-2xl m-2">Product Details</h2>
+            <h2 class="font-bold text-2xl ml-6 uppercase">Product Details</h2>
 
-            <div class="overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="h-full w-full overflow-scroll">
               <table
-                class="w-full text-left"
+                class="w-full min-w-max table-auto text-left border-2 border-white"
               >
                 <tbody>
-                  <tr
-                    class="border-b "
-                  >
+                  <tr class="border-b">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium whitespace-nowrap"
+                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
                     >
                       Description
                     </th>
                     <td class="px-6 py-4">{{ product.description }}</td>
                   </tr>
-                  <tr
-                    class="border-b"
-                  >
+                  <tr class="border-b">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium  whitespace-nowrap "
+                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
                     >
                       Colors Available
                     </th>
@@ -88,12 +88,10 @@
                       {{ product.productAttributes?.color }}
                     </td>
                   </tr>
-                  <tr
-                    class=" border-b"
-                  >
+                  <tr class="border-b">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium  whitespace-nowrap "
+                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
                     >
                       Size
                     </th>
@@ -101,12 +99,10 @@
                       {{ product.productAttributes?.size }}
                     </td>
                   </tr>
-                  <tr
-                    class="border-b"
-                  >
+                  <tr class="border-b">
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium"
+                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
                     >
                       Stocks Available
                     </th>
