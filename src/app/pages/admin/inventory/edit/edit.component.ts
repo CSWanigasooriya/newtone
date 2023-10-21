@@ -21,6 +21,7 @@ import { StepperOrientation } from '@angular/cdk/stepper';
   styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, OnDestroy {
+  productId!: string;
   product$!: Observable<Partial<Product> | undefined>;
 
   filteredCategories!: Observable<Partial<Category>[]>;
@@ -85,8 +86,8 @@ export class EditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.product$ = this._activatedRoute.paramMap.pipe(
       switchMap((params) => {
-        const productId = String(params.get('pid'));
-        return this._collection.getProduct(productId);
+        this.productId = String(params.get('pid'));
+        return this._collection.getProduct(this.productId);
       })
     );
 
@@ -97,7 +98,7 @@ export class EditComponent implements OnInit, OnDestroy {
           price: product?.price,
           description: product?.description,
           stock: product?.stock,
-          categoryId: product?.categoryId,
+          // categoryId: product?.categoryId,
           stockThreshold: product?.stockThreshold,
         });
         this.deleteImage(0);
@@ -138,9 +139,9 @@ export class EditComponent implements OnInit, OnDestroy {
     );
 
     this._collection
-      .updateProduct({
+      .updateProduct(this.productId,{
         name: productFormValue.name ?? '',
-        price: productFormValue.price ?? 0,
+        price: Number(productFormValue.price) ?? 0,
         imageURLs: images ?? '',
         categoryId: this.selectedCategoryId ?? '',
         description: productFormValue.description ?? '',
@@ -149,6 +150,10 @@ export class EditComponent implements OnInit, OnDestroy {
           size: productAttributesValue.size ?? Size.UNKNOWN,
           color: productAttributesValue.color ?? '',
           brand: productAttributesValue.brand ?? '',
+          weight: Number(productAttributesValue.weight) ?? 0,
+          height: Number(productAttributesValue.height) ?? 0,
+          width: Number(productAttributesValue.width) ?? 0,
+          length: Number(productAttributesValue.length) ?? 0,
         },
         stockThreshold: Number(productFormValue.stockThreshold) ?? 0,
       })

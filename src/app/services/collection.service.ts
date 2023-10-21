@@ -22,7 +22,7 @@ export class CollectionService {
   }
 
   getProducts() {
-    return this._productService.getProducts(10);
+    return this._productService.getProducts(100);
   }
 
   getCategories() {
@@ -37,8 +37,12 @@ export class CollectionService {
     return this._productService.getProduct(pid);
   }
 
-  updateProduct(product: Partial<Product>) {
-    return this._productService.updateProduct(product);
+  updateProduct(pid: string ,product: Partial<Product>) {
+    return this._productService.updateProduct(pid, product);
+  }
+
+  createProduct(product: Partial<Product>) {
+    return this._productService.createProduct(product);
   }
 
   deleteProduct(pid: string) {
