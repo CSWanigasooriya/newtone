@@ -58,12 +58,15 @@ export class LayoutComponent implements OnDestroy {
         this.cartSize = cart.products.length;
       })
     );
-    this.products$.subscribe((products) => {
-      this.filteredProducts = this.searchControl.valueChanges.pipe(
-        startWith(''),
-        map((value) => this._filter(value || '', products))
-      );
-    });
+
+    this._subscriptions.add(
+      this.products$.subscribe((products) => {
+        this.filteredProducts = this.searchControl.valueChanges.pipe(
+          startWith(''),
+          map((value) => this._filter(value || '', products))
+        );
+      })
+    );
 
     this.theme$ = _store.select('theme');
 

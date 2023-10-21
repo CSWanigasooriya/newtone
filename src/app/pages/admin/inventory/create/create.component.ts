@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, Subscription, map, startWith } from 'rxjs';
 import {
   Product,
   ProductAttributes,
@@ -54,6 +54,8 @@ export class CreateComponent {
 
   stepperOrientation: Observable<StepperOrientation>;
 
+  private _subscriptions = new Subscription();
+
   constructor(
     breakpointObserver: BreakpointObserver,
     private _formBuilder: FormBuilder,
@@ -64,14 +66,16 @@ export class CreateComponent {
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
 
-    this.categories$.subscribe((category) => {
-      this.filteredCategories = this.createProductForm
-        .get('categoryId')!
-        .valueChanges.pipe(
-          startWith(''),
-          map((value: string) => this._filter(value || '', category))
-        );
-    });
+    this._subscriptions.add(
+      this.categories$.subscribe((category) => {
+        this.filteredCategories = this.createProductForm
+          .get('categoryId')!
+          .valueChanges.pipe(
+            startWith(''),
+            map((value: string) => this._filter(value || '', category))
+          );
+      })
+    );
   }
 
   onSelectionChanged(event: { option: { id: unknown; value: unknown } }) {

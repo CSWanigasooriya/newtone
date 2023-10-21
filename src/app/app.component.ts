@@ -42,18 +42,20 @@ export class AppComponent implements OnDestroy {
     this.count$ = _store.select('count');
     this.theme$ = _store.select('theme');
 
-    this._router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.loading = true;
-      }
-      if (
-        event instanceof NavigationEnd ||
-        event instanceof NavigationCancel ||
-        event instanceof NavigationError
-      ) {
-        this.loading = false;
-      }
-    });
+    this._subscriptions.add(
+      this._router.events.subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          this.loading = true;
+        }
+        if (
+          event instanceof NavigationEnd ||
+          event instanceof NavigationCancel ||
+          event instanceof NavigationError
+        ) {
+          this.loading = false;
+        }
+      })
+    );
 
     this._iconRegistry.setDefaultFontSetClass('material-icons-outlined');
     this._overlayContainer.getContainerElement().classList.add('dark-theme');

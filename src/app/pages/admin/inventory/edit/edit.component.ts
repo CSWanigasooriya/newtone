@@ -67,15 +67,16 @@ export class EditComponent implements OnInit, OnDestroy {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
-
-    this.categories$.subscribe((category) => {
-      this.filteredCategories = this.createProductForm
-        .get('categoryId')!
-        .valueChanges.pipe(
-          startWith(''),
-          map((value: string) => this._filter(value || '', category))
-        );
-    });
+    this._subscriptions.add(
+      this.categories$.subscribe((category) => {
+        this.filteredCategories = this.createProductForm
+          .get('categoryId')!
+          .valueChanges.pipe(
+            startWith(''),
+            map((value: string) => this._filter(value || '', category))
+          );
+      })
+    );
   }
   ngOnDestroy(): void {
     this._subscriptions.unsubscribe();
@@ -100,7 +101,7 @@ export class EditComponent implements OnInit, OnDestroy {
           stockThreshold: product?.stockThreshold,
         });
         this.deleteImage(0);
-        product?.imageURLs?.map(Image=> this.addImage(Image))
+        product?.imageURLs?.map((Image) => this.addImage(Image));
         this.productAttributesForm.patchValue({
           size: product?.productAttributes?.size,
           color: product?.productAttributes?.color,
