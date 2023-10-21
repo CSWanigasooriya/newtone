@@ -26,7 +26,7 @@ export class ProductComponent implements OnDestroy {
 
   hidePageSize = false;
   showPageSizeOptions = true;
-  showFirstLastButtons = true;
+  showFirstLastButtons = false;
   disabled = false;
 
   pageEvent: PageEvent = new PageEvent();
