@@ -35,13 +35,23 @@ export class ProductService {
       .valueChanges();
   }
 
-  async updateProduct(product: Partial<Product>) {
+  async createProduct(product: Partial<Product>) {
     const id = this.afs.createId();
     return await this.productsCollection.doc(id).set(
       {
         ...product,
         updatedAt: serverTimestamp(),
         pid: id,
+      },
+      { merge: true }
+    );
+  }
+
+  async updateProduct(pid: string, product: Partial<Product>) {
+    return await this.productsCollection.doc(pid).set(
+      {
+        ...product,
+        updatedAt: serverTimestamp(),
       },
       { merge: true }
     );
@@ -60,9 +70,9 @@ export class ProductService {
     return await batch.commit();
   }
 
-  async createProduct(product: Partial<Product>) {
-    return await this.productsCollection.doc(product.pid).set(product);
-  }
+  // async createProduct(product: Partial<Product>) {
+  //   return await this.productsCollection.doc(product.pid).set(product);
+  // }
 
   getCategories() {
     return this.categoriesCollection.valueChanges();

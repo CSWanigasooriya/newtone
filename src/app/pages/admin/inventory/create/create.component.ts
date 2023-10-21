@@ -97,9 +97,9 @@ export class CreateComponent {
     );
 
     this._collection
-      .updateProduct({
+      .createProduct({
         name: productFormValue.name ?? '',
-        price: productFormValue.price ?? 0,
+        price: Number(productFormValue.price) ?? 0,
         imageURLs: images ?? '',
         categoryId: this.selectedCategoryId ?? '',
         description: productFormValue.description ?? '',
@@ -108,6 +108,10 @@ export class CreateComponent {
           size: productAttributesValue.size ?? Size.UNKNOWN,
           color: productAttributesValue.color ?? '',
           brand: productAttributesValue.brand ?? '',
+          weight: Number(productAttributesValue.weight) ?? 0,
+          height: Number(productAttributesValue.height) ?? 0,
+          width: Number(productAttributesValue.width) ?? 0,
+          length: Number(productAttributesValue.length) ?? 0,
         },
         stockThreshold: Number(productFormValue.stockThreshold) ?? 0,
       })
