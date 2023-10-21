@@ -13,7 +13,6 @@ import { serverTimestamp } from '@angular/fire/firestore';
   providedIn: 'root',
 })
 export class ProductService {
-
   private productsCollection: AngularFirestoreCollection<Partial<Product>>;
   private categoriesCollection: AngularFirestoreCollection<Partial<Category>>;
 
@@ -27,10 +26,10 @@ export class ProductService {
     return this.productsCollection.doc<Partial<Product>>(pid).valueChanges();
   }
 
-  getProducts(limit: number) {
+  getProducts() {
     return this.afs
       .collection<Partial<Product>>('product', (ref) =>
-        ref.orderBy('updatedAt').limit(limit)
+        ref.orderBy('updatedAt')
       )
       .valueChanges();
   }

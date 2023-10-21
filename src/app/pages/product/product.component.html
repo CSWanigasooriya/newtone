@@ -82,7 +82,7 @@
       (optionSelected)="onSelectionChanged($event)"
     >
       <mat-option
-        *ngFor="let product of filteredProducts | async"
+        *ngFor="let product of filteredProducts$ | async"
         [value]="product.name"
         [id]="product.pid?.toString()!"
       >
@@ -92,7 +92,7 @@
     </mat-autocomplete>
     <mat-divider></mat-divider>
     <div class="row">
-      <ng-container *ngFor="let item of filteredProducts | async">
+      <ng-container *ngFor="let item of filteredProducts$ | async">
         <div class="col s12 m6 l3 mb-2 mt-2" *ngIf="item.pid">
           <newtone-item
             [product]="item"
@@ -101,5 +101,18 @@
         </div>
       </ng-container>
     </div>
+
+    <mat-paginator
+      #paginator
+      (page)="handlePageEvent($event)"
+      [length]="length"
+      [pageSize]="pageSize"
+      [disabled]="disabled"
+      [showFirstLastButtons]="showFirstLastButtons"
+      [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+      [hidePageSize]="hidePageSize"
+      [pageIndex]="pageIndex"
+    >
+    </mat-paginator>
   </div>
 </div>
