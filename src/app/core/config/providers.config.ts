@@ -26,6 +26,7 @@ import { CollectionService } from '../../services/collection.service';
 import { DialogTemplateService } from '../../shared/services/dialog-template.service';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { FilterByPipe } from './../../pipes/filter-by.pipe';
+import { FirestorePaginationService } from './../../services/firestore-pagination-service.service';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
 import { MAT_CHIPS_DEFAULT_OPTIONS } from '@angular/material/chips';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
@@ -107,6 +108,7 @@ export const PROVIDERS_CONFIG = [
   BreakPointHelper,
   FilterByPipe,
   CollectionService,
+  FirestorePaginationService,
   AuthService,
   UserService,
   ProductService,
