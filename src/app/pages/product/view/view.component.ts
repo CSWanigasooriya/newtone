@@ -2,9 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, switchMap } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
+import { Cart } from './../../../models/cart.model';
 import { Category } from './../../../models/category.model';
 import { CollectionService } from '../../../services/collection.service';
+import { NotificationService } from './../../../shared/services/notification.service';
 import { Product } from '../../../models/product.model';
+import { Store } from '@ngrx/store';
+import { postCart } from './../../../core/state/cart/cart.actions';
 
 @Component({
   selector: 'newtone-view',
@@ -22,8 +26,18 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private _collection: CollectionService
+    private _collection: CollectionService,
+    private _notificationService: NotificationService,
+    private _store: Store<{ cart: Cart }>,
   ) {}
+
+  handleAddToCart(product: Partial<Product>) {
+    if (product.categoryId === undefined || product.categoryId === null) return;
+    this._store.dispatch(postCart({ products: product }));
+    this._notificationService.showNotification(
+      `${product.name} added to cart successfully`
+    );
+  }
 
   ngOnInit() {
     this.showSlide(this.activeIndex);

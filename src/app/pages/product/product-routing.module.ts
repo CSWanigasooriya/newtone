@@ -7,16 +7,16 @@ import { ViewComponent } from './view/view.component';
 
 const routes: Routes = [
   {
+    path: 'checkout',
+    component: CheckoutComponent,
+  },
+  {
     path: '',
     component: ProductComponent,
   },
   {
     path: ':id',
     component: ViewComponent,
-  },
-  {
-    path: 'checkout',
-    component: CheckoutComponent,
   },
 ];
 
