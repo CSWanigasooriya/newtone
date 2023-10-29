@@ -1,0 +1,61 @@
+<!-- checkout.component.html -->
+<div class="p-4 shadow-lg container mat-app-background">
+  <h2 class="text-3xl font-semibold mb-4">Checkout</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="col s12 m6 l6 xl6">
+      <mat-form-field class="w-full">
+        <mat-label>Full Name</mat-label>
+        <input matInput [(ngModel)]="fullName" name="fullName" required />
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Email Address</mat-label>
+        <input matInput [(ngModel)]="email" name="email" required />
+      </mat-form-field>
+
+      <!-- Add other fields as needed for the left section -->
+    </div>
+
+    <div class="col s12 m6 l6 xl6">
+      <!-- Right section content -->
+      <mat-form-field class="w-full">
+        <mat-label>Phone Number</mat-label>
+        <input matInput [(ngModel)]="phoneNumber" name="phoneNumber" required />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <!-- Cart Items -->
+    <h3 class="text-xl font-semibold mb-2">Cart Items</h3>
+    <div *ngFor="let product of (cart$ | async)?.products">
+      <mat-card class="mb-2">
+        <mat-list>
+          <mat-list-item *ngFor="let variant of product.variants">
+            <div class="flex items-center justify-between">
+              <span class="flex-1">{{ variant.size }}</span>
+              <span class="flex-1 text-right">{{
+                variant.price | currency
+              }}</span>
+              <div class="flex-1 text-right">
+                <button mat-icon-button (click)="decrementQuantity(variant)">
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span class="quantity">{{ variant.quantity }}</span>
+                <button mat-icon-button (click)="incrementQuantity(variant)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button (click)="removeFromCart(variant)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </div>
+  </div>
+
+  <button mat-raised-button type="submit">Place Order</button>
+</div>

@@ -74,7 +74,7 @@
               >
                 <div
                   class="inline-block px-2"
-                  *ngIf="category.cid && category.title"
+                  *ngIf="category.categoryId && category.title"
                 >
                   <div
                     class="w-80 h-200 max-w-xs overflow-hidden border-2 shadow-sm border-gray-200 rounded-lg shadow-mdhover:shadow-xl transition-shadow duration-300 ease-in-out"
@@ -128,26 +128,11 @@
                             {{ category.source }}
                           </p>
                         </div>
-                        <div class="flex flex-row-reverse md:mt-2 lg:mt-0">
-                          <span
-                            class="z-0 ml-px inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#e0e5f26c] text-xs text-navy-700"
-                            >+{{ category.subCategories?.length }}</span
-                          >
-                        </div>
                       </div>
                       <div
                         class="flex items-center justify-between md:items-center lg:justify-between p-3"
                       >
-                        <div class="flex">
-                          <p class="!mb-0 text-sm font-bold text-brand-500">
-                            {{
-                              category.subCategories?.length
-                                ? category.subCategories?.length
-                                : '0'
-                            }}
-                            Sub Categories
-                          </p>
-                        </div>
+                        <div class="flex"></div>
                         <button mat-raised-button>VIEW</button>
                       </div>
                     </div>

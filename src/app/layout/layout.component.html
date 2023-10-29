@@ -66,10 +66,10 @@
                 <mat-option
                   *ngFor="let product of filteredProducts | async"
                   [value]="product.name"
-                  [id]="product.pid?.toString()!"
+                  [id]="product.productId?.toString()!"
                 >
                   <span>{{ product.name }}</span> |
-                  <small>Category: {{ product.categoryId }}</small>
+                  <small>Category: {{ product.category?.categoryId }}</small>
                 </mat-option>
               </mat-autocomplete>
             </form>

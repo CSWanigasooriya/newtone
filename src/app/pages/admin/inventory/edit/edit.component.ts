@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, map, startWith, switchMap } from 'rxjs';
 import {
   Product,
-  ProductAttributes,
+  ProductVariant,
   Size,
 } from './../../../../models/product.model';
 
@@ -22,37 +22,22 @@ import { StepperOrientation } from '@angular/cdk/stepper';
 })
 export class EditComponent implements OnInit, OnDestroy {
   productId!: string;
+  step = 0;
   product$!: Observable<Partial<Product> | undefined>;
-
   filteredCategories!: Observable<Partial<Category>[]>;
   categories$ = this._collection.getCategories();
-  selectedCategoryId!: string;
+  selectedCategory!: Partial<Category>;
 
   createProductForm: FormGroup = this._formBuilder.group({
     name: ['', Validators.required],
-    price: ['', Validators.required],
     description: ['', Validators.required],
-    stock: ['', Validators.required],
     categoryId: ['', Validators.required],
     stockThreshold: [10, Validators.required],
   });
 
-  productImagesForm: FormGroup = this._formBuilder.group({
-    imageURLs: this._formBuilder.array([
-      this._formBuilder.group({
-        url: ['', Validators.required],
-      }),
-    ]),
-  });
-
-  productAttributesForm: FormGroup = this._formBuilder.group({
-    size: ['', Validators.required],
-    color: ['', Validators.required],
-    brand: ['', Validators.required],
-    weight: ['', Validators.required],
-    height: ['', Validators.required],
-    width: ['', Validators.required],
-    length: ['', Validators.required],
+  // Initialize the product variants form
+  productVariantsForm: FormGroup = this._formBuilder.group({
+    variants: this._formBuilder.array([]), // Initialize an empty FormArray for variants
   });
 
   stepperOrientation: Observable<StepperOrientation>;
@@ -65,6 +50,8 @@ export class EditComponent implements OnInit, OnDestroy {
     private _collection: CollectionService,
     private _activatedRoute: ActivatedRoute
   ) {
+    this.initializeVariantsForm();
+
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
@@ -79,6 +66,27 @@ export class EditComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+  initializeVariantsForm() {
+    const variantsFormArray = this.productVariantsForm.get(
+      'variants'
+    ) as FormArray;
+
+    const variantFormGroup = this._formBuilder.group({
+      size: ['', Validators.required],
+      color: ['', Validators.required],
+      price: [0, Validators.required], // Initialize with a default value
+      weight: [0, Validators.required], // Initialize with a default value
+      height: [0, Validators.required], // Initialize with a default value
+      width: [0, Validators.required], // Initialize with a default value
+      length: [0, Validators.required], // Initialize with a default value
+      stock: [0, Validators.required], // Initialize with a default
+      image: ['', Validators.required],
+    });
+
+    variantsFormArray.push(variantFormGroup);
+  }
+
   ngOnDestroy(): void {
     this._subscriptions.unsubscribe();
   }
@@ -95,67 +103,63 @@ export class EditComponent implements OnInit, OnDestroy {
       this.product$.subscribe((product) => {
         this.createProductForm.patchValue({
           name: product?.name,
-          price: product?.price,
           description: product?.description,
-          stock: product?.stock,
-          // categoryId: product?.categoryId,
           stockThreshold: product?.stockThreshold,
+          categoryId: product?.category?.categoryId,
         });
-        this.deleteImage(0);
-        product?.imageURLs?.map((Image) => this.addImage(Image));
-        this.productAttributesForm.patchValue({
-          size: product?.productAttributes?.size,
-          color: product?.productAttributes?.color,
-          brand: product?.productAttributes?.brand,
-          weight: product?.productAttributes?.weight,
-          height: product?.productAttributes?.height,
-          width: product?.productAttributes?.width,
-          length: product?.productAttributes?.length,
+
+        this.productVariantsForm.patchValue({
+          variants: product?.variants,
         });
       })
     );
   }
 
   onSelectionChanged(event: { option: { id: unknown; value: unknown } }) {
-    const selectedValue = event.option.id;
-    this.selectedCategoryId = selectedValue as string;
+    const selectedValue = event.option.id as string;
+    this._subscriptions.add(
+      this._collection.getCategory(selectedValue).subscribe((cat) => {
+        this.selectedCategory = cat!;
+      })
+    );
   }
 
-  createProduct() {
-    if (
-      this.createProductForm.invalid ||
-      this.productImagesForm.invalid ||
-      this.productAttributesForm.invalid
-    )
+  updateProduct() {
+    if (this.createProductForm.invalid || this.productVariantsForm.invalid)
       return;
 
-    const productFormValue = this.createProductForm.value as Partial<Product>;
+    const productFormValue = this.createProductForm.value as {
+      name: string;
+      description: string;
+      categoryId: string;
+      stockThreshold: number;
+    };
 
-    const productAttributesValue = this.productAttributesForm
-      .value as Partial<ProductAttributes>;
-
-    const images = this.productImagesForm.value.imageURLs.map(
-      (image: { url: string }) => image.url
+    const variants = this.productVariantsForm.value.variants.map(
+      (variant: Partial<ProductVariant>) => {
+        return {
+          size: variant.size ?? Size.UNKNOWN,
+          color: variant.color ?? '',
+          price: Number(variant.price) ?? 0,
+          weight: Number(variant.weight) ?? 0,
+          height: Number(variant.height) ?? 0,
+          width: Number(variant.width) ?? 0,
+          length: Number(variant.length) ?? 0,
+          stock: Number(variant.stock) ?? 0,
+          image: variant.image ?? '',
+        };
+      }
     );
 
     this._collection
       .updateProduct(this.productId, {
         name: productFormValue.name ?? '',
-        price: Number(productFormValue.price) ?? 0,
-        imageURLs: images ?? '',
-        categoryId: this.selectedCategoryId ?? '',
         description: productFormValue.description ?? '',
-        stock: Number(productFormValue.stock) ?? 0,
-        productAttributes: {
-          size: productAttributesValue.size ?? Size.UNKNOWN,
-          color: productAttributesValue.color ?? '',
-          brand: productAttributesValue.brand ?? '',
-          weight: Number(productAttributesValue.weight) ?? 0,
-          height: Number(productAttributesValue.height) ?? 0,
-          width: Number(productAttributesValue.width) ?? 0,
-          length: Number(productAttributesValue.length) ?? 0,
-        },
         stockThreshold: Number(productFormValue.stockThreshold) ?? 0,
+        variants: variants,
+        category: this.selectedCategory ?? {
+          categoryId: productFormValue.categoryId ?? '',
+        },
       })
       .then(() => {
         this._router.navigate(['/admin/inventory']);
@@ -163,22 +167,15 @@ export class EditComponent implements OnInit, OnDestroy {
   }
 
   get productImages() {
-    return this.productImagesForm.get('imageURLs') as FormArray;
+    return this.productVariantsForm.get('images') as FormArray;
   }
 
-  get getFormControls() {
-    return this.productImages.controls as FormGroup[];
+  get productVariants() {
+    return this.productVariantsForm.get('variants') as FormArray;
   }
 
-  addImage(urlValue = '') {
-    const images = this._formBuilder.group({
-      url: [urlValue, Validators.required],
-    });
-    this.productImages.push(images);
-  }
-
-  deleteImage(index: number) {
-    this.productImages.removeAt(index);
+  get getProductVariantsFormControls() {
+    return this.productVariants.controls as FormGroup[];
   }
 
   private _filter(
@@ -190,5 +187,44 @@ export class EditComponent implements OnInit, OnDestroy {
     return categories.filter((category) =>
       category?.title?.toLowerCase().includes(filterValue)
     );
+  }
+
+  addVariant() {
+    const variantsFormArray = this.productVariantsForm.get(
+      'variants'
+    ) as FormArray;
+
+    const variantFormGroup = this._formBuilder.group({
+      size: ['', Validators.required],
+      color: ['', Validators.required],
+      price: [0, Validators.required], // Initialize with a default value
+      weight: [0, Validators.required], // Initialize with a default value
+      height: [0, Validators.required], // Initialize with a default value
+      width: [0, Validators.required], // Initialize with a default value
+      length: [0, Validators.required], // Initialize with a default value
+      stock: [0, Validators.required], // Initialize with a default
+      image: ['', Validators.required],
+    });
+
+    variantsFormArray.push(variantFormGroup);
+  }
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+
+  deleteVariant(index: number) {
+    const variantsFormArray = this.productVariantsForm.get(
+      'variants'
+    ) as FormArray;
+    variantsFormArray.removeAt(index);
   }
 }

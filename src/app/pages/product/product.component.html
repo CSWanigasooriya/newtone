@@ -84,16 +84,16 @@
       <mat-option
         *ngFor="let product of filteredProducts$ | async"
         [value]="product.name"
-        [id]="product.pid?.toString()!"
+        [id]="product.productId?.toString()!"
       >
         <span>{{ product.name }}</span> |
-        <small>Category: {{ product.categoryId }}</small>
+        <small>Category: {{ product.category?.title }}</small>
       </mat-option>
     </mat-autocomplete>
     <mat-divider></mat-divider>
     <div class="row">
       <ng-container *ngFor="let item of filteredProducts$ | async">
-        <div class="col s12 m6 l3 mb-2 mt-2" *ngIf="item.pid">
+        <div class="col s12 m6 l3 mb-2 mt-2" *ngIf="item.productId">
           <newtone-item
             [product]="item"
             (addToCart)="handleAddToCart($event)"

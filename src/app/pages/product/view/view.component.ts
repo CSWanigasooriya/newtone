@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, switchMap } from 'rxjs';
+import { Product, ProductVariant } from '../../../models/product.model';
 
 import { ActivatedRoute } from '@angular/router';
 import { Cart } from './../../../models/cart.model';
 import { Category } from './../../../models/category.model';
 import { CollectionService } from '../../../services/collection.service';
 import { NotificationService } from './../../../shared/services/notification.service';
-import { Product } from '../../../models/product.model';
 import { Store } from '@ngrx/store';
 import { postCart } from './../../../core/state/cart/cart.actions';
 
@@ -28,11 +28,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private _collection: CollectionService,
     private _notificationService: NotificationService,
-    private _store: Store<{ cart: Cart }>,
+    private _store: Store<{ cart: Cart }>
   ) {}
 
   handleAddToCart(product: Partial<Product>) {
-    if (product.categoryId === undefined || product.categoryId === null) return;
     this._store.dispatch(postCart({ products: product }));
     this._notificationService.showNotification(
       `${product.name} added to cart successfully`
@@ -51,9 +50,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._subscriptions.add(
       this.product$.subscribe((product) => {
         this.category$ = this._collection.getCategory(
-          product?.categoryId || '0'
+          product?.category?.categoryId || '0'
         );
-        this.images = product?.imageURLs || [];
+        this.images =
+          product?.variants?.map((variant) => variant.image || '') || [];
       })
     );
   }
@@ -69,6 +69,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   prevSlide(): void {
     this.activeIndex =
       (this.activeIndex - 1 + this.images.length) % this.images.length;
+  }
+
+  getMinStock(variants: Partial<ProductVariant>[] | undefined) {
+    return variants?.reduce((min, current) => {
+      if (current.stock !== undefined) {
+        return Math.min(min, current.stock);
+      }
+      return min;
+    }, Number.MAX_SAFE_INTEGER);
   }
 
   ngOnDestroy() {

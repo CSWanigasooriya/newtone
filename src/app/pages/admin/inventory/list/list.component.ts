@@ -14,11 +14,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { Product } from './../../../../models/product.model';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
-import { User } from './../../../../models/user.model';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-type TableData = Partial<User | undefined>;
+type TableData = Partial<
+  | {
+      productId: string;
+      name: string;
+      price: number;
+      stock: number;
+    }
+  | undefined
+>;
 
 @Component({
   selector: 'newtone-list',
@@ -51,10 +58,23 @@ export class ListComponent implements OnDestroy {
 
     this._subscriptions.add(
       this._collection.getProducts().subscribe((products) => {
-        this.tableData = products as TableData[];
+        this.tableData = products.map((product) => {
+          return {
+            productId: product.productId,
+            name: product.name,
+            price: product?.variants?.reduce(
+              (a, b) => Math.max(a, b.price || 0),
+              -Infinity
+            ),
+            stock: product?.variants?.reduce(
+              (a, b) => Math.max(a, b.stock || 0),
+              -Infinity
+            ),
+          };
+        }) as TableData[];
 
         this.accordionData = {
-          key: 'uid',
+          key: 'productId',
           content: this.tableData,
           actions: [
             {
@@ -140,7 +160,7 @@ export class ListComponent implements OnDestroy {
             text: 'Delete',
             action: () => {
               this._collection.deleteProducts(
-                selectedRows.map((row) => row.pid)
+                selectedRows.map((row) => row.productId)
               );
             },
             style: 'mat-stroked-button',
@@ -168,7 +188,7 @@ export class ListComponent implements OnDestroy {
 
   onRowAction(action: TableAction<Product>, item: Product = {} as Product) {
     if (action.id === 'edit') {
-      this._router.navigate(['admin', 'inventory', 'edit', item.pid]);
+      this._router.navigate(['admin', 'inventory', 'edit', item.productId]);
     } else if (action.id === 'delete') {
       this.openDeleteDialog(item);
     }
@@ -189,7 +209,7 @@ export class ListComponent implements OnDestroy {
           {
             text: 'Delete',
             action: () => {
-              this._collection.deleteProduct(item.pid);
+              this._collection.deleteProduct(item.productId);
             },
             style: 'mat-stroked-button',
             color: 'warn',

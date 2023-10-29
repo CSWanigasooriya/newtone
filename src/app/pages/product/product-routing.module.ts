@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { CheckoutComponent } from './checkout/checkout.component';
+import { CheckoutComponent } from '../checkout/checkout.component';
 import { NgModule } from '@angular/core';
 import { ProductComponent } from './product.component';
 import { ViewComponent } from './view/view.component';

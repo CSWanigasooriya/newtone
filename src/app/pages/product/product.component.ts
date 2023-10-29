@@ -121,7 +121,11 @@ export class ProductComponent implements OnDestroy {
   }
 
   handleAddToCart(product: Partial<Product>) {
-    if (product.categoryId === undefined || product.categoryId === null) return;
+    if (
+      product?.category?.categoryId === undefined ||
+      product?.category?.categoryId === null
+    )
+      return;
     this._store.dispatch(postCart({ products: product }));
     this._notificationService.showNotification(
       `${product.name} added to cart successfully`

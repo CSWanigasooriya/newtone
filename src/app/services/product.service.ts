@@ -40,7 +40,7 @@ export class ProductService {
       {
         ...product,
         updatedAt: serverTimestamp(),
-        pid: id,
+        productId: id,
       },
       { merge: true }
     );

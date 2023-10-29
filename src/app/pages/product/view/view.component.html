@@ -4,20 +4,14 @@
 >
   <div class="container">
     <div class="info">
-      <h3 class="name">{{ product.productAttributes?.brand }}</h3>
+      <h3 class="name">{{ product?.brand }}</h3>
       <h1 class="slogan">{{ product.name }}</h1>
-      <p class="price">{{ product.price | currency }}</p>
+      <p class="price">{{ product.variants?.[0]?.price | currency }}</p>
       <div class="attribs" *ngIf="category$ | async as category">
         <div class="attrib size">
           <p class="header">Select Option</p>
           <div class="options">
-            <mat-button-toggle-group>
-              <mat-button-toggle
-                [value]="option.name"
-                *ngFor="let option of category.subCategories"
-                >{{ option.name }}</mat-button-toggle
-              >
-            </mat-button-toggle-group>
+            <mat-button-toggle-group> </mat-button-toggle-group>
           </div>
         </div>
         <div class="attrib color">
@@ -30,7 +24,7 @@
         </div>
       </div>
       <div class="buttons">
-        <div class="button"  (click)="handleAddToCart(product)">Add to cart</div>
+        <div class="button" (click)="handleAddToCart(product)">Add to cart</div>
         <div class="button colored">Buy now</div>
       </div>
     </div>
@@ -40,9 +34,8 @@
       <div style="text-align: center">
         <div class="carousel-container">
           <img
-            *ngFor="let image of product?.imageURLs; let i = index"
-            [src]="image"
-            [class.active]="i === activeIndex"
+            *ngFor="let variant of product?.variants"
+            [src]="variant?.image"
           />
         </div>
       </div>
@@ -85,7 +78,7 @@
                       Colors Available
                     </th>
                     <td class="px-6 py-4">
-                      {{ product.productAttributes?.color }}
+                      {{ product.variants?.[0]?.color }}
                     </td>
                   </tr>
                   <tr class="border-b">
@@ -96,7 +89,7 @@
                       Size
                     </th>
                     <td class="px-6 py-4">
-                      {{ product.productAttributes?.size }}
+                      {{ product.variants?.[0]?.size }}
                     </td>
                   </tr>
                   <tr class="border-b">
@@ -106,7 +99,9 @@
                     >
                       Stocks Available
                     </th>
-                    <td class="px-6 py-4">{{ product.stock }}</td>
+                    <td class="px-6 py-4">
+                      {{ getMinStock(product.variants) }}
+                    </td>
                   </tr>
                   <!-- <tr
                   class="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"

@@ -26,7 +26,7 @@ export const _cartReducer = createReducer(
   }),
   on(PostsActions.removeItemFromCart, (state, action) => {
     const products = [...state.products];
-    const index = products.findIndex((x) => x.pid === action.product.pid);
+    const index = products.findIndex((x) => x.productId === action.product.productId);
     products.splice(index, 1);
 
     state = {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { APP_CONFIG, AppConfig } from './../../../core/config/app.config';
 
-import { Product } from '../../../models/product.model';
+import { Product, ProductVariant } from '../../../models/product.model';
 
 @Component({
   selector: 'newtone-item',
@@ -16,5 +16,14 @@ export class ItemComponent {
 
   handleAddToCart(product: Partial<Product>) {
     this.addToCart.emit(product as Product);
+  }
+
+  getMinStock(variants: Partial<ProductVariant>[] | undefined) {
+    return variants?.reduce((min, current) => {
+      if (current.stock !== undefined) {
+        return Math.min(min, current.stock);
+      }
+      return min;
+    }, Number.MAX_SAFE_INTEGER);
   }
 }

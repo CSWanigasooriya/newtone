@@ -36,7 +36,8 @@ export class SheetComponent implements OnDestroy {
     this._subscriptions.add(
       this.cart$.subscribe((cart) => {
         this.subTotal = cart.products.reduce(
-          (acc: number, product) => Number(acc) + Number(product.price || 0),
+          (acc: number, product) =>
+            Number(acc) + Number(product?.variants?.[0]?.price || 0),
           0
         );
       })
@@ -58,7 +59,7 @@ export class SheetComponent implements OnDestroy {
 
   deleteSelectedItems() {
     this.items?.selectedOptions.selected.map(async (item) => {
-      this.removeFromCart({ pid: item.value.key });
+      this.removeFromCart({ productId: item.value.key });
     });
   }
 
