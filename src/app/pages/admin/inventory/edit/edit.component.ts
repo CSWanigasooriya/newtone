@@ -50,8 +50,6 @@ export class EditComponent implements OnInit, OnDestroy {
     private _collection: CollectionService,
     private _activatedRoute: ActivatedRoute
   ) {
-    this.initializeVariantsForm();
-
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
@@ -67,26 +65,6 @@ export class EditComponent implements OnInit, OnDestroy {
     );
   }
 
-  initializeVariantsForm() {
-    const variantsFormArray = this.productVariantsForm.get(
-      'variants'
-    ) as FormArray;
-
-    const variantFormGroup = this._formBuilder.group({
-      size: ['', Validators.required],
-      color: ['', Validators.required],
-      price: [0, Validators.required], // Initialize with a default value
-      weight: [0, Validators.required], // Initialize with a default value
-      height: [0, Validators.required], // Initialize with a default value
-      width: [0, Validators.required], // Initialize with a default value
-      length: [0, Validators.required], // Initialize with a default value
-      stock: [0, Validators.required], // Initialize with a default
-      image: ['', Validators.required],
-    });
-
-    variantsFormArray.push(variantFormGroup);
-  }
-
   ngOnDestroy(): void {
     this._subscriptions.unsubscribe();
   }
@@ -99,6 +77,10 @@ export class EditComponent implements OnInit, OnDestroy {
       })
     );
 
+    const variantsFormArray = this.productVariantsForm.get(
+      'variants'
+    ) as FormArray;
+
     this._subscriptions.add(
       this.product$.subscribe((product) => {
         this.createProductForm.patchValue({
@@ -108,8 +90,20 @@ export class EditComponent implements OnInit, OnDestroy {
           categoryId: product?.category?.categoryId,
         });
 
-        this.productVariantsForm.patchValue({
-          variants: product?.variants,
+        product?.variants?.forEach((variant) => {
+          const variantFormGroup = this._formBuilder.group({
+            size: [variant.size ?? '', Validators.required],
+            color: [variant.color ?? '', Validators.required],
+            price: [variant.price ?? 0, Validators.required],
+            weight: [variant.weight ?? 0, Validators.required],
+            height: [variant.height ?? 0, Validators.required],
+            width: [variant.width ?? 0, Validators.required],
+            length: [variant.length ?? 0, Validators.required],
+            stock: [variant.stock ?? 0, Validators.required],
+            image: [variant.image ?? '', Validators.required],
+          });
+
+          variantsFormArray.push(variantFormGroup);
         });
       })
     );

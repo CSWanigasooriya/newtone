@@ -26,7 +26,7 @@ export class UserService {
   // }
 
   async updateUser(user: Partial<User> | null) {
-    return this.usersCollection.doc(user?.uid).set(
+    return this.usersCollection.doc(user?.userId).set(
       {
         ...user,
       },

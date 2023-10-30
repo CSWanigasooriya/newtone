@@ -18,7 +18,6 @@ export interface Product {
 
 export interface ProductVariant {
   variantId: string;
-  quantity: number;
   size: Size;
   color: string;
   weight: number;

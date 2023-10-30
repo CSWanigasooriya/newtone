@@ -1,13 +1,13 @@
-<mat-nav-list *ngIf="(cart$ | async)?.products as products" class="mb-2">
+<mat-nav-list *ngIf="(cart$ | async)?.items as products" class="mb-2">
   <h1 class="text-xl uppercase">Cart Items</h1>
 
   <mat-selection-list #items>
     <mat-list-option
-      *ngFor="let item of products | groupBy : 'pid'"
+      *ngFor="let item of products | groupBy : 'productId'"
       [value]="item"
     >
       <div matListItemTitle>
-        {{ item.value[0].name }} : {{ item.value.length }}
+        {{ item.value[0].product.name }} : {{ item.value.length }}
       </div>
     </mat-list-option>
   </mat-selection-list>

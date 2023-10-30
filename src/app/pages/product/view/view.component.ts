@@ -1,9 +1,9 @@
+import { Cart, CartItem } from './../../../models/cart.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, switchMap } from 'rxjs';
 import { Product, ProductVariant } from '../../../models/product.model';
 
 import { ActivatedRoute } from '@angular/router';
-import { Cart } from './../../../models/cart.model';
 import { Category } from './../../../models/category.model';
 import { CollectionService } from '../../../services/collection.service';
 import { NotificationService } from './../../../shared/services/notification.service';
@@ -17,6 +17,8 @@ import { postCart } from './../../../core/state/cart/cart.actions';
 })
 export class ViewComponent implements OnInit, OnDestroy {
   activeIndex = 0;
+  selectedColor = null;
+  selectedSize = null;
   images: string[] = [];
   product$!: Observable<Partial<Product> | undefined>;
   selectedId!: string | null | undefined;
@@ -32,7 +34,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {}
 
   handleAddToCart(product: Partial<Product>) {
-    this._store.dispatch(postCart({ products: product }));
+    const cartItem = {
+      product,
+    } as CartItem;
+    this._store.dispatch(postCart({ item: cartItem }));
     this._notificationService.showNotification(
       `${product.name} added to cart successfully`
     );
@@ -56,6 +61,13 @@ export class ViewComponent implements OnInit, OnDestroy {
           product?.variants?.map((variant) => variant.image || '') || [];
       })
     );
+  }
+
+  joinColorsAndSizes(
+    variants: Partial<ProductVariant>[] | undefined,
+    key: keyof ProductVariant
+  ): string {
+    return variants?.map((v) => v[key]).join(', ') || '';
   }
 
   showSlide(index: number): void {

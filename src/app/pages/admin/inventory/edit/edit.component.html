@@ -1,6 +1,6 @@
 <mat-stepper class="stepper" [orientation]="(stepperOrientation | async)!">
   <mat-step [stepControl]="createProductForm" label="PRODUCT INFORMATION">
-    <form [formGroup]="createProductForm">
+    <form [formGroup]="createProductForm" class="my-2">
       <mat-form-field>
         <mat-label>PRODUCT NAME</mat-label>
         <input
@@ -48,20 +48,23 @@
         <input
           matInput
           type="number"
-          placeholder="PRODUCT STOCK THRESHOLD"
+          placeholder="PRODUCT STOCK STOP SELL THRESHOLD"
           formControlName="stockThreshold"
           required
         />
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-raised-button matStepperNext>Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="productVariantsForm" label="PRODUCT VARIANTS">
-    <button mat-raised-button (click)="addVariant()">ADD VARIANT</button>
+    <button mat-raised-button (click)="addVariant()" color="primary">
+      <mat-icon>add</mat-icon>
+      ADD VARIANT
+    </button>
     <mat-accordion>
-      <form [formGroup]="productVariantsForm">
+      <form [formGroup]="productVariantsForm" class="my-2">
         <ng-container formArrayName="variants">
           <ng-container
             *ngFor="
@@ -183,7 +186,7 @@
               <mat-action-row>
                 <button
                   *ngIf="!isLast"
-                  mat-button
+                  mat-raised-button
                   color="primary"
                   (click)="nextStep()"
                 >
@@ -194,8 +197,8 @@
           </ng-container>
         </ng-container>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperPrevious>Back</button>
+          <button mat-raised-button matStepperNext>Next</button>
         </div>
       </form>
     </mat-accordion>
@@ -206,8 +209,5 @@
     <button mat-raised-button color="primary" (click)="updateProduct()">
       SAVE PRODUCT
     </button>
-    <div class="m-5">
-      <button mat-button matStepperPrevious>Back</button>
-    </div>
   </mat-step>
 </mat-stepper>

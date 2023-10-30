@@ -26,29 +26,42 @@
     </div>
   </div>
 
-  <div class="mb-4">
+  <div class="mb-4" *ngIf="(cart$ | async)?.items as products">
     <!-- Cart Items -->
     <h3 class="text-xl font-semibold mb-2">Cart Items</h3>
-    <div *ngFor="let product of (cart$ | async)?.products">
+    <div *ngFor="let item of products | groupBy : 'productId'">
       <mat-card class="mb-2">
         <mat-list>
-          <mat-list-item *ngFor="let variant of product.variants">
+          <mat-list-item
+            *ngFor="let variant of item.value[0].product?.variants"
+          >
             <div class="flex items-center justify-between">
+              <span class="flex-1">{{ item.value[0].product?.name }}</span>
               <span class="flex-1">{{ variant.size }}</span>
               <span class="flex-1 text-right">{{
                 variant.price | currency
               }}</span>
               <div class="flex-1 text-right">
-                <button mat-icon-button (click)="decrementQuantity(variant)">
-                  <mat-icon>remove</mat-icon>
-                </button>
-                <span class="quantity">{{ variant.quantity }}</span>
-                <button mat-icon-button (click)="incrementQuantity(variant)">
-                  <mat-icon>add</mat-icon>
-                </button>
-                <button mat-icon-button (click)="removeFromCart(variant)">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                <div class="flex items-center justify-end">
+                  <button
+                    mat-icon-button
+                    (click)="decrementQuantity(item.value[0].product)"
+                  >
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <span class="quantity"
+                    ><b>{{ item.value.length }}</b></span
+                  >
+                  <button
+                    mat-icon-button
+                    (click)="incrementQuantity(item.value[0].product)"
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                  <button mat-icon-button>
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
               </div>
             </div>
           </mat-list-item>
