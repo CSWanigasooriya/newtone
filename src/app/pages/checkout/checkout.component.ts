@@ -1,11 +1,11 @@
 import { Cart, CartItem } from './../../models/cart.model';
+import { Component, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import {
   postCart,
   removeItemFromCart,
 } from './../../core/state/cart/cart.actions';
 
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Product } from './../../models/product.model';
 import { Store } from '@ngrx/store';
 
@@ -14,17 +14,23 @@ import { Store } from '@ngrx/store';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnDestroy {
   shippingAddress = '';
   fullName = '';
   email = '';
   phoneNumber = '';
   paymentMethod = '';
+  cartItems: Partial<CartItem>[] = [];
 
   cart$: Observable<Cart> | undefined;
-
+  private _subscriptions = new Subscription();
   constructor(private _store: Store<{ cart: Cart }>) {
     this.cart$ = this._store.select('cart');
+    this._subscriptions.add(
+      this.cart$.subscribe((cart) => {
+        this.cartItems = cart.items;
+      })
+    );
   }
 
   onSubmit() {
@@ -56,5 +62,23 @@ export class CheckoutComponent {
       quantity: 1,
     } as CartItem;
     this._store.dispatch(postCart({ item: cartItem }));
+  }
+
+  calculateTotal(): number {
+    let total = 0;
+
+    for (const item of this.cartItems) {
+      if (item.product && item.product.variants) {
+        for (const variant of item.product.variants) {
+          total += Number(variant.price);
+        }
+      }
+    }
+
+    return total;
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.unsubscribe();
   }
 }

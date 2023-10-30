@@ -17,8 +17,9 @@ import { postCart } from './../../../core/state/cart/cart.actions';
 })
 export class ViewComponent implements OnInit, OnDestroy {
   activeIndex = 0;
-  selectedColor = null;
-  selectedSize = null;
+  selectedColor = '';
+  selectedSize = '';
+  loadedVariants: Partial<ProductVariant>[] = [];
   images: string[] = [];
   product$!: Observable<Partial<Product> | undefined>;
   selectedId!: string | null | undefined;
@@ -34,6 +35,18 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {}
 
   handleAddToCart(product: Partial<Product>) {
+    const variants = this.loadedVariants?.filter(
+      (variant) =>
+        variant.color === this.selectedColor &&
+        variant.size === this.selectedSize
+    );
+    product.variants = variants.map((variant, index) => {
+      return {
+        ...variant,
+        variantId: product.productId + index.toString(),
+      };
+    });
+
     const cartItem = {
       product,
     } as CartItem;
@@ -41,6 +54,22 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._notificationService.showNotification(
       `${product.name} added to cart successfully`
     );
+
+    this.reset(product);
+  }
+
+  onColorChange(product: Partial<Product>) {
+    const variants = product?.variants?.filter(
+      (variant) => variant.color === this.selectedColor
+    );
+    product.variants = variants;
+  }
+
+  onSizeChange(product: Partial<Product>) {
+    const variants = product?.variants?.filter(
+      (variant) => variant.size === this.selectedSize
+    );
+    product.variants = variants;
   }
 
   ngOnInit() {
@@ -54,6 +83,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
     this._subscriptions.add(
       this.product$.subscribe((product) => {
+        this.loadedVariants = product?.variants || [];
+
         this.category$ = this._collection.getCategory(
           product?.category?.categoryId || '0'
         );
@@ -68,6 +99,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     key: keyof ProductVariant
   ): string {
     return variants?.map((v) => v[key]).join(', ') || '';
+  }
+
+  reset(product: Partial<Product>) {
+    this.selectedColor = '';
+    this.selectedSize = '';
+    this.product$ = this._collection.getProduct(product.productId || '0');
   }
 
   showSlide(index: number): void {

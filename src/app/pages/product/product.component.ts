@@ -127,6 +127,14 @@ export class ProductComponent implements OnDestroy {
     )
       return;
 
+    if (product?.variants?.length !== 1) {
+      this._router.navigate(['/product', product?.productId]);
+      this._notificationService.showNotification(
+        'Please select a variant to add to cart'
+      );
+      return;
+    }
+
     const cartItem = {
       product,
       quantity: 1,

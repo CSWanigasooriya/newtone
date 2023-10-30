@@ -2,14 +2,19 @@
   <h1 class="text-xl uppercase">Cart Items</h1>
 
   <mat-selection-list #items>
-    <mat-list-option
-      *ngFor="let item of products | groupBy : 'productId'"
-      [value]="item"
-    >
-      <div matListItemTitle>
-        {{ item.value[0].product.name }} : {{ item.value.length }}
-      </div>
-    </mat-list-option>
+    <ng-container *ngFor="let item of products | groupBy : 'productId'">
+      <ng-container *ngFor="let val of item.value">
+        <mat-list-option
+          [value]="item"
+          *ngFor="let variant of val.product.variants | groupBy : 'variantId'"
+        >
+          <div matListItemTitle>
+            {{ val.product.name }} # {{ variant.value[0].size }} :
+            {{ val.product.variants.length }}
+          </div>
+        </mat-list-option>
+      </ng-container>
+    </ng-container>
   </mat-selection-list>
 
   <mat-divider></mat-divider>

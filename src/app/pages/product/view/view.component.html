@@ -6,12 +6,16 @@
         <h1 class="slogan">{{ product.name }}</h1>
         <p class="price mb-2">{{ product.variants?.[0]?.price | currency }}</p>
         <p class="text-sm">{{ product.description }}</p>
-        <p class="text-lg">{{ getMinStock(product.variants) }} IN STOCK</p>
-        <div class="flex justify-center mt-8">
-          <div class="col s6 p-1">
-            <mat-form-field class="w-full">
+        <p class="text-lg mt-2">{{ getMinStock(product.variants) }} IN STOCK</p>
+        <div class="flex md:justify-center lg:justify-start mt-8">
+          <div class="col s12 m6">
+            <mat-form-field>
               <mat-label>Select Color</mat-label>
-              <mat-select [(ngModel)]="selectedColor" name="colorToggle">
+              <mat-select
+                [(ngModel)]="selectedColor"
+                name="colorToggle"
+                (selectionChange)="onColorChange(product)"
+              >
                 <mat-option
                   *ngFor="let variant of product.variants"
                   [value]="variant.color"
@@ -21,10 +25,15 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col s6 p-1">
-            <mat-form-field class="w-full">
+          <span class="m-1"></span>
+          <div class="col s12 m6">
+            <mat-form-field>
               <mat-label>Select Size</mat-label>
-              <mat-select [(ngModel)]="selectedSize" name="sizeToggle">
+              <mat-select
+                [(ngModel)]="selectedSize"
+                name="sizeToggle"
+                (selectionChange)="onSizeChange(product)"
+              >
                 <mat-option
                   *ngFor="let variant of product.variants"
                   [value]="variant.size"
@@ -33,13 +42,22 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
+
+            <button
+              mat-icon-button
+              color="primary"
+              class="ml-1 sm:invisible md:visible"
+              (click)="reset(product)"
+              [matTooltip]="'Reset Selection'"
+            >
+              <mat-icon class="text-gray-500">restart_alt</mat-icon>
+            </button>
           </div>
         </div>
-
         <div
           class="buttons"
           [ngClass]="{
-            'disabled-item': selectedColor === null || selectedSize === null
+            'disabled-item': selectedColor === '' || selectedSize === ''
           }"
         >
           <div class="button" (click)="handleAddToCart(product)">
@@ -63,45 +81,6 @@
         <div class="movControls">
           <div class="movControl left" (click)="prevSlide()"></div>
           <div class="movControl right" (click)="nextSlide()"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section *ngIf="product$ | async as product">
-    <div class="container">
-      <div class="shadow-md p-4 md:p-6 lg:p-8">
-        <h2 class="font-bold text-2xl md:text-3xl xl:text-4xl uppercase mb-4">
-          Product Details
-        </h2>
-
-        <div class="overflow-x-auto">
-          <table class="w-full md:min-w-max table-auto text-left">
-            <tbody>
-              <tr class="border-b">
-                <th class="px-3 py-2 md:px-6 md:py-4 font-medium">
-                  Description
-                </th>
-                <td class="px-3 py-2 md:px-6 md:py-4">
-                  {{ product.description }}
-                </td>
-              </tr>
-              <tr class="border-b">
-                <th class="px-3 py-2 md:px-6 md:py-4 font-medium">
-                  Colors Available
-                </th>
-                <td class="px-3 py-2 md:px-6 md:py-4">
-                  {{ joinColorsAndSizes(product.variants, 'color') }}
-                </td>
-              </tr>
-              <tr class="border-b">
-                <th class="px-3 py-2 md:px-6 md:py-4 font-medium">Size</th>
-                <td class="px-3 py-2 md:px-6 md:py-4">
-                  {{ joinColorsAndSizes(product.variants, 'size') }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
