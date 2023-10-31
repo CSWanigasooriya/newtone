@@ -12,7 +12,7 @@ export class OrderService {
   private ordersCollection: AngularFirestoreCollection<Partial<Order>>;
 
   constructor(private afs: AngularFirestore) {
-    this.ordersCollection = this.afs.collection<Partial<Order>>('orders');
+    this.ordersCollection = this.afs.collection<Partial<Order>>('order');
   }
 
   getOrder(orderId: string): Observable<Partial<Order> | undefined> {
@@ -21,7 +21,7 @@ export class OrderService {
 
   getOrders() {
     return this.afs
-      .collection<Partial<Order>>('orders', (ref) =>
+      .collection<Partial<Order>>('order', (ref) =>
         ref.orderBy('orderDate')
       )
       .valueChanges();

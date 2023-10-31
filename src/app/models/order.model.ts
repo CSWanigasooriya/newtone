@@ -12,6 +12,10 @@ export interface Order {
   customerName: string;
   customerEmail: string;
   shippingAddress: string;
+  shippingCity: string;
+  shippingZipCode: string;
+  paymentMethod: 'credit_card' | 'cash_on_delivery' | 'paypal';
+  phoneNumber: string;
   orderStatus: OrderStatus;
 }
 
