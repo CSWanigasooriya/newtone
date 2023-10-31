@@ -110,8 +110,8 @@ export class LayoutComponent implements OnDestroy {
         badge: -1,
       },
       {
-        icon: 'account_circle',
-        tooltip: 'Account',
+        icon: 'logout',
+        tooltip: 'Logout',
         action: () => {
           this._auth.signOut();
         },

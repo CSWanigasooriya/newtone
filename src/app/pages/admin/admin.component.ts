@@ -1,3 +1,6 @@
+import { AuthService } from './../../services/auth.service';
+import { toggle } from './../../core/state/theme/theme.actions';
+
 import { MediaMatcher } from '@angular/cdk/layout';
 import {
   AfterViewInit,
@@ -19,6 +22,12 @@ import {
 } from './../../core/animation/side-bar.animations';
 import { APP_CONFIG, AppConfig } from './../../core/config/app.config';
 
+interface ToolbarIconButton {
+  icon: string;
+  tooltip: string;
+  action: () => void;
+}
+
 @Component({
   selector: 'newtone-admin',
   templateUrl: './admin.component.html',
@@ -36,6 +45,7 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
   theme$: Observable<boolean>;
   selected = 0;
   isEnlarge = true;
+  iconButtons: ToolbarIconButton[] = [];
 
   sideNavItems = [
     {
@@ -69,12 +79,34 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
     private _store: Store<{ count: number; theme: boolean; sidebar: boolean }>,
     @Optional() @Inject(APP_CONFIG) public config: AppConfig,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    media: MediaMatcher,
+    private _auth: AuthService
   ) {
     this.theme$ = this._store.select('theme');
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this._mobileQueryListener);
+
+    this.iconButtons = [
+      {
+        icon: 'dark_mode',
+        tooltip: 'Dark Mode',
+        action: () => {
+          this._toggleTheme();
+        },
+      },
+      {
+        icon: 'logout',
+        tooltip: 'Logout',
+        action: () => {
+          this._auth.signOut();
+        },
+      },
+    ];
+  }
+
+  private _toggleTheme() {
+    this._store.dispatch(toggle());
   }
 
   ngAfterViewInit(): void {

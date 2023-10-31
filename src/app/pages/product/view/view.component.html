@@ -28,20 +28,21 @@
         <div class="button colored">Buy now</div>
       </div>
     </div>
-    <div class="container"></div>
-    <div class="preview">
-      <h1 class="brand">NEWTONE</h1>
-      <div style="text-align: center">
-        <div class="carousel-container">
-          <img
-            *ngFor="let variant of product?.variants"
-            [src]="variant?.image"
-          />
+    <div class="container">
+      <div class="preview">
+        <h1 class="brand">NEWTONE</h1>
+        <div style="text-align: center">
+          <div class="carousel-container">
+            <img
+              *ngFor="let variant of product?.variants"
+              [src]="variant?.image"
+            />
+          </div>
         </div>
-      </div>
-      <div class="movControls">
-        <div class="movControl left" (click)="prevSlide()"></div>
-        <div class="movControl right" (click)="nextSlide()"></div>
+        <div class="movControls">
+          <div class="movControl left" (click)="prevSlide()"></div>
+          <div class="movControl right" (click)="nextSlide()"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -78,7 +79,7 @@
                       Colors Available
                     </th>
                     <td class="px-6 py-4">
-                      {{ product.variants?.[0]?.color }}
+                      {{ product.variants?.[0]?.color }}----//: image URL :{{ product.variants?.[0]?.image}}
                     </td>
                   </tr>
                   <tr class="border-b">
