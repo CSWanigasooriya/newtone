@@ -1,115 +1,125 @@
 <!-- checkout.component.html -->
 <div class="p-4 container mat-app-background">
   <div class="row">
-    <div class="col s12 m6 l6">
-      <mat-card>
-        <mat-card-header class="mb-2">
-          <mat-card-title>CUSTOMER DETAILS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-form-field class="w-full">
-            <mat-label>Full Name</mat-label>
-            <input matInput [(ngModel)]="fullName" name="fullName" required />
-          </mat-form-field>
+    <mat-card>
+      <mat-card-header class="mb-2">
+        <mat-card-title>CUSTOMER DETAILS</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="w-full">
+          <mat-label>Full Name</mat-label>
+          <input matInput [(ngModel)]="fullName" name="fullName" required />
+        </mat-form-field>
 
-          <mat-form-field class="w-full">
-            <mat-label>Email Address</mat-label>
-            <input matInput [(ngModel)]="email" name="email" required />
-          </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Email Address</mat-label>
+          <input matInput [(ngModel)]="email" name="email" required />
+        </mat-form-field>
 
-          <mat-form-field class="w-full">
-            <mat-label>Phone Number</mat-label>
-            <input
-              matInput
-              [(ngModel)]="phoneNumber"
-              name="phoneNumber"
-              required
-            />
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
+        <mat-form-field class="w-full">
+          <mat-label>Phone Number</mat-label>
+          <input
+            matInput
+            [(ngModel)]="phoneNumber"
+            name="phoneNumber"
+            required
+          />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
 
-      <!-- Shipping Address -->
-      <mat-card class="mt-4">
-        <mat-card-header class="mb-2">
-          <mat-card-title>SHIPPING ADDRESS</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-form-field class="w-full">
-            <mat-label>Address</mat-label>
-            <input
-              matInput
-              [(ngModel)]="shippingAddress"
-              name="shippingAddress"
-              required
-            />
-          </mat-form-field>
+    <!-- Shipping Address -->
+    <mat-card class="mt-4">
+      <mat-card-header class="mb-2">
+        <mat-card-title>SHIPPING ADDRESS</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="w-full">
+          <mat-label>Address</mat-label>
+          <input
+            matInput
+            [(ngModel)]="shippingAddress"
+            name="shippingAddress"
+            required
+          />
+        </mat-form-field>
 
-          <mat-form-field class="w-full">
-            <mat-label>City</mat-label>
-            <input
-              matInput
-              [(ngModel)]="shippingCity"
-              name="shippingCity"
-              required
-            />
-          </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>City</mat-label>
+          <input
+            matInput
+            [(ngModel)]="shippingCity"
+            name="shippingCity"
+            required
+          />
+        </mat-form-field>
 
-          <mat-form-field class="w-full">
-            <mat-label>Zip Code</mat-label>
-            <input
-              matInput
-              [(ngModel)]="shippingZipCode"
-              name="shippingZipCode"
-              required
-            />
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
+        <mat-form-field class="w-full">
+          <mat-label>Zip Code</mat-label>
+          <input
+            matInput
+            [(ngModel)]="shippingZipCode"
+            name="shippingZipCode"
+            required
+          />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
 
-      <!-- Payment Method -->
-      <mat-card class="mt-4">
-        <mat-card-header class="mb-2">
-          <mat-card-title>PAYMENT METHOD</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-button-toggle-group
-            [(ngModel)]="paymentMethod"
-            name="paymentMethodToggle"
-            class="mt-3"
-          >
-            <mat-button-toggle value="credit_card"
-              >Credit Card</mat-button-toggle
-            >
-            <mat-button-toggle value="paypal">PayPal</mat-button-toggle>
-            <!-- Add more payment method options as needed -->
-          </mat-button-toggle-group>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="col s12 m6" *ngIf="(cart$ | async)?.items as products">
+    <!-- Payment Method -->
+    <mat-card class="mt-4">
+      <mat-card-header class="mb-2">
+        <mat-card-title>PAYMENT METHOD</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-button-toggle-group
+          [(ngModel)]="paymentMethod"
+          name="paymentMethodToggle"
+          class="mt-3"
+        >
+          <mat-button-toggle value="credit_card">Credit Card</mat-button-toggle>
+          <mat-button-toggle value="paypal">PayPal</mat-button-toggle>
+          <!-- Add more payment method options as needed -->
+        </mat-button-toggle-group>
+      </mat-card-content>
+    </mat-card>
+    <div *ngIf="(cart$ | async)?.items as products">
       <!-- Cart Items -->
       <ng-container *ngIf="products.length > 0; else noItemsInCart">
         <div *ngFor="let item of products | groupBy : 'productId'">
-          <mat-card class="mb-2">
+          <mat-card class="mb-2 mt-4">
             <mat-card-header>
-              <mat-card-title class="text-xl uppercase font-bold text-gray-700 tracking-wide">
+              <mat-card-title
+                class="text-xl uppercase font-bold text-gray-700 tracking-wide"
+              >
                 Cart Items
               </mat-card-title>
             </mat-card-header>
             <mat-list>
               <ng-container *ngFor="let value of item.value; index as i">
-                <mat-list-item *ngFor="let variant of item.value[i].product?.variants">
+                <mat-list-item
+                  *ngFor="let variant of item.value[i].product?.variants"
+                >
                   <div class="flex items-center justify-between">
-                    <span class="flex-1 font-bold">{{ item.value[i].product?.name }}</span>
+                    <span class="flex-1 font-bold">{{
+                      item.value[i].product?.name
+                    }}</span>
                     <span class="flex-1">{{ variant.size }}</span>
-                    <span class="flex-1 text-right">{{ variant.price | currency }}</span>
+                    <span class="flex-1 text-right">{{
+                      variant.price | currency
+                    }}</span>
                     <div class="flex-1 text-right">
                       <div class="flex items-center justify-end">
-                        <button mat-icon-button (click)="decrementQuantity(item.value[i].product)">
+                        <button
+                          mat-icon-button
+                          (click)="decrementQuantity(item.value[i].product)"
+                        >
                           <mat-icon>remove</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="incrementQuantity(item.value[i].product)">
+                        <button
+                          mat-icon-button
+                          (click)="incrementQuantity(item.value[i].product)"
+                        >
                           <mat-icon>add</mat-icon>
                         </button>
                         <button mat-icon-button>
@@ -123,7 +133,11 @@
               </ng-container>
             </mat-list>
             <mat-card-actions>
-              <button mat-raised-button [disabled]="products.length === 0" color="accent">
+              <button
+                mat-raised-button
+                [disabled]="products.length === 0"
+                color="accent"
+              >
                 Total: {{ calculateTotal() | currency }}
               </button>
             </mat-card-actions>
@@ -131,10 +145,11 @@
         </div>
       </ng-container>
       <ng-template #noItemsInCart>
-        <p>Your cart is empty.</p>
+        <mat-card class="mb-2 mt-4">
+          <p>Your cart is empty.</p>
+        </mat-card>
       </ng-template>
     </div>
-    
   </div>
 
   <button mat-raised-button (click)="onSubmit()">Place Order</button>
