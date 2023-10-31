@@ -146,7 +146,13 @@
       </ng-container>
       <ng-template #noItemsInCart>
         <mat-card class="mb-2 mt-4">
-          <p>Your cart is empty.</p>
+          <mat-card-header>
+            <mat-card-title
+              class="text-xl uppercase font-bold text-gray-700 tracking-wide"
+            >
+              Your cart is empty.
+            </mat-card-title>
+          </mat-card-header>
         </mat-card>
       </ng-template>
     </div>
