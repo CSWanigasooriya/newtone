@@ -6,7 +6,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { removeItemFromCart } from './../../../core/state/cart/cart.actions';
-import { Cart } from './../../../models/cart.model';
+import { Cart, CartItem } from './../../../models/cart.model';
 import { Product } from './../../../models/product.model';
 import { MatSelectionList } from '@angular/material/list';
 
@@ -35,9 +35,9 @@ export class SheetComponent implements OnDestroy {
     this.cart$ = this._store.select('cart');
     this._subscriptions.add(
       this.cart$.subscribe((cart) => {
-        this.subTotal = cart.products.reduce(
+        this.subTotal = cart.items.reduce(
           (acc: number, product) =>
-            Number(acc) + Number(product?.variants?.[0]?.price || 0),
+            Number(acc) + Number(product?.product?.variants?.[0]?.price || 0),
           0
         );
       })
@@ -54,7 +54,10 @@ export class SheetComponent implements OnDestroy {
   }
 
   removeFromCart(product: Partial<Product>) {
-    this._store.dispatch(removeItemFromCart({ product: product }));
+    const cartItem = {
+      product,
+    } as CartItem;
+    this._store.dispatch(removeItemFromCart({ item: cartItem }));
   }
 
   deleteSelectedItems() {

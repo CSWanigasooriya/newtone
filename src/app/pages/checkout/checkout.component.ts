@@ -1,8 +1,12 @@
-import { Product, ProductVariant } from './../../models/product.model';
+import { Cart, CartItem } from './../../models/cart.model';
+import { Component, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import {
+  postCart,
+  removeItemFromCart,
+} from './../../core/state/cart/cart.actions';
 
-import { Cart } from './../../models/cart.model';
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Product } from './../../models/product.model';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -10,17 +14,23 @@ import { Store } from '@ngrx/store';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnDestroy {
   shippingAddress = '';
   fullName = '';
   email = '';
   phoneNumber = '';
   paymentMethod = '';
+  cartItems: Partial<CartItem>[] = [];
 
   cart$: Observable<Cart> | undefined;
-
+  private _subscriptions = new Subscription();
   constructor(private _store: Store<{ cart: Cart }>) {
     this.cart$ = this._store.select('cart');
+    this._subscriptions.add(
+      this.cart$.subscribe((cart) => {
+        this.cartItems = cart.items;
+      })
+    );
   }
 
   onSubmit() {
@@ -35,17 +45,40 @@ export class CheckoutComponent {
     // For example, make an HTTP request to submit the order.
   }
 
-  decrementQuantity(variant: Partial<ProductVariant>) {
+  decrementQuantity(product: Partial<Product>) {
     // Decrease the quantity of a variant
+    const cartItem = {
+      product,
+      quantity: 1,
+    } as CartItem;
+    this._store.dispatch(removeItemFromCart({ item: cartItem }));
   }
 
   // Increase the quantity of a variant
-  incrementQuantity(variant: Partial<ProductVariant>) {
+  incrementQuantity(product: Partial<Product>) {
     // Increase the quantity of a variant
+    const cartItem = {
+      product,
+      quantity: 1,
+    } as CartItem;
+    this._store.dispatch(postCart({ item: cartItem }));
   }
 
-  // Remove a variant from the cart
-  removeFromCart(variant: Partial<ProductVariant>) {
-    // Remove a variant from the cart
+  calculateTotal(): number {
+    let total = 0;
+
+    for (const item of this.cartItems) {
+      if (item.product && item.product.variants) {
+        for (const variant of item.product.variants) {
+          total += Number(variant.price);
+        }
+      }
+    }
+
+    return total;
+  }
+
+  ngOnDestroy() {
+    this._subscriptions.unsubscribe();
   }
 }

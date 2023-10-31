@@ -1,7 +1,7 @@
+import { Cart, CartItem } from './../../models/cart.model';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { Observable, Subscription, map, startWith } from 'rxjs';
 
-import { Cart } from './../../models/cart.model';
 import { CollectionService } from './../../services/collection.service';
 import { FirestorePaginationService } from './../../services/firestore-pagination-service.service';
 import { FormControl } from '@angular/forms';
@@ -126,7 +126,20 @@ export class ProductComponent implements OnDestroy {
       product?.category?.categoryId === null
     )
       return;
-    this._store.dispatch(postCart({ products: product }));
+
+    if (product?.variants?.length !== 1) {
+      this._router.navigate(['/product', product?.productId]);
+      this._notificationService.showNotification(
+        'Please select a variant to add to cart'
+      );
+      return;
+    }
+
+    const cartItem = {
+      product,
+      quantity: 1,
+    } as CartItem;
+    this._store.dispatch(postCart({ item: cartItem }));
     this._notificationService.showNotification(
       `${product.name} added to cart successfully`
     );

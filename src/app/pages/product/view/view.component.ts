@@ -1,9 +1,9 @@
+import { Cart, CartItem } from './../../../models/cart.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, switchMap } from 'rxjs';
 import { Product, ProductVariant } from '../../../models/product.model';
 
 import { ActivatedRoute } from '@angular/router';
-import { Cart } from './../../../models/cart.model';
 import { Category } from './../../../models/category.model';
 import { CollectionService } from '../../../services/collection.service';
 import { NotificationService } from './../../../shared/services/notification.service';
@@ -17,6 +17,9 @@ import { postCart } from './../../../core/state/cart/cart.actions';
 })
 export class ViewComponent implements OnInit, OnDestroy {
   activeIndex = 0;
+  selectedColor = '';
+  selectedSize = '';
+  loadedVariants: Partial<ProductVariant>[] = [];
   images: string[] = [];
   product$!: Observable<Partial<Product> | undefined>;
   selectedId!: string | null | undefined;
@@ -32,10 +35,41 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {}
 
   handleAddToCart(product: Partial<Product>) {
-    this._store.dispatch(postCart({ products: product }));
+    const variants = this.loadedVariants?.filter(
+      (variant) =>
+        variant.color === this.selectedColor &&
+        variant.size === this.selectedSize
+    );
+    product.variants = variants.map((variant, index) => {
+      return {
+        ...variant,
+        variantId: product.productId + index.toString(),
+      };
+    });
+
+    const cartItem = {
+      product,
+    } as CartItem;
+    this._store.dispatch(postCart({ item: cartItem }));
     this._notificationService.showNotification(
       `${product.name} added to cart successfully`
     );
+
+    this.reset(product);
+  }
+
+  onColorChange(product: Partial<Product>) {
+    const variants = product?.variants?.filter(
+      (variant) => variant.color === this.selectedColor
+    );
+    product.variants = variants;
+  }
+
+  onSizeChange(product: Partial<Product>) {
+    const variants = product?.variants?.filter(
+      (variant) => variant.size === this.selectedSize
+    );
+    product.variants = variants;
   }
 
   ngOnInit() {
@@ -49,6 +83,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
     this._subscriptions.add(
       this.product$.subscribe((product) => {
+        this.loadedVariants = product?.variants || [];
+
         this.category$ = this._collection.getCategory(
           product?.category?.categoryId || '0'
         );
@@ -56,6 +92,19 @@ export class ViewComponent implements OnInit, OnDestroy {
           product?.variants?.map((variant) => variant.image || '') || [];
       })
     );
+  }
+
+  joinColorsAndSizes(
+    variants: Partial<ProductVariant>[] | undefined,
+    key: keyof ProductVariant
+  ): string {
+    return variants?.map((v) => v[key]).join(', ') || '';
+  }
+
+  reset(product: Partial<Product>) {
+    this.selectedColor = '';
+    this.selectedSize = '';
+    this.product$ = this._collection.getProduct(product.productId || '0');
   }
 
   showSlide(index: number): void {

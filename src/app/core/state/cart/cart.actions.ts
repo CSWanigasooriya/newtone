@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Product } from '../../../models/product.model';
+import { CartItem } from './../../../models/cart.model';
 
 // product.action.ts
 
@@ -8,12 +8,12 @@ export const getCart = createAction('[Cart] Get Cart Items');
 
 export const postCart = createAction(
   '[Cart] Post Cart',
-  props<{ products: Partial<Product> }>()
+  props<{ item: Partial<CartItem> }>()
 );
 
 export const removeItemFromCart = createAction(
   '[Cart] Remove Item from Cart',
-  props<{ product: Partial<Product> }>()
+  props<{ item: Partial<CartItem> }>()
 );
 
 export const getCartFailure = createAction(

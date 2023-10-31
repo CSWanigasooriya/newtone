@@ -55,7 +55,7 @@ export class LayoutComponent implements OnDestroy {
 
     this._subscriptions.add(
       this.cart$.subscribe((cart) => {
-        this.cartSize = cart.products.length;
+        this.cartSize = cart.items.length;
       })
     );
 

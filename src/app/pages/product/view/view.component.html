@@ -1,41 +1,80 @@
-<section
-  class="productCard mat-app-background"
-  *ngIf="product$ | async as product"
->
-  <div class="container">
-    <div class="info">
-      <h3 class="name">{{ product?.brand }}</h3>
-      <h1 class="slogan">{{ product.name }}</h1>
-      <p class="price">{{ product.variants?.[0]?.price | currency }}</p>
-      <div class="attribs" *ngIf="category$ | async as category">
-        <div class="attrib size">
-          <p class="header">Select Option</p>
-          <div class="options">
-            <mat-button-toggle-group> </mat-button-toggle-group>
-          </div>
-        </div>
-        <div class="attrib color">
-          <p class="header">Select Color</p>
-          <div class="options">
-            <div class="option" style="color: #60aec1"></div>
-            <div class="option" style="color: #ef525e"></div>
-            <div class="option" style="color: #000000"></div>
-          </div>
-        </div>
-      </div>
-      <div class="buttons">
-        <div class="button" (click)="handleAddToCart(product)">Add to cart</div>
-        <div class="button colored">Buy now</div>
-      </div>
-    </div>
+<div class="mat-app-background">
+  <section class="productCard" *ngIf="product$ | async as product">
     <div class="container">
+      <div class="info">
+        <h3 class="name">{{ product?.brand }}</h3>
+        <h1 class="slogan">{{ product.name }}</h1>
+        <p class="price mb-2">{{ product.variants?.[0]?.price | currency }}</p>
+        <p class="text-sm">{{ product.description }}</p>
+        <p class="text-lg mt-2">{{ getMinStock(product.variants) }} IN STOCK</p>
+        <div class="flex md:justify-center lg:justify-start mt-8">
+          <div class="col s12 m6">
+            <mat-form-field>
+              <mat-label>Select Color</mat-label>
+              <mat-select
+                [(ngModel)]="selectedColor"
+                name="colorToggle"
+                (selectionChange)="onColorChange(product)"
+              >
+                <mat-option
+                  *ngFor="let variant of product.variants"
+                  [value]="variant.color"
+                >
+                  {{ variant.color }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <span class="m-1"></span>
+          <div class="col s12 m6">
+            <mat-form-field>
+              <mat-label>Select Size</mat-label>
+              <mat-select
+                [(ngModel)]="selectedSize"
+                name="sizeToggle"
+                (selectionChange)="onSizeChange(product)"
+              >
+                <mat-option
+                  *ngFor="let variant of product.variants"
+                  [value]="variant.size"
+                >
+                  {{ variant.size }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button
+              mat-icon-button
+              color="primary"
+              class="ml-1 sm:invisible md:visible"
+              (click)="reset(product)"
+              [matTooltip]="'Reset Selection'"
+            >
+              <mat-icon class="text-gray-500">restart_alt</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div
+          class="buttons"
+          [ngClass]="{
+            'disabled-item': selectedColor === '' || selectedSize === ''
+          }"
+        >
+          <div class="button" (click)="handleAddToCart(product)">
+            Add to cart
+          </div>
+          <div class="button colored">Buy now</div>
+        </div>
+      </div>
+      <div class="container"></div>
       <div class="preview">
         <h1 class="brand">NEWTONE</h1>
         <div style="text-align: center">
           <div class="carousel-container">
             <img
-              *ngFor="let variant of product?.variants"
+              *ngFor="let variant of product?.variants; let i = index"
               [src]="variant?.image"
+              [class.active]="i === activeIndex"
             />
           </div>
         </div>
@@ -45,82 +84,5 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- product details -->
-<section class="mat-app-background" *ngIf="product$ | async as product">
-  <div class="container">
-    <div class="rounded-lg p-6">
-      <div class="flex">
-        <div class="w-full pt-4">
-          <div>
-            <h2 class="font-bold text-2xl ml-6 uppercase">Product Details</h2>
-
-            <div class="h-full w-full overflow-scroll">
-              <table
-                class="w-full min-w-max table-auto text-left border-2 border-white"
-              >
-                <tbody>
-                  <tr class="border-b">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
-                    >
-                      Description
-                    </th>
-                    <td class="px-6 py-4">{{ product.description }}</td>
-                  </tr>
-                  <tr class="border-b">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
-                    >
-                      Colors Available
-                    </th>
-                    <td class="px-6 py-4">
-                      {{ product.variants?.[0]?.color }}----//: image URL :{{ product.variants?.[0]?.image}}
-                    </td>
-                  </tr>
-                  <tr class="border-b">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
-                    >
-                      Size
-                    </th>
-                    <td class="px-6 py-4">
-                      {{ product.variants?.[0]?.size }}
-                    </td>
-                  </tr>
-                  <tr class="border-b">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium whitespace-nowrap border-blue-gray-100 bg-blue-gray-50 p-4"
-                    >
-                      Stocks Available
-                    </th>
-                    <td class="px-6 py-4">
-                      {{ getMinStock(product.variants) }}
-                    </td>
-                  </tr>
-                  <!-- <tr
-                  class="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                  Last Updated
-                  </th>
-                  <td class="px-6 py-4"> {{ product.updatedAt }}</td>
-                </tr> -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+</div>

@@ -8,7 +8,7 @@ import { Cart } from '../../../models/cart.model';
 // product.reducer.ts
 
 export const initialState: Cart = {
-  products: [],
+  items: [],
 };
 
 export const _cartReducer = createReducer(
@@ -19,19 +19,21 @@ export const _cartReducer = createReducer(
   on(PostsActions.postCart, (state, action) => {
     state = {
       ...state,
-      products: [...state.products, action.products],
+      items: [...state.items, action.item],
     };
 
     return state;
   }),
   on(PostsActions.removeItemFromCart, (state, action) => {
-    const products = [...state.products];
-    const index = products.findIndex((x) => x.productId === action.product.productId);
-    products.splice(index, 1);
+    const items = [...state.items];
+    const index = items.findIndex(
+      (x) => x.product?.productId === action.item?.product?.productId
+    );
+    items.splice(index, 1);
 
     state = {
       ...state,
-      products: products,
+      items: items,
     };
 
     return state;

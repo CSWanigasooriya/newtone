@@ -75,7 +75,7 @@ export class AuthService {
 
       const user = {
         photoURL: credential.user?.photoURL ?? '',
-        uid: credential.user?.uid ?? '',
+        userId: credential.user?.uid ?? '',
         email: credential.user?.email ?? '',
         idToken: idToken ?? '',
         role: userRole ?? '',
@@ -107,7 +107,7 @@ export class AuthService {
 
       const user = {
         photoURL: credential.user?.photoURL ?? '',
-        uid: credential.user?.uid ?? '',
+        userId: credential.user?.uid ?? '',
         email: credential.user?.email ?? '',
         idToken: idToken ?? '',
       } as Partial<User> | null;
@@ -170,7 +170,7 @@ export class AuthService {
 
       const user = {
         photoURL: credential.user?.photoURL ?? '',
-        uid: credential.user?.uid ?? '',
+        userId: credential.user?.uid ?? '',
         email: credential.user?.email ?? '',
         idToken: idToken ?? '',
         role: userRole ?? '',
