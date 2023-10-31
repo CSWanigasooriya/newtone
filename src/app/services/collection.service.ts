@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Order } from './../models/order.model'; // Import the Order model
+import { OrderService } from './order.service'; // Import the OrderService
 import { Product } from './../models/product.model';
 import { ProductService } from './product.service';
 import { User } from './../models/user.model';
@@ -10,7 +12,8 @@ import { UserService } from './user.service';
 export class CollectionService {
   constructor(
     private _userService: UserService,
-    private _productService: ProductService
+    private _productService: ProductService,
+    private _orderService: OrderService // Inject the OrderService
   ) {}
 
   getUsers() {
@@ -53,30 +56,23 @@ export class CollectionService {
     return this._productService.deleteProducts(pids);
   }
 
-  // getFiles() {
-  //   return this.filesCollection.valueChanges()
-  // }
-  // async getNotifications(receiver: string) {
-  //   const notifications = await this.chatNotificationCollection.ref
-  //     .where('receiver', '==', receiver)
-  //     .get()
-  //   return notifications.docs.map((doc) => doc.data())
-  // }
-  // getReviews() {
-  //   return this.reviewsCollection.valueChanges()
-  // }
-  // async getAverageReviewScore(fileId: number) {
-  //   const reviews = await this.reviewsCollection.ref.where('id', '==', fileId).get()
-  //   const reviewCount = reviews.docs.length
-  //   const reviewScore = reviews.docs.reduce((acc, curr) => {
-  //     return acc + (curr.data().rating ? Number(curr.data().rating) : 0)
-  //   }, 0)
-  //   return reviewScore / reviewCount
-  // }
-  // async updateFile(file: Partial<FileContract>) {
-  //   return await this.filesCollection.doc().set(file, { merge: true })
-  // }
-  // async updateReview(review: Partial<ReviewContract>) {
-  //   return await this.reviewsCollection.doc().set(review, { merge: true })
-  // }
+  // Order service methods
+  getOrders() {
+    return this._orderService.getOrders();
+  }
+
+  createOrder(order: Partial<Order>) {
+    return this._orderService.createOrder(order);
+  }
+
+  updateOrder(orderId: string, order: Partial<Order>) {
+    return this._orderService.updateOrder(orderId, order);
+  }
+
+  deleteOrder(orderId: string) {
+    return this._orderService.deleteOrder(orderId);
+  }
+
+  // Add more order-related methods as needed
+
 }

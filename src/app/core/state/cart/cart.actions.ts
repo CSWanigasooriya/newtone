@@ -16,6 +16,10 @@ export const removeItemFromCart = createAction(
   props<{ item: Partial<CartItem> }>()
 );
 
+export const removeAllItemsFromCart = createAction(
+  '[Cart] Remove All Items from Cart'
+);
+
 export const getCartFailure = createAction(
   '[Cart] Get Cart failure',
   props<{ error: string }>()

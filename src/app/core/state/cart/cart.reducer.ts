@@ -24,6 +24,10 @@ export const _cartReducer = createReducer(
 
     return state;
   }),
+  on(PostsActions.removeAllItemsFromCart, (state) => ({
+    ...state,
+    items: [],
+  })),
   on(PostsActions.removeItemFromCart, (state, action) => {
     const items = [...state.items];
     const index = items.findIndex(
