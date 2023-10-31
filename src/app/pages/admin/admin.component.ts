@@ -59,6 +59,11 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
       link: '/admin/inventory',
     },
     {
+      icon: 'category',
+      text: 'Categories',
+      link: '/admin',
+    },
+    {
       icon: 'point_of_sale',
       text: 'Sales',
       link: '/admin/sales',
