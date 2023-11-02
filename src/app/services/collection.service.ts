@@ -1,3 +1,4 @@
+import { Category } from '../models/category.model';
 import { Injectable } from '@angular/core';
 import { Order } from './../models/order.model'; // Import the Order model
 import { OrderService } from './order.service'; // Import the OrderService
@@ -54,6 +55,22 @@ export class CollectionService {
 
   deleteProducts(pids: string[]) {
     return this._productService.deleteProducts(pids);
+  }
+
+  updateCategory(cid: string, category: Partial<Category>) {
+    return this._productService.updateCategory(cid, category);
+  }
+
+  createCategory(category: Partial<Category>) {
+    return this._productService.createCategory(category);
+  }
+
+  deleteCategory(cid: string) {
+    return this._productService.deleteCategory(cid);
+  }
+
+  deleteCategories(cids: string[]) {
+    return this._productService.deleteCategories(cids);
   }
 
   // Order service methods

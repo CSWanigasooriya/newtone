@@ -5,8 +5,8 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
-import { SharedModule } from './../../shared/shared.module';
 import { SalesComponent } from './sales/sales.component';
+import { SharedModule } from './../../shared/shared.module';
 
 @NgModule({
   declarations: [DashboardComponent, AdminComponent, SalesComponent],

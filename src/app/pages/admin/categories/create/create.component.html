@@ -1,0 +1,57 @@
+<mat-stepper class="stepper" [orientation]="(stepperOrientation | async)!">
+    <mat-step [stepControl]="createCategoryForm" label="CATEGORY INFORMATION">
+      <form [formGroup]="createCategoryForm" class="my-2">
+        <mat-form-field>
+          <mat-label>CATEGORY TITLE</mat-label>
+          <input
+            matInput
+            placeholder="CATEGORY TITLE"
+            formControlName="title"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>CATEGORY SOURCE</mat-label>
+          <input
+            matInput
+            placeholder="CATEGORY SOURCE"
+            formControlName="source"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>IMAGE URL</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="IMAGE URL"
+              formControlName="imageURL"
+              required
+            />
+          </mat-form-field>
+        <!-- <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onSelectionChanged($event)"
+        >
+          <mat-option
+            *ngFor="let category of filteredCategories | async"
+            [value]="category.title"
+            [id]="category?.categoryId?.toString()!"
+          >
+            <span>{{ category.title }}</span> |
+            <small>Category ID: {{ category.categoryId }}</small>
+          </mat-option>
+        </mat-autocomplete> -->
+        <div>
+          <button mat-raised-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>  
+    <mat-step>
+      <ng-template matStepLabel>DONE</ng-template>
+      <button mat-raised-button color="primary" (click)="createCategory()">
+        ADD CATEGORY
+      </button>
+    </mat-step>
+  </mat-stepper>
+  

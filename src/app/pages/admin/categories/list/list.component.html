@@ -1,0 +1,32 @@
+<button
+  mat-raised-button
+  class="mb-1"
+  [routerLink]="['/admin/categories/create']"
+>
+  <mat-icon>add</mat-icon>
+  ADD
+</button>
+
+<newtone-table
+  *ngIf="(isSmallScreen$ | async) === false"
+  [tableData]="tableData"
+  [tableColumns]="tableColumns"
+  [isPageable]="true"
+  [isSortable]="true"
+  [isFilterable]="true"
+  [rowActionButtons]="tableRowActions"
+  [paginationSizes]="[2, 4, 6, 10, 30]"
+  [defaultPageSize]="10"
+  [stickyHeader]="true"
+  [isSelectable]="true"
+  [paginatorActionButton]="tablePaginatorAction"
+  (sort)="sortData($event)"
+  (paginatorAction)="onPaginatorAction($event)"
+  (selectionChange)="onSelectionChange($event)"
+>
+</newtone-table>
+
+<newtone-accordion
+  [data]="accordionData"
+  *ngIf="(isSmallScreen$ | async) === true"
+></newtone-accordion>

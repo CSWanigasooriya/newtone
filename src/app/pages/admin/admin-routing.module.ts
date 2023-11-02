@@ -16,6 +16,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./inventory/inventory.module').then((m) => m.InventoryModule),  
       },
+      {
+        path: 'categories',
+        loadChildren: () =>
+          import('./categories/categories.module').then((m) => m.CategoriesModule),  
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'sales', component: SalesComponent },
     ],

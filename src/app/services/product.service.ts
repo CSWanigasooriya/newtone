@@ -3,7 +3,7 @@ import {
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
 
-import { Category } from '../models/category.model';
+import { Category } from './../models/category.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
@@ -79,5 +79,39 @@ export class ProductService {
 
   getCategory(cid: string) {
     return this.categoriesCollection.doc(cid).valueChanges();
+  }
+
+  
+  async createCategory(category: Partial<Category>) {
+    const id = this.afs.createId();
+    return await this.categoriesCollection.doc(id).set(
+      {
+        ...category,
+        categoryId: id,
+      },
+      { merge: true }
+    );
+  }
+
+  async updateCategory(cid: string, category: Partial<Category>) {
+    return await this.categoriesCollection.doc(cid).set(
+      {
+        ...category,
+      },
+      { merge: true }
+    );
+  }
+
+  async deleteCategory(cid: string) {
+    return await this.categoriesCollection.doc(cid).delete();
+  }
+
+  async deleteCategories(cids: string[]) {
+    const batch = this.afs.firestore.batch();
+    cids.forEach((cid) => {
+      const docRef = this.categoriesCollection.doc(cid).ref;
+      batch.delete(docRef);
+    });
+    return await batch.commit();
   }
 }
