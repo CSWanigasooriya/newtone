@@ -8,10 +8,10 @@ import { Subscription, map } from 'rxjs';
 
 import { AccordionData } from './../../../../shared/components/accordion/accordion.component';
 import { BreakPointHelper } from '../../../../core/helpers/breakpoint.helper';
+import { Category } from './../../../../models/category.model';
 import { CollectionService } from './../../../../services/collection.service';
 import { DialogComponent } from './../../../../shared/components/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Product } from './../../../../models/product.model';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 
@@ -19,10 +19,10 @@ import { Sort } from '@angular/material/sort';
 
 type TableData = Partial<
   | {
-      productId: string;
-      name: string;
-      price: number;
-      stock: number;
+      categoryId: string;
+      title: string;
+      source: string;
+      imageURL: string;
     }
   | undefined
 >;
@@ -39,7 +39,7 @@ export class ListComponent implements OnDestroy {
 
   tableData: TableData[] = [];
 
-  tableRowActions!: TableAction<Product>[];
+  tableRowActions!: TableAction<Category>[];
 
   tableColumns: TableColumn[] = [];
 
@@ -57,24 +57,18 @@ export class ListComponent implements OnDestroy {
     this.initializeTable();
 
     this._subscriptions.add(
-      this._collection.getProducts().subscribe((products) => {
-        this.tableData = products.map((product) => {
+      this._collection.getCategories().subscribe((categories) => {
+        this.tableData = categories.map((category) => {
           return {
-            productId: product.productId,
-            name: product.name,
-            price: product?.variants?.reduce(
-              (a, b) => Math.max(a, b.price || 0),
-              -Infinity
-            ),
-            stock: product?.variants?.reduce(
-              (a, b) => Math.max(a, b.stock || 0),
-              -Infinity
-            ),
+            categoryId: category.categoryId,
+            title: category.title,
+            source: category.source,
+            imageURL: category.imageURL,
           };
         }) as TableData[];
 
         this.accordionData = {
-          key: 'productId',
+          key: 'categoryId',
           content: this.tableData,
           actions: [
             {
@@ -93,19 +87,19 @@ export class ListComponent implements OnDestroy {
   private initializeTable(): void {
     this.tableColumns = [
       {
-        name: 'Product Name',
-        dataKey: 'name',
+        name: 'Category Title',
+        dataKey: 'title',
         isSortable: true,
       },
       {
-        name: 'Price',
-        dataKey: 'price',
+        name: 'Source',
+        dataKey: 'source',
         isSortable: true,
       },
       {
-        name: 'Stock',
-        dataKey: 'stock',
-        isSortable: true,
+        name: 'Image',
+        dataKey: 'imageURL',
+        isSortable: false,
       },
     ];
 
@@ -143,12 +137,12 @@ export class ListComponent implements OnDestroy {
     console.log(selectedRows);
   }
 
-  onPaginatorAction(selectedRows: Product[]) {
+  onPaginatorAction(selectedRows: Category[]) {
     if (!selectedRows.length) return;
     this._matDialog.open(DialogComponent, {
       data: {
         title: 'Delete',
-        subtitle: `Are you sure you want to delete ${selectedRows.length} products?`,
+        subtitle: `Are you sure you want to delete ${selectedRows.length} categories?`,
         description: 'This action cannot be undone.',
         actions: [
           {
@@ -159,8 +153,8 @@ export class ListComponent implements OnDestroy {
           {
             text: 'Delete',
             action: () => {
-              this._collection.deleteProducts(
-                selectedRows.map((row) => row.productId)
+              this._collection.deleteCategories(
+                selectedRows.map((row) => row.categoryId)
               );
             },
             style: 'mat-stroked-button',
@@ -186,19 +180,19 @@ export class ListComponent implements OnDestroy {
     }
   }
 
-  onRowAction(action: TableAction<Product>, item: Product = {} as Product) {
+  onRowAction(action: TableAction<Category>, item: Category = {} as Category) {
     if (action.id === 'edit') {
-      this._router.navigate(['admin', 'categories', 'edit', item.productId]);
+      this._router.navigate(['admin', 'categories', 'edit', item.categoryId]);
     } else if (action.id === 'delete') {
       this.openDeleteDialog(item);
     }
   }
 
-  openDeleteDialog(item: Product = {} as Product) {
+  openDeleteDialog(item: Category = {} as Category) {
     this._matDialog.open(DialogComponent, {
       data: {
         title: 'Delete',
-        subtitle: `Are you sure you want to delete ${item.name}?`,
+        subtitle: `Are you sure you want to delete ${item.title}?`,
         description: 'This action cannot be undone.',
         actions: [
           {
@@ -209,7 +203,7 @@ export class ListComponent implements OnDestroy {
           {
             text: 'Delete',
             action: () => {
-              this._collection.deleteProduct(item.productId);
+              this._collection.deleteCategory(item.categoryId);
             },
             style: 'mat-stroked-button',
             color: 'warn',
