@@ -4,6 +4,8 @@ import { Order } from './../models/order.model'; // Import the Order model
 import { OrderService } from './order.service'; // Import the OrderService
 import { Product } from './../models/product.model';
 import { ProductService } from './product.service';
+import { Review } from './../models/review.model';
+import { ReviewService } from './review.service';
 import { User } from './../models/user.model';
 import { UserService } from './user.service';
 
@@ -14,8 +16,13 @@ export class CollectionService {
   constructor(
     private _userService: UserService,
     private _productService: ProductService,
-    private _orderService: OrderService // Inject the OrderService
+    private _orderService: OrderService,
+    private _reviewService: ReviewService
   ) {}
+
+  getCurrentUser() {
+    return this._userService.getCurrentUser();
+  }
 
   getUsers() {
     return this._userService.getUsers();
@@ -90,6 +97,23 @@ export class CollectionService {
     return this._orderService.deleteOrder(orderId);
   }
 
-  // Add more order-related methods as needed
+  createReview(review: Partial<Review>) {
+    return this._reviewService.addReview(review);
+  }
 
+  getReviewsByProduct(productId: string) {
+    return this._reviewService.getReviewsByProduct(productId);
+  }
+
+  getReviewsByUser(userId: string) {
+    return this._reviewService.getReviewsByUser(userId);
+  }
+
+  updateReview(reviewId: string, review: Partial<Review>) {
+    return this._reviewService.updateReview(reviewId, review);
+  }
+
+  deleteReview(reviewId: string) {
+    return this._reviewService.deleteReview(reviewId);
+  }
 }

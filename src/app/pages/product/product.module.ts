@@ -7,6 +7,7 @@ import { ItemComponent } from './item/item.component';
 import { NgModule } from '@angular/core';
 import { ProductComponent } from './product.component';
 import { ProductRoutingModule } from './product-routing.module';
+import { ReviewComponent } from './review/review.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ViewComponent } from './view/view.component';
 
@@ -17,6 +18,7 @@ import { ViewComponent } from './view/view.component';
     ViewComponent,
     CreateComponent,
     CheckoutComponent,
+    ReviewComponent,
   ],
   imports: [
     CommonModule,

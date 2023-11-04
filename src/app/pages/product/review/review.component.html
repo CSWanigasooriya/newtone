@@ -1,0 +1,54 @@
+<!-- product-reviews.component.html -->
+<div class="product-reviews p-4" *ngIf="productId">
+  <div class="add-review mt-2">
+    <h4 class="text-lg uppercase mb-4">Add a Review</h4>
+    <textarea
+      [(ngModel)]="newReview.comment"
+      placeholder="Your Review"
+      class="w-full p-2 mt-2 border rounded mb-2"
+    ></textarea>
+    <newtone-star-rating
+      [readonly]="false"
+      [color]="'#f1c40f'"
+      [size]="2"
+      [initialStars]="0"
+      (ratingOutput)="newReview.rating = $event"
+      class="mt-4"
+    ></newtone-star-rating>
+    <button
+      (click)="addReview()"
+      class="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 mr-2"
+    >
+      SUBMIT
+    </button>
+    <!-- <button mat-stroked-button color="primary" (click)="loadReviews()">
+      LOAD ALL REVIEWS
+    </button> -->
+  </div>
+  <div *ngIf="productId" class="mt-2">
+    <div *ngFor="let review of reviews" class="mb-4 border p-4 rounded shadow">
+      <newtone-star-rating
+        [readonly]="true"
+        [color]="'#f1c40f'"
+        [size]="2"
+        [initialStars]="review.rating || 0"
+        class="mt-4"
+      ></newtone-star-rating>
+      <div class="mt-2">{{ review.comment }}</div>
+      <div class="text-sm mt-2 text-gray-600">
+        By {{ review.user?.displayName || 'Anonymous User' }}
+      </div>
+      <!--delete review-->
+      <button
+        mat-raised-button
+        color="warn"
+        *ngIf="review.user?.userId === currentUser?.userId"
+        class="mt-2 text-sm text-red-600 cursor-pointer"
+        (click)="deleteReview(review?.reviewId)"
+      >
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
