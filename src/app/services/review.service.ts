@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
+
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { serverTimestamp } from '@angular/fire/firestore';
 import { Review } from '../models/review.model';
+import { serverTimestamp } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +54,14 @@ export class ReviewService {
 
   deleteReview(reviewId: string): Promise<void> {
     return this.reviewsCollection.doc(reviewId).delete();
+  }
+  
+  async deleteReviews(reviewIds: string[]) {
+    const batch = this.afs.firestore.batch();
+    reviewIds.forEach((reviewId) => {
+      const docRef = this.reviewsCollection.doc(reviewId).ref;
+      batch.delete(docRef);
+    });
+    return await batch.commit();
   }
 }

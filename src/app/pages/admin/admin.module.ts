@@ -9,7 +9,11 @@ import { SalesComponent } from './sales/sales.component';
 import { SharedModule } from './../../shared/shared.module';
 
 @NgModule({
-  declarations: [DashboardComponent, AdminComponent, SalesComponent],
+  declarations: [
+    DashboardComponent,
+    AdminComponent,
+    SalesComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,

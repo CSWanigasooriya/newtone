@@ -81,6 +81,10 @@ export class CollectionService {
   }
 
   // Order service methods
+  getOrder(orderId: string) {
+    return this._orderService.getOrder(orderId);
+  }
+
   getOrders() {
     return this._orderService.getOrders();
   }
@@ -95,6 +99,10 @@ export class CollectionService {
 
   deleteOrder(orderId: string) {
     return this._orderService.deleteOrder(orderId);
+  }
+
+  deleteOrders(orderIds: string[]) {
+    return this._orderService.deleteOrders(orderIds);
   }
 
   createReview(review: Partial<Review>) {
@@ -115,5 +123,9 @@ export class CollectionService {
 
   deleteReview(reviewId: string) {
     return this._reviewService.deleteReview(reviewId);
+  }
+
+  deleteReviews(reviewIds: string[]) {
+    return this._reviewService.deleteReviews(reviewIds);
   }
 }

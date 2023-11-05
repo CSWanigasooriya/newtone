@@ -53,6 +53,15 @@ export class OrderService {
     return await this.ordersCollection.doc(orderId).delete();
   }
 
+  async deleteOrders(orderIds: string[]) {
+    const batch = this.afs.firestore.batch();
+    orderIds.forEach((orderId) => {
+      const docRef = this.ordersCollection.doc(orderId).ref;
+      batch.delete(docRef);
+    });
+    return await batch.commit();
+  }
+
   // You can add more methods as needed for order-related operations.
   
 }
