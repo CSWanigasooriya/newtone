@@ -73,6 +73,11 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
       text: 'Sales',
       link: '/admin/sales',
     },
+    {
+      icon: 'reviews',
+      text: 'Reviews',
+      link: '/admin/reviews',
+    },
   ];
 
   enlarge = {

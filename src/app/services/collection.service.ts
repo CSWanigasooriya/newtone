@@ -128,4 +128,12 @@ export class CollectionService {
   deleteReviews(reviewIds: string[]) {
     return this._reviewService.deleteReviews(reviewIds);
   }
+
+  getReview(reviewId: string) {
+    return this._reviewService.getReview(reviewId);
+  }
+
+  getReviews() {
+    return this._reviewService.getReviews();
+  }
 }

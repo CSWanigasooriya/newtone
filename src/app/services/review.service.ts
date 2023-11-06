@@ -15,7 +15,7 @@ export class ReviewService {
   private reviewsCollection: AngularFirestoreCollection<Partial<Review>>;
 
   constructor(private afs: AngularFirestore) {
-    this.reviewsCollection = this.afs.collection<Partial<Review>>('reviews');
+    this.reviewsCollection = this.afs.collection<Partial<Review>>('review');
   }
 
   addReview(review: Partial<Review>): Promise<void> {
@@ -32,7 +32,7 @@ export class ReviewService {
 
   getReviewsByProduct(productId: string): Observable<Partial<Review>[]> {
     return this.afs
-      .collection<Partial<Review>>('reviews', (ref) =>
+      .collection<Partial<Review>>('review', (ref) =>
         ref.where('productId', '==', productId)
       )
       .valueChanges();
@@ -63,5 +63,13 @@ export class ReviewService {
       batch.delete(docRef);
     });
     return await batch.commit();
+  }
+
+  getReview(reviewId: string): Observable<Partial<Review> | undefined> {
+    return this.reviewsCollection.doc<Partial<Review>>(reviewId).valueChanges();
+  }
+
+  getReviews() {
+    return this.reviewsCollection.valueChanges();
   }
 }
