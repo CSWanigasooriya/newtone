@@ -21,7 +21,7 @@ import { Store } from '@ngrx/store';
 export class CheckoutComponent implements OnDestroy {
   shippingAddress = '';
   fullName = '';
-  email = '';
+  customerEmail = '';
   phoneNumber = '';
   paymentMethod = '';
   shippingCity = '';
@@ -46,7 +46,7 @@ export class CheckoutComponent implements OnDestroy {
   isFormValid(): boolean {
     return (
       this.fullName !== '' &&
-      this.email !== '' &&
+      this.customerEmail !== '' &&
       this.phoneNumber !== '' &&
       this.shippingAddress !== '' &&
       this.paymentMethod !== ''
@@ -59,7 +59,7 @@ export class CheckoutComponent implements OnDestroy {
 
     const order = {
       fullName: this.fullName,
-      email: this.email,
+      customerEmail: this.customerEmail,
       phoneNumber: this.phoneNumber,
       shippingAddress: this.shippingAddress,
       paymentMethod: this.paymentMethod,

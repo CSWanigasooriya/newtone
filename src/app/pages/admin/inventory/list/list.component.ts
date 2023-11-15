@@ -4,6 +4,7 @@ import {
   TableAction,
   TableColumn,
 } from './../../../../shared/components/table/table.component';
+import { Product, Size } from './../../../../models/product.model';
 import { Subscription, map } from 'rxjs';
 
 import { AccordionData } from './../../../../shared/components/accordion/accordion.component';
@@ -11,7 +12,6 @@ import { BreakPointHelper } from '../../../../core/helpers/breakpoint.helper';
 import { CollectionService } from './../../../../services/collection.service';
 import { DialogComponent } from './../../../../shared/components/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Product } from './../../../../models/product.model';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 
@@ -21,8 +21,18 @@ type TableData = Partial<
   | {
       productId: string;
       name: string;
+      brand: string;
+      stockThreshold: number;
+      description: string;
+      size: Size;
+      color: string;
+      weight: number;
+      height: number;
+      width: number;
+      length: number;
       price: number;
       stock: number;
+      image: string;
     }
   | undefined
 >;
@@ -62,6 +72,15 @@ export class ListComponent implements OnDestroy {
           return {
             productId: product.productId,
             name: product.name,
+            brand: product.name,
+            stockThreshold: product.stockThreshold,
+            description: product.description,
+            // size: product.size,
+            color: product.variants?.[0]?.color,
+            weight: product.variants?.[0]?.weight,
+            height: product.variants?.[0]?.height,
+            width: product.variants?.[0]?.width,
+            length: product.variants?.[0]?.length,
             price: product?.variants?.reduce(
               (a, b) => Math.max(a, b.price || 0),
               -Infinity
@@ -70,6 +89,7 @@ export class ListComponent implements OnDestroy {
               (a, b) => Math.max(a, b.stock || 0),
               -Infinity
             ),
+            image: product.variants?.[0]?.image,
           };
         }) as TableData[];
 
@@ -98,6 +118,41 @@ export class ListComponent implements OnDestroy {
         isSortable: true,
       },
       {
+        name: 'Brand',
+        dataKey: 'brand',
+        isSortable: true,
+      },
+      {
+        name: 'Stock Threshold',
+        dataKey: 'stockThreshold',
+        isSortable: true,
+      },
+      {
+        name: 'Description',
+        dataKey: 'description',
+        isSortable: true,
+      },
+      {
+        name: 'Size',
+        dataKey: 'size',
+        isSortable: true,
+      },
+      {
+        name: 'Color',
+        dataKey: 'color',
+        isSortable: true,
+      },
+      {
+        name: 'Weight',
+        dataKey: 'weight',
+        isSortable: true,
+      },
+      {
+        name: 'Length',
+        dataKey: 'length',
+        isSortable: true,
+      },
+      {
         name: 'Price',
         dataKey: 'price',
         isSortable: true,
@@ -105,6 +160,11 @@ export class ListComponent implements OnDestroy {
       {
         name: 'Stock',
         dataKey: 'stock',
+        isSortable: true,
+      },
+      {
+        name: 'Image',
+        dataKey: 'image',
         isSortable: true,
       },
     ];

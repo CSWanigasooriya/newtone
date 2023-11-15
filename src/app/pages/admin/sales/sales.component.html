@@ -19,10 +19,24 @@
                 <div class="flex">
                   <div class="mx-4 w-20 flex flex-col border-l-2 border-blue-900">
                     <div class="-mb-1 ml-2 text-white text-2xl tracking-wide font-semibold">149</div>
-                    <div class="ml-2 text-xs text-gray-300">units sold</div>
+                    <div class="ml-2 text-xs text-gray-300">Processing</div>
+                  </div>
+                  <div class="mx-4 w-20 flex flex-col border-l-2 border-blue-900">
+                    <div class="-mb-1 ml-2 text-white text-2xl tracking-wide font-semibold">149</div>
+                    <div class="ml-2 text-xs text-gray-300">Shipped</div>
+                  </div>
+                  <div class="mx-4 w-20 flex flex-col border-l-2 border-blue-900">
+                    <div class="-mb-1 ml-2 text-white text-2xl tracking-wide font-semibold">149</div>
+                    <div class="ml-2 text-xs text-gray-300">Delivered</div>
+                  </div>
+                  <div class="mx-4 w-20 flex flex-col border-l-2 border-blue-900">
+                    <div class="-mb-1 ml-2 text-white text-2xl tracking-wide font-semibold">149</div>
+                    <div class="ml-2 text-xs text-gray-300">Canceled</div>
                   </div>
                   <div class="w-20 flex flex-col border-l-2 border-blue-900">
-                    <div class="-mb-1 ml-2 text-white text-2xl tracking-wide font-semibold">125</div>
+                    <div class="-mb-1 ml-2 text-white text-2xl tracking-wide font-semibold">{{
+                      (totalOrders$ | async)?.length
+                    }}</div>
                     <div class="ml-2 text-xs text-gray-300">orders</div>
                   </div>
                 </div>

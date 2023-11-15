@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { Order, OrderStatus } from './../../../../models/order.model';
 import {
   PaginatorAction,
   TableAction,
@@ -10,8 +11,9 @@ import { AccordionData } from './../../../../shared/components/accordion/accordi
 import { BreakPointHelper } from '../../../../core/helpers/breakpoint.helper';
 import { CollectionService } from './../../../../services/collection.service';
 import { DialogComponent } from './../../../../shared/components/dialog/dialog.component';
+import { FieldValue } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { Order } from './../../../../models/order.model';
+import { ProductVariant } from './../../../../models/product.model';
 import { Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 
@@ -20,7 +22,20 @@ import { Sort } from '@angular/material/sort';
 type TableData = Partial<
   | {
       orderId: string;
+      phoneNumber: string;
+      customerEmail: string;
+      productId: string;
+      productName: string;
+      quantity: number;
+      price: number;
+      variants: Partial<ProductVariant>[]; // Array of variants for the product
+      orderDate: FieldValue;
+      customerName: string;
       shippingAddress: string;
+      shippingCity: string;
+      shippingZipCode: string;
+      paymentMethod: 'credit_card' | 'cash_on_delivery' | 'paypal';
+      orderStatus: OrderStatus;
     }
   | undefined
 >;
@@ -59,7 +74,25 @@ export class ListComponent implements OnDestroy {
         this.tableData = orders.map((order) => {
           return {
             orderId: order.orderId,
+            phoneNumber: order.phoneNumber,
+            customerEmail: order.customerEmail,
+            customerName: order.customerName,
+            paymentMethod: order.paymentMethod,
             shippingAddress: order.shippingAddress,
+            color: order.variants?.[0]?.color,
+            weight: order.variants?.[0]?.weight,
+            height: order.variants?.[0]?.height,
+            width: order.variants?.[0]?.width,
+            length: order.variants?.[0]?.length,
+            price: order?.variants?.reduce(
+              (a, b) => Math.max(a, b.price || 0),
+              -Infinity
+            ),
+            stock: order?.variants?.reduce(
+              (a, b) => Math.max(a, b.stock || 0),
+              -Infinity
+            ),
+            quantity: order.quantity,
           };
         }) as TableData[];
 
@@ -88,8 +121,58 @@ export class ListComponent implements OnDestroy {
         isSortable: true,
       },
       {
+        name: 'Phone Number',
+        dataKey: 'phoneNumber',
+        isSortable: true,
+      },
+      {
+        name: 'Payment Method',
+        dataKey: 'paymentMethod',
+        isSortable: true,
+      },
+      {
+        name: 'Customer',
+        dataKey: 'customerName',
+        isSortable: true,
+      },
+      {
         name: 'Shipping Address',
         dataKey: 'shippingAddress',
+        isSortable: true,
+      },
+      {
+        name: 'Email',
+        dataKey: 'customerEmail',
+        isSortable: true,
+      },
+      {
+        name: 'Size',
+        dataKey: 'size',
+        isSortable: true,
+      },
+      {
+        name: 'Color',
+        dataKey: 'color',
+        isSortable: true,
+      },
+      {
+        name: 'Weight',
+        dataKey: 'weight',
+        isSortable: true,
+      },
+      {
+        name: 'Length',
+        dataKey: 'length',
+        isSortable: true,
+      },
+      {
+        name: 'Price',
+        dataKey: 'price',
+        isSortable: true,
+      },
+      {
+        name: 'Stock',
+        dataKey: 'stock',
         isSortable: true,
       },
     ];
@@ -183,7 +266,7 @@ export class ListComponent implements OnDestroy {
     this._matDialog.open(DialogComponent, {
       data: {
         title: 'Delete',
-        subtitle: `Are you sure you want to delete ${item.shippingAddress}?`,
+        subtitle: `Are you sure you want to delete ${item.orderId}?`,
         description: 'This action cannot be undone.',
         actions: [
           {
