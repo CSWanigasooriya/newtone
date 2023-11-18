@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { Component, OnDestroy } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { Observable, Subscription, map, startWith } from 'rxjs';
 import { ProductVariant, Size } from './../../../../models/product.model';
 
@@ -33,6 +38,10 @@ export class CreateComponent implements OnDestroy {
   // Initialize the product variants form
   productVariantsForm: FormGroup = this._formBuilder.group({
     variants: this._formBuilder.array([]), // Initialize an empty FormArray for variants
+  });
+
+  productSpecificationsForm: FormGroup = this._formBuilder.group({
+    specifications: this._formBuilder.array([]),
   });
 
   stepperOrientation: Observable<StepperOrientation>;
@@ -118,12 +127,23 @@ export class CreateComponent implements OnDestroy {
       }
     );
 
+    const specifications =
+      this.productSpecificationsForm.value.specifications.map(
+        (spec: { key: string; value: string }) => {
+          return {
+            key: spec.key ?? '',
+            value: spec.value ?? '',
+          };
+        }
+      );
+
     this._collection
       .createProduct({
         name: productFormValue.name ?? '',
         description: productFormValue.description ?? '',
         stockThreshold: Number(productFormValue.stockThreshold) ?? 0,
-        variants: variants,
+        variants,
+        specifications,
         category: this.selectedCategory ?? {
           categoryId: productFormValue.categoryId ?? '',
           title: '',
@@ -143,8 +163,16 @@ export class CreateComponent implements OnDestroy {
     return this.productVariantsForm.get('variants') as FormArray;
   }
 
+  get productSpecifications() {
+    return this.productSpecificationsForm.get('specifications') as FormArray;
+  }
+
   get getProductVariantsFormControls() {
     return this.productVariants.controls as FormGroup[];
+  }
+
+  get getProductSpecificationsFormControls() {
+    return this.productSpecifications.controls as FormGroup[];
   }
 
   private _filter(
@@ -178,6 +206,19 @@ export class CreateComponent implements OnDestroy {
     variantsFormArray.push(variantFormGroup);
   }
 
+  addSpecification() {
+    const specificationFormArray = this.productSpecificationsForm.get(
+      'specifications'
+    ) as FormArray;
+
+    const specificationFormGroup = this._formBuilder.group({
+      key: ['', Validators.required],
+      value: [''],
+    });
+
+    specificationFormArray.push(specificationFormGroup);
+  }
+
   setStep(index: number) {
     this.step = index;
   }
@@ -195,6 +236,13 @@ export class CreateComponent implements OnDestroy {
       'variants'
     ) as FormArray;
     variantsFormArray.removeAt(index);
+  }
+
+  deleteSpecification(index: number) {
+    const specificationFormArray = this.productSpecificationsForm.get(
+      'specifications'
+    ) as FormArray;
+    specificationFormArray.removeAt(index);
   }
 
   ngOnDestroy() {

@@ -7,6 +7,7 @@ export interface Product {
   name: string;
   brand: string;
   variants: Partial<ProductVariant>[];
+  specifications: Record<string, string>;
   category: Partial<Category>;
   stockThreshold: number;
   description: string;

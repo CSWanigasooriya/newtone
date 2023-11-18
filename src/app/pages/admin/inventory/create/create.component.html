@@ -58,6 +58,88 @@
       </div>
     </form>
   </mat-step>
+  <mat-step
+    [stepControl]="productSpecificationsForm"
+    label="PRODUCT SPECIFICATIONS"
+  >
+    <button mat-raised-button (click)="addSpecification()" color="primary">
+      <mat-icon>add</mat-icon>
+      ADD SPECIFICATION
+    </button>
+    <mat-accordion>
+      <form [formGroup]="productSpecificationsForm" class="my-2">
+        <ng-container formArrayName="specifications">
+          <ng-container
+            *ngFor="
+              let specificationForm of getProductSpecificationsFormControls;
+              let i = index;
+              first as isFirst;
+              last as isLast
+            "
+          >
+            <mat-expansion-panel
+              [expanded]="step === i"
+              (opened)="setStep(i)"
+              hideToggle
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title> Specification {{ i + 1 }} </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div [formGroup]="specificationForm">
+                <!-- Add your specification form controls here -->
+                <mat-form-field>
+                  <mat-label>SPECIFICATION NAME</mat-label>
+                  <input
+                    matInput
+                    formControlName="key"
+                    placeholder="SPECIFICATION NAME"
+                    required
+                  />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>SPECIFICATION VALUE</mat-label>
+                  <input
+                    matInput
+                    formControlName="value"
+                    placeholder="SPECIFICATION VALUE"
+                    required
+                  />
+                </mat-form-field>
+
+                <!-- Add more specification form controls as needed -->
+
+                <div>
+                  <button
+                    mat-raised-button
+                    (click)="deleteSpecification(i)"
+                    color="warn"
+                  >
+                    <mat-icon>delete</mat-icon>
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <mat-action-row>
+                <button
+                  *ngIf="!isLast"
+                  mat-raised-button
+                  color="primary"
+                  (click)="nextStep()"
+                >
+                  Next
+                </button>
+              </mat-action-row>
+            </mat-expansion-panel>
+          </ng-container>
+        </ng-container>
+        <div>
+          <button mat-raised-button matStepperPrevious>Back</button>
+          <button mat-raised-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-accordion>
+  </mat-step>
   <mat-step [stepControl]="productVariantsForm" label="PRODUCT VARIANTS">
     <button mat-raised-button (click)="addVariant()" color="primary">
       <mat-icon>add</mat-icon>
