@@ -93,11 +93,13 @@
     <mat-divider></mat-divider>
     <div class="row">
       <ng-container *ngFor="let item of filteredProducts$ | async">
-        <div class="col s12 m6 l3 mb-2 mt-2" *ngIf="item.productId">
-          <newtone-item
-            [product]="item"
-            (addToCart)="handleAddToCart($event)"
-          ></newtone-item>
+        <div class="col s12 m6 l3 mb-2 mt-2">
+          <ng-container *ngIf="item.productId">
+            <newtone-item
+              [product]="item"
+              (addToCart)="handleAddToCart($event)"
+            ></newtone-item>
+          </ng-container>
         </div>
       </ng-container>
     </div>
