@@ -27,12 +27,13 @@
         <div class="relative">
           <input
             class="p-2 rounded-sm w-full border text-[#002D74]"
-            type="password"
+            [type]="hidePassword ? 'password' : 'text'"
             required
             formControlName="password"
             placeholder="Password"
           />
           <svg
+            (click)="hidePassword = !hidePassword"
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"

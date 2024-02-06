@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent {
+  hidePassword = true;
+
   signInForm: FormGroup = this._formBuilder.group({
     email: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]],
