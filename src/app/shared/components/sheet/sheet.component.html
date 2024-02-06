@@ -9,8 +9,7 @@
           *ngFor="let variant of val.product.variants | groupBy : 'variantId'"
         >
           <div matListItemTitle>
-            {{ val.product.name }} # {{ variant.value[0].size }} :
-            {{ val.product.variants.length }}
+            {{ val.product.name }} - {{ variant.value[0].size }}
           </div>
         </mat-list-option>
       </ng-container>
