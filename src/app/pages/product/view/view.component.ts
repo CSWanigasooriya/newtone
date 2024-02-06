@@ -1,9 +1,9 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cart, CartItem } from './../../../models/cart.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, switchMap } from 'rxjs';
 import { Product, ProductVariant } from '../../../models/product.model';
 
-import { ActivatedRoute } from '@angular/router';
 import { Category } from './../../../models/category.model';
 import { CollectionService } from '../../../services/collection.service';
 import { NotificationService } from './../../../shared/services/notification.service';
@@ -29,6 +29,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private _router: Router,
     private _collection: CollectionService,
     private _notificationService: NotificationService,
     private _store: Store<{ cart: Cart }>
@@ -56,6 +57,27 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
 
     this.reset(product);
+  }
+
+  handleBuyNow(product: Partial<Product>) {
+    const variants = this.loadedVariants?.filter(
+      (variant) =>
+        variant.color === this.selectedColor &&
+        variant.size === this.selectedSize
+    );
+    product.variants = variants.map((variant, index) => {
+      return {
+        ...variant,
+        variantId: product.productId + index.toString(),
+      };
+    });
+
+    const cartItem = {
+      product,
+    } as CartItem;
+    this._store.dispatch(postCart({ item: cartItem }));
+
+    this._router.navigate(['/product/checkout']);
   }
 
   onColorChange(product: Partial<Product>) {
