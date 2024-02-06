@@ -269,11 +269,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-  body {
-    * {
-      cursor: default !important;
-    }
-  }
   .productCard {
     &.morph {
       .container {
@@ -384,7 +379,7 @@ img.active {
   display: block;
 }
 
-button {
+.reset {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

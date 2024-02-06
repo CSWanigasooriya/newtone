@@ -1,4 +1,12 @@
 <div class="mat-app-background" *ngIf="product$ | async as product">
+  <button
+    mat-raised-button
+    class="ml-3 mb-2"
+    color="primary"
+    [routerLink]="['/product']"
+  >
+    <mat-icon>arrow_back</mat-icon>CONTINUE SHOPPING
+  </button>
   <section class="productCard">
     <div class="container">
       <div class="info">
@@ -46,7 +54,7 @@
             <button
               mat-icon-button
               color="primary"
-              class="ml-1 sm:invisible md:visible"
+              class="ml-1 sm:invisible md:visible reset"
               (click)="reset(product)"
               [matTooltip]="'Reset Selection'"
             >
@@ -63,7 +71,9 @@
           <div class="button" (click)="handleAddToCart(product)">
             Add to cart
           </div>
-          <div class="button colored" (click)="handleBuyNow(product)">Buy now</div>
+          <div class="button colored" (click)="handleBuyNow(product)">
+            Buy now
+          </div>
         </div>
       </div>
       <div class="container"></div>
@@ -91,7 +101,9 @@
       <mat-tab label="REVIEWS">
         <newtone-review [productId]="product.productId"></newtone-review>
       </mat-tab>
-      <mat-tab label="SPECIFICATIONS"> {{ product.specifications | json }}</mat-tab>
+      <mat-tab label="SPECIFICATIONS">
+        {{ product.specifications | json }}</mat-tab
+      >
     </mat-tab-group>
   </section>
 </div>
