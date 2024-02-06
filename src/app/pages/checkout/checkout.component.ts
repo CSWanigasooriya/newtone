@@ -89,7 +89,6 @@ export class CheckoutComponent implements OnDestroy {
       product,
       quantity: 1,
     } as CartItem;
-    this.cartItems.splice(this.cartItems.indexOf(cartItem), 1);
     this._store.dispatch(removeItemFromCart({ item: cartItem }));
   }
 
@@ -100,7 +99,6 @@ export class CheckoutComponent implements OnDestroy {
       product,
       quantity: 1,
     } as CartItem;
-    this.cartItems.push(cartItem);
     this._store.dispatch(postCart({ item: cartItem }));
   }
 
