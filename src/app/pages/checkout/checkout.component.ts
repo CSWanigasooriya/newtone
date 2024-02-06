@@ -11,6 +11,7 @@ import { CollectionService } from './../../services/collection.service';
 import { NotificationService } from './../../shared/services/notification.service';
 import { Order } from './../../models/order.model';
 import { Product } from './../../models/product.model';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -32,6 +33,7 @@ export class CheckoutComponent implements OnDestroy {
   private _subscriptions = new Subscription();
   constructor(
     private _store: Store<{ cart: Cart }>,
+    private _router: Router,
     private _collection: CollectionService,
     private _notificationService: NotificationService
   ) {
@@ -54,8 +56,7 @@ export class CheckoutComponent implements OnDestroy {
   }
 
   onSubmit() {
-
-    if(!this.isFormValid()) return;
+    if (!this.isFormValid()) return;
 
     const order = {
       fullName: this.fullName,
@@ -71,6 +72,7 @@ export class CheckoutComponent implements OnDestroy {
         this._notificationService.showNotification('Order placed successfully');
         this._store.dispatch(removeAllItemsFromCart());
         this.cartItems = [];
+        this._router.navigate(['/']);
       },
       () => {
         this._notificationService.showError({
