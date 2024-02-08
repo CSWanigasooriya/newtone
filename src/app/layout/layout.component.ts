@@ -73,12 +73,12 @@ export class LayoutComponent implements OnDestroy {
     this.navItems = [
       {
         name: 'About',
-        route: '/about',
+        route: 'about',
         icon: 'info',
       },
       {
         name: 'Contact',
-        route: '/contact',
+        route: 'contact',
         icon: 'contact_support',
       },
     ];
