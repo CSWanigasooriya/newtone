@@ -8,6 +8,6 @@ export interface AppConfig {
 export const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 
 export const NEWTONE_DI_CONFIG: AppConfig = {
-  title: 'Newtone',
+  title: 'NEWTONE',
   dark_theme: false,
 };

@@ -84,7 +84,7 @@ export class CreateComponent implements OnDestroy {
       height: [0, Validators.required], // Initialize with a default value
       width: [0, Validators.required], // Initialize with a default value
       length: [0, Validators.required], // Initialize with a default value
-      stock: [0, Validators.required], // Initialize with a default
+      stock: [1, Validators.required], // Initialize with a default
       image: ['', Validators.required],
     });
 

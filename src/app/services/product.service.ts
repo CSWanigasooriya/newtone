@@ -81,7 +81,6 @@ export class ProductService {
     return this.categoriesCollection.doc(cid).valueChanges();
   }
 
-  
   async createCategory(category: Partial<Category>) {
     const id = this.afs.createId();
     return await this.categoriesCollection.doc(id).set(

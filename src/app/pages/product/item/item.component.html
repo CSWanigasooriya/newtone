@@ -40,10 +40,11 @@
       >
     </div>
   </div>
-  <div class="p-4 border-t border-b text-xs text-gray-500">
+  <div class="p-4 border-t border-b text-xs text-gray-500" *ngIf="product.category?.tags?.length! > 0">
     <span
+      *ngFor="let tag of product.category?.tags"
       class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-      >#{{ product.category?.categoryId }}</span
+      >#{{ tag }}</span
     >
   </div>
   <div class="p-4 flex items-center text-sm text-gray-400">
